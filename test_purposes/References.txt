@@ -1,0 +1,19 @@
+TODO
+
+[1]    ETSI ES 203 119-4: "TDL: Structured Test Objective Specification (Extension)"
+[2]    ETSI TS 124 229:   "Digital cellular telecommunications system (Phase 2+) (GSM); Universal Mobile Telecommunications System (UMTS); LTE; IP multimedia call control protocol based on Session Initiation Protocol (SIP) and Session Description Protocol (SDP); Stage 3 (3GPP TS 24.229 Release 15)".
+[3]    ETSI TS 129 165:   "Digital cellular telecommunications system (Phase 2+) (GSM); Universal Mobile Telecommunications System (UMTS); LTE; Inter-IMS Network to Network Interface (NNI) (3GPP TS 29.165 Release 15)".
+[4]    ETSI TS 129 228:   "Digital cellular telecommunications system (Phase 2+) (GSM); Universal Mobile Telecommunications System (UMTS); LTE; IP Multimedia (IM) Subsystem Cx and Dx Interfaces; Signalling flows and message contents (3GPP TS 29.228 Release 15)".
+[5]    ETSI TS 129 229:   "Digital cellular telecommunications system (Phase 2+) (GSM); Universal Mobile Telecommunications System (UMTS); LTE; Cx and Dx interfaces based on the Diameter protocol; Protocol details (3GPP TS 29.229 Release 15)".
+[6]    ETSI TS 132 260:   "Digital cellular telecommunications system (Phase 2+) (GSM); Universal Mobile Telecommunications System (UMTS); LTE; Telecommunication management;Charging management;IP Multimedia Subsystem (IMS) charging (3GPP TS 32.260 Release 15)".
+[7]    ETSI TS 132 299:   "Digital cellular telecommunications system (Phase 2+) (GSM); Universal Mobile Telecommunications System (UMTS); LTE; Telecommunication management; Charging management; Diameter charging applications (3GPP TS 32.299 Release 15)".
+[8]    ETSI TS 129 214:   "Universal Mobile Telecommunications System (UMTS); LTE; Policy and charging control over Rx reference point (3GPP TS 29.214 Release 15)".
+[9]    ETSI TS 129 212:   "Universal Mobile Telecommunications System (UMTS); LTE; Policy and Charging Control (PCC); Reference points (3GPP TS 29.212 Release 15)".
+[10]   ETSI TS 129 272:   "Universal Mobile Telecommunications System (UMTS); LTE; Evolved Packet System (EPS); Mobility Management Entity (MME) and Serving GPRS Support Node (SGSN) related interfaces based on Diameter protocol (3GPP TS 29.272 Release 15)".
+[11]   ETSI TS 129 215:   "Digital cellular telecommunications system (Phase 2+) (GSM); Universal Mobile Telecommunications System (UMTS); LTE; Policy and Charging Control (PCC) over S9 reference point; Stage 3 (3GPP TS 29.215 Release 15)".
+[12]   ETSI TS 129 328:   "Digital cellular telecommunications system (Phase 2+) (GSM); Universal Mobile Telecommunications System (UMTS); LTE; IP Multimedia (IM) Subsystem Sh interface; Signalling flows and message contents (3GPP TS 29.328 Release 15)".
+[13]   ETSI TS 129 329:   "Digital cellular telecommunications system (Phase 2+) (GSM); Universal Mobile Telecommunications System (UMTS); LTE; Sh interface based on the Diameter protocol; Protocol details (3GPP TS 29.329 Release 15)".
+[14]   ISO/IEC 9646-1:    "Information technology -- Open Systems Interconnection -- Conformance testing methodology and framework -- Part 1: General concepts".
+[15]   ISO/IEC 9646-7:    "Information technology -- Open Systems Interconnection -- Conformance testing methodology and framework -- Part 7: Implementation Conformance Statements".
+[16]   ETSI ETS 300 406:  "Methods for testing and Specification (MTS); Protocol and profile conformance testing specifications; Standardization methodology".
+[17]   IETF RFC 3588:     "Diameter Base Protocol".

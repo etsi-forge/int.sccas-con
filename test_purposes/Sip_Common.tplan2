@@ -1,0 +1,164 @@
+/* ETSI Software License
+* As long as the here under conditions are respected, non-exclusive permission is hereby granted,
+* free of charge, to use, reproduce and modify this software source code, under the following conditions:
+* This source code is provided AS IS with no warranties, express or implied, including but not limited to,
+* the warranties of merchant ability, fitness for a particular purpose and warranties for non-infringement
+* of intellectual property rights.
+* ETSI shall not be held liable in any event for any direct or indirect damages whatsoever (including, without
+* limitation, damages for loss of profits, business interruption, loss of information, or any other pecuniary
+* loss) arising out of or related to the use of or inability to use the source code.
+* This permission is granted to facilitate the implementation of the related ETSI standard, provided that
+* ETSI is given the right to use, reproduce and amend the modified source code under the same conditions
+* as the present permission.
+* This permission does not apply to any documentation associated with this source code for which ETSI keeps
+* all rights reserved.
+* The present ETSI Source Code license shall be included in all copies of whole or part of this source code
+* and shall not imply any sub-license right.
+* (c) ETSI 2019-2020 
+*/
+ 
+ 
+Package Sip_Common {
+    Domain {
+        pics:
+            - NONE
+            - PICS_2
+            - NOT_PICS_2
+        ;
+        entities:
+            - SCCAS
+            - IMS_S_CSCF
+            - UE
+            - IUT
+        ;
+        events:
+            - receives
+            - sends
+            - forwards
+            // Initial conditions
+            - isTriggeredToStart
+            - isNotRegisteredTo
+            - hasAchievedFirstRegistration
+            - isRegisteredTo
+            - isNotAttachedTo
+            - isAttachedTo
+            - isNotConfiguredForTopologyHiding
+            - isConfiguredForTopologyHiding
+            - isExistingIn
+            - establishedSecurityRelation
+            - registeredIdentityTelURI
+            - registeredIdentitySipURI
+            - hasInitiatedDialogWith
+            - isConfiguredWithENUMentryForTelURI_E164NumberOf
+            - hasReceivedInitialRequestForDialog
+            - hasReceived200OkOnInitialRequestForDialogWith
+            - hasReceived180OnInitialRequest
+            - hasReceived200OkCancel
+            - hasReceivedTerminatedRequest
+            - registeredPublicIdsWithTelUriAndSipUri
+            - hasReceivedSubsequentOrTargetRefreshRequestInDialog
+            - previouslyEstablishedCallWith
+            - isRequestedToSend
+            - isRequestedToDeregisterUser
+            - isBusy
+            - isNoLongerAvailable
+            - isTriggeredToDetachUser
+            - isRequestedToDetachfromNetwork
+            - hasAchievedFirstREGISTER
+            - hasResponded486INVITE
+            - hasAchievedInitialINVITE
+            - hasAchievedINVITE
+        ;
+    } // End of Domain section
+
+//    Const {
+//        PX_Stored_Domain_Uri,
+//        PX_Affected_IMPU,
+//        PX_Contact,
+//        PX_UE_A_SIP_URI,
+//        PX_UE_A_TEL_URI,
+//        PX_UE_A_CALLID,
+//        PX_UE_A_REALM,
+//        PX_UE_A_USERNAME,
+//        PX_UE_A_INVALID_USERNAME,
+//        PX_UE_A_VIA,
+//        PX_UE_A_AUTH_ALG,
+//        PX_OPERATOR_ID_A,
+//        PX_UE_B_SIP_URI,
+//        PX_UE_B_TEL_URI,
+//        PX_UE_B_USERNAME,
+//        PX_UE_B_INVALID_USERNAME,
+//        PX_UE_B_VIA,
+//        PX_UE_B_AUTH_ALG,
+//        PX_OPERATOR_ID_B,
+//        PX_P_CSCF_A_SIP_URI,
+//        PX_IMS_A_ICID,
+//        PX_IMS_A_ORIG_IOI,
+//        PX_S_CSCF_A_SIP_URI,
+//        PX_P_CSCF_A_SIP_URI,
+//        PX_IBCF_B_SIP_URI,
+//        PX_TO_BE_DEFINED
+//        ;
+//    } // End of Const section
+
+    Data {
+        type SipMessage;
+        type EnumMessage;
+        
+        SipMessage REGISTER;
+        SipMessage SUBSCRIBE;
+        SipMessage INVITE;
+        SipMessage ACK;
+        SipMessage CANCEL;
+        SipMessage BYE;
+         // SIP Responses
+        SipMessage r_100_Trying;
+        SipMessage r_180_Ringing;
+        SipMessage r_200_Ok;
+        SipMessage r_2xx_Any;
+        SipMessage r_401_Unauthorized;
+        SipMessage r_403_Forbidden;
+        SipMessage r_404_NotFound;
+        SipMessage r_486_INVITE;
+        SipMessage r_4xx_Any;
+    } // End of Data section
+          
+        Configuration {
+            Interface Type defaultGT accepts SipMessage;
+            Component Type SipComponent with gate g of type defaultGT;
+            
+            
+            Test Configuration CFG_SCCAS_01 
+                containing 
+                    Tester component IMS_S_CSCF of type SipComponent
+                    SUT component IUT of type SipComponent
+                    connection between IMS_S_CSCF.g and IUT.g;
+                    
+            Test Configuration CFG_SCSCF_01 
+                containing 
+                    Tester component SCCAS of type SipComponent
+                    SUT component IUT of type SipComponent
+                    connection between SCCAS.g and IUT.g;
+                    
+            Test Configuration CFG_SCSCF_02 
+                containing 
+                    Tester component SCCAS of type SipComponent
+                    Tester component UE of type SipComponent
+                    SUT component IUT of type SipComponent
+                    connection between SCCAS.g and IUT.g
+                    connection between UE.g and IUT.g;
+        }
+    
+    //Type MSG (optional TCP of type CONTENT);
+    
+    //Type CONTENT;
+    //CONTENT tcp;
+    
+    //MSG MESSAGE;
+    
+    //Type MSG_SIZE;
+    
+    //Message_Body_Size MSG_SIZE;
+    
+} // End of Package Sip_Common
+
