@@ -1,0 +1,264 @@
+/*
+Copyright (c) ETSI 2019-2020.
+
+This software is subject to copyrights owned by ETSI. Non-exclusive permission
+is hereby granted, free of charge, to copy, reproduce and amend this file
+under the following conditions: It is provided "as is", without warranty of any
+kind, expressed or implied.
+
+ETSI shall never be liable for any claim, damages, or other liability arising
+from its use or inability of use.This permission does not apply to any documentation
+associated with this file for which ETSI keeps all rights reserved. The present
+copyright notice shall be included in all copies of whole or part of this
+file and shall not imply any sub-license right.
+*/
+
+/* interface ISC at SCCAS */
+Package TP_SCCAS_Chapter_6_3 {
+    
+    import all from Sip_Common;
+    
+    Test Purpose {
+        
+        TP Id TP_ISC_SCCAS_REG_01
+        
+        Test objective  "Verify that the SCCAS successfully obtain/processes 3pty registration information."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clause 6.3.1"
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE
+        
+        Initial conditions with {
+            the UE entity isNotRegisteredTo the IMS_A
+        }
+        
+        Expected behaviour
+            ensure that {
+                when {
+                    the IUT entity receives a REGISTER containing
+                        From indicating value PX_IMS_S_CSCF_SIP_URI,
+                        To indicating value PX_UE_A_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        SipMessageBody containing
+                            MIME indicating value "REGISTER from_UE_A",
+                            MIME indicating value "r_200_Ok to_UE_A";;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                    the IUT entity sends a r_200_Ok containing
+                        From indicating value PX_IMS_S_CSCF_SIP_URI,
+                        To indicating value PX_UE_A_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Contact indicating value PX_UE_A_SIP_URI //,
+                        //Path indicating value PX_P_CSCF_A_SIP_URI,
+                        //PChargingVector containing
+                        //    icid indicating value PX_TO_BE_DEFINED,
+                        //PVisitedNetworkID indicating value PX_TO_BE_DEFINED,
+                        //Require indicating value "path",
+                        //Supported indicating value "path"   ;;
+                        ;
+                    to the IMS_S_CSCF entity
+                }
+            }
+    } // End of TP_ISC_SCCAS_REG_01
+    
+     Test Purpose {
+        
+        TP Id TP_ISC_SCCAS_REG_02
+        
+        Test objective  "Verify that the SCCAS successfully obtain/processes SRVCC information."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clause 6.3.2 (1st numbered list)"
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE
+        
+        Initial conditions with {
+            the UE entity isNotRegisteredTo the IMS_A
+        }
+        
+        Expected behaviour
+            ensure that {
+                when {
+                    the IUT entity receives a REGISTER containing
+                        From indicating value PX_IMS_S_CSCF_SIP_URI,
+                        To indicating value PX_UE_A_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        FeatureCaps containing 
+                            g3gppAtcfFeatureCapabilityIndicator;,
+                        SipMessageBody containing
+                            MIME indicating value "REGISTER from_UE_A",
+                            MIME indicating value "r_200_Ok to_UE_A";;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                    the IUT entity sends a r_200_Ok containing
+                        From indicating value PX_IMS_S_CSCF_SIP_URI,
+                        To indicating value PX_UE_A_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Contact indicating value PX_UE_A_SIP_URI;
+                    to the IMS_S_CSCF entity
+    
+                }
+                
+            }
+            
+    } // End of TP_ISC_SCCAS_REG_02
+    
+    Test Purpose {
+        
+        TP Id TP_ISC_SCCAS_REG_03
+        
+        Test objective  "Verify that the SCCAS successfully sends MESSAGE providing PS to CS SRVCC information."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clause 6.3.3"
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE
+        
+        Initial conditions with {
+            the UE entity isNotRegisteredTo the IMS_A
+        }
+        
+        Expected behaviour
+            ensure that {
+                when {
+                    the IUT entity receives a REGISTER containing
+                        From indicating value PX_IMS_S_CSCF_SIP_URI,
+                        To indicating value PX_UE_A_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        FeatureCaps containing 
+                            g3gppAtcfFeatureCapabilityIndicator;,
+                        SipMessageBody containing
+                            MIME indicating value "REGISTER from_UE_A",
+                            MIME indicating value "r_200_Ok to_UE_A";;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                    the IUT entity sends a r_200_Ok containing
+                        From indicating value PX_IMS_S_CSCF_SIP_URI,
+                        To indicating value PX_UE_A_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Contact indicating value PX_UE_A_SIP_URI //,
+                        //Path indicating value PX_P_CSCF_A_SIP_URI,
+                        //PChargingVector containing
+                        //    icid indicating value PX_TO_BE_DEFINED,
+                        //PVisitedNetworkID indicating value PX_TO_BE_DEFINED,
+                        //Require indicating value "path",
+                        //Supported indicating value "path"   ;;
+                        ;
+                    to the IMS_S_CSCF entity
+                    
+                	and the IUT entity sends a MESSAGE
+                	to the ATCF entity
+                }
+                
+            }
+            
+    } // End of TP_ISC_SCCAS_REG_03
+    
+       Test Purpose {
+        
+        TP Id TP_ISC_SCCAS_REG_04
+        
+        Test objective  "Verify that the SCCAS successfully obtain/processes de-registration information (Expires=0)."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clause 6.3.1"
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS_A
+        }
+        
+        Expected behaviour
+            ensure that {
+                when {
+                    the IUT entity receives a REGISTER containing
+                        From indicating value PX_IMS_S_CSCF_SIP_URI,
+                        To indicating value PX_UE_A_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Expires indicating value 0;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                    the IUT entity sends a r_200_Ok containing
+                        From indicating value PX_IMS_S_CSCF_SIP_URI,
+                        To indicating value PX_UE_A_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA ;
+                    to the IMS_S_CSCF entity
+                }
+            }
+    } // End of TP_ISC_SCCAS_REG_04
+    
+    Test Purpose {
+        
+        TP Id TP_SCCAS_INVITE_01
+        
+        Test objective  "Verify that the P-CSCF successfully processes an initial INVITE (Originating Leg)."
+        
+        Reference 
+            "ETSI TS 124 229 [1], Clauses 5.2.7.2 and 6.2"
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS
+        }
+        
+        Expected behaviour
+            ensure that {
+                when {
+                    the IUT entity receives an INVITE containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+                        PAccessNetworkInfo,
+                        MessageBody containing
+                            SDP containing
+                                Version indicating value "0";;;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                    the IUT entity sends an r_200_Ok containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+                        PAccessNetworkInfo,
+                        ContentType indicating value "application/sdp",
+                        ContentLength,
+                        MessageBody containing
+                            SDP containing
+                                Version indicating value "0";;;
+                     to the IMS_S_CSCF entity
+                }
+            }
+            
+    } // End of TP_MW_PCSCF_INVITE_01
+    
+} // End of Package TP_MW_PS
+
