@@ -30,6 +30,7 @@ Package Sip_Common {
             - IMS_S_CSCF
             - UE
             - IUT
+            - ATCF
         ;
         events:
             - receives
@@ -105,6 +106,15 @@ Package Sip_Common {
         type SipMessage;
         type EnumMessage;
         
+        type SDP;
+        type XmlType;
+        type MimeType with
+            optional SDP of type SDP,
+            optional XML of type XmlType,
+            optional SipMessage of type SipMessage;
+       
+        type g3gppAtcfFeatureCapabilityIndicator;
+        
         SipMessage REGISTER;
         SipMessage SUBSCRIBE;
         SipMessage INVITE;
@@ -121,6 +131,15 @@ Package Sip_Common {
         SipMessage r_404_NotFound;
         SipMessage r_486_INVITE;
         SipMessage r_4xx_Any;
+        
+        type SipMessageBody
+                with
+                    optional SDP of type SDP,
+                    optional XML of type XmlType,
+                    optional MIME of type MimeType;
+        
+        
+                
     } // End of Data section
           
         Configuration {
