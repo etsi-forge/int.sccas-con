@@ -1,0 +1,321 @@
+/*
+Copyright (c) ETSI 2019-2020.
+
+This software is subject to copyrights owned by ETSI. Non-exclusive permission
+is hereby granted, free of charge, to copy, reproduce and amend this file
+under the following conditions: It is provided "as is", without warranty of any
+kind, expressed or implied.
+
+ETSI shall never be liable for any claim, damages, or other liability arising
+from its use or inability of use.This permission does not apply to any documentation
+associated with this file for which ETSI keeps all rights reserved. The present
+copyright notice shall be included in all copies of whole or part of this
+file and shall not imply any sub-license right.
+*/
+
+/* interface at SCCAS */
+Package TP_SCCAS {
+    
+    
+   // import all from Sip_Common;
+    
+  
+    
+    
+    Group "9.3.3 SCC AS procedures for CS to PS access transfer"
+    {
+    	import all from Sip_Common;
+    	 
+    	Test Purpose {
+    		
+    	// When the SCC AS receives a 
+    	// SIP INVITE request due to 
+    	// STI on the (page 20)
+    	// Target Access Leg offering (RFC 3891 - replaces header field, 
+    	// PS media only (PS Packet Switch),
+		// SCC AS shall follow the procedures specified in subclause 10.3.2.
+		
+        
+        TP Id TP_SCCAS_CS_to_PS_access_transfer_01 
+        
+        Test objective  "Verify that the P-CSCF successfully processes an initial INVITE (Originating Leg) with dynamic STI."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clauses 9.3.3 and 10.3.2" 
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE  // TODO
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS  // TODO
+        }
+        
+        Expected behaviour
+            ensure that {
+                when {
+                    the IUT entity receives an INVITE containing  	
+                        From indicating value PX_UE_A_SIP_URI,		// this indicates dynamic STI
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+                        Supported indicating value "replaces",
+                        PAccessNetworkInfo,
+                        Replaces containing  // Replaces indicating value (RFC 3891)
+                        	 call_id indicating value PX_call_id, // TODO PX
+                        	 from_tag indicating value PX_from_tag, // TODO PX
+                        	 to_tag indicating value PX_to_tag // TODO PX                   
+                        MessageBody containing
+                            SDP containing  // SDP: Session Description Protocol
+                                Media indicating value PX_PSMediaOnly, // TODO: PX for media only
+                                Version indicating value "0";;;;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                    the IUT entity sends an r_200_Ok containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+                        PAccessNetworkInfo,
+                        ContentType indicating value "application/sdp",
+                        ContentLength,
+                        MessageBody containing
+                            SDP containing
+                             	Media indicating value PX_PSMediaOnly, // TODO: PX for media only
+                                Version indicating value "0";;;
+                     to the IMS_S_CSCF entity
+                	}
+            	}
+            
+            } // end TP TP_SCCAS_CS_to_PS_access_transfer_01
+            
+            
+            // Testpurpose 2: When the SCC AS receives a SIP INVITE request due to static STI, the SCC AS shall:
+            Test Purpose {
+    		
+	    	// When the SCC AS receives a 
+	    	// SIP INVITE request due to 
+	    	// STI on the (page 20)
+	    	// Target Access Leg offering (RFC 3891 - replaces header field, 
+	    	// PS media only (PS Packet Switch),
+			// SCC AS shall follow the procedures specified in subclause 10.3.2.
+			
+	        
+	        TP Id TP_SCCAS_CS_to_PS_access_transfer_02 
+	        
+	        Test objective  "Verify that the P-CSCF successfully processes an initial INVITE (Originating Leg) with static STI."
+	        
+	        Reference 
+	            "ETSI TS 124 237 [1], Clauses 9.3.3" 
+	        
+	        Config Id CFG_SCCAS_01
+	        
+	        PICS Selection NONE  // TODO
+	        
+	        Initial conditions with {
+	            the UE entity isRegisteredTo the IMS  // TODO
+	        }
+	        
+	        Expected behaviour
+	            ensure that {
+	                when {
+	                    the IUT entity receives an INVITE containing  	
+	                        From indicating value PX_UE_A_TEL_URI,		// this indicates static STI 
+	                        To indicating value PX_UE_B_SIP_URI,
+	                        CallId indicating value PX_UE_A_CALLID,
+	                        Via indicating value PX_UE_A_VIA,
+	                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+	                        Supported indicating value "replaces",
+	                        PAccessNetworkInfo,
+	                        Replaces containing  // Replaces indicating value (RFC 3891)
+	                        	 call_id indicating value PX_call_id, // TODO PX
+	                        	 from_tag indicating value PX_from_tag, // TODO PX
+	                        	 to_tag indicating value PX_to_tag // TODO PX                   
+	                        MessageBody containing
+	                            SDP containing  // SDP: Session Description Protocol
+	                                Media indicating value PX_PSMediaOnly, // TODO: PX for media only
+	                                Version indicating value "0";;;;
+	                    from the IMS_S_CSCF entity
+	                }
+	                then {
+	                    the IUT entity sends an r_200_Ok containing
+	                        From indicating value PX_UE_A_TEL_URI,
+	                        To indicating value PX_UE_B_SIP_URI,
+	                        CallId indicating value PX_UE_A_CALLID,
+	                        Via indicating value PX_UE_A_VIA,
+	                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+	                        PAccessNetworkInfo,
+	                        ContentType indicating value "application/sdp",
+	                        ContentLength,
+	                        MessageBody containing
+	                            SDP containing
+	                             	Media indicating value PX_PSMediaOnly, // TODO: PX for media only
+	                                Version indicating value "0";;;
+	                     to the IMS_S_CSCF entity
+	                	}
+	            	}
+            
+            } // end TP_SCCAS_CS_to_PS_access_transfer_02
+            
+            
+            // Test puposes 3: Upon receiving the SIP 2xx response to the SIP re-INVITE request the SCC AS shall send the SIP 200 (OK) response
+			// to the SIP INVITE request due to static STI on the target access leg populated as follows:
+          	Test Purpose {
+    		
+	    	// Note: Consider alternative with: 
+	    	// if the SCC AS supports CS to PS dual radio access transfer for calls in alerting phase according to operator policy
+		
+        
+	        TP Id TP_SCCAS_CS_to_PS_access_transfer_03 
+	        
+	        Test objective  "Verify that the P-CSCF successfully processes an re-INVITE (Originating Leg)"
+	        
+	        Reference 
+	            "ETSI TS 124 237 [1], Clauses 9.3.3" 
+	        
+	        Config Id CFG_SCCAS_01
+	        
+	        PICS Selection NONE  // TODO
+	        
+	        Initial conditions with {
+	            the UE entity isRegisteredTo the IMS and // TODO
+	            the UE entity previouslyEstablishedCallWith 
+	        }
+	        
+	        Expected behaviour
+	            ensure that {
+	                when {
+	                    the IUT entity receives an INVITE containing  	// re-invite
+	                        From indicating value PX_UE_A_SIP_URI,		
+	                        To indicating value PX_UE_B_SIP_URI,
+	                        CallId indicating value PX_UE_A_CALLID,
+	                        Via indicating value PX_UE_A_VIA,
+	                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+	                        Supported indicating value "replaces",
+	                        PAccessNetworkInfo,
+	                        Replaces containing  // Replaces indicating value (RFC 3891)
+	                        	 call_id indicating value PX_call_id, // TODO PX
+	                        	 from_tag indicating value PX_from_tag, // TODO PX
+	                        	 to_tag indicating value PX_to_tag // TODO PX                   
+	                        MessageBody containing
+	                            SDP containing  // SDP: Session Description Protocol
+	                                Media indicating value PX_PSMediaOnly, // TODO: PX for media only
+	                                Version indicating value "0";;;;
+	                    from the IMS_S_CSCF entity
+	                }
+	                then {
+	                    the IUT entity sends an r_200_Ok containing
+	                        From indicating value PX_UE_A_SIP_URI,
+	                        To indicating value PX_UE_B_SIP_URI,
+	                        CallId indicating value PX_UE_A_CALLID,
+	                        Via indicating value PX_UE_A_VIA,
+	                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+	                        PAccessNetworkInfo,
+	                        ContentType indicating value "application/sdp",
+	                        ContentLength,
+	                        MessageBody containing
+	                            SDP containing
+	                             	Media indicating value PX_PSMediaOnly, // TODO: PX for media only
+	                                Version indicating value "0";;;
+	                     to the IMS_S_CSCF entity
+	                	}
+	            	}
+	            
+	            } // end TP_SCCAS_CS_to_PS_access_transfer_03
+            
+            
+            // Test puposes 4: Upon receiving the SIP ACK request originated from the SC UE, the SCC AS shall:
+            Test Purpose {
+            	
+            TP Id TP_SCCAS_CS_to_PS_access_transfer_04  
+            
+            //Upon receiving the SIP ACK request originated from the SC UE, the SCC AS shall:
+			//1) release the source access leg as specified in subclause 9.3.6.; and ...
+			
+            //the source access leg is an ongoing session containing only an active or inactive media component or a session in
+			//an early dialog phase on the terminating side, send a SIP BYE request on the source access leg in accordance
+			//with 3GPP TS 24.229 [2];
+        
+        	Test objective  "Verify that the P-CSCF successfully processes an ACK and release the source access leg."
+        
+        	Reference 
+            "ETSI TS 124 237 [1], Clauses 9.3.3 and 9.3.6." 
+        
+        	Config Id CFG_SCCAS_01
+        
+       	 	PICS Selection NONE  // TODO
+        
+        	Initial conditions with {
+            	the UE entity isRegisteredTo the IMS and
+            	the UE entity hasReceived200OkOnInitialRequestForDialogWith
+        	}
+        	
+        	Expected behaviour
+            	ensure that {
+                	when {                 
+                    	the IUT entity receives an ACK containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE;
+                    from the IMS_S_CSCF entity
+                }                    	             	
+              	then {
+                    	the IUT entity sends an BYE containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE;
+                    to the IMS_S_CSCF entity
+                    }
+                }
+            	
+            
+            } // end TP TP_SCCAS_CS_to_PS_access_transfer_04
+            
+    	
+    } // end Group "9.3.3 SCC AS procedures for CS to PS access transfer"
+    
+     Group "9.3.4 SCC AS procedures for CS to PS access transfer with MSC server assisted mid-call feature"
+    {
+    	
+    	
+    } // end Group 9.3.4 SCC AS procedures for CS to PS access transfer with MSC server assisted mid-call feature
+    
+    Group "9.3.5 SCC AS procedures for PS to CS dual radio access transfer of calls in an early dialog phase"
+    {
+    	Group "9.3.5.2 SCC AS procedures for PS to CS dual radio access transfer of a originating session in the alerting phase"
+    	{
+    		
+    	} // end Group "9.3.5.2 SCC AS procedures for PS to CS dual radio access transfer of a originating session in the alerting phase"
+
+		Group "9.3.5.3 SCC AS procedures for PS to CS dual radio, access transfer of a originating session in the prealerting phase"
+		{
+			
+		} // end Group "9.3.5.3 SCC AS procedures for PS to CS dual radio, access transfer of a originating session in the prealerting phase"
+		
+		Group "9.3.5.4 SCC AS procedures for PS to CS dual radio access transfer of an additional session in an early dialog phase"
+		{
+			
+		} // end Group "9.3.5.4 SCC AS procedures for PS to CS dual radio access transfer of an additional session in an early dialog phase"
+		
+		Group "9.3.5.5 SCC AS procedures for PS to CS dual radio access transfer of a terminating session in the alerting phase"
+		{
+			
+		} // end Group "9.3.5.5 SCC AS procedures for PS to CS dual radio access transfer of a terminating session in the alerting phase"
+    	
+    } // end Group "9.3.5 9.3.5 SCC AS procedures for PS to CS dual radio access transfer of calls in an early dialog phase"
+    
+     Group "9.3.6 Removal of non-transferred audio media components and release of source access legs"
+    {
+    	
+    	
+    } // end Group "9.3.6 Removal of non-transferred audio media components and release of source access legs"
+    
+} // End of Package TP_SCCAS
+
