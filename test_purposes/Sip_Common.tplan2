@@ -154,6 +154,15 @@ Package Sip_Common {
                     Tester component IMS_S_CSCF of type SipComponent
                     SUT component IUT of type SipComponent
                     connection between IMS_S_CSCF.g and IUT.g;
+            
+            
+            Test Configuration CFG_SCCAS_02 
+                containing 
+                    Tester component IMS_S_CSCF of type SipComponent
+                    Tester component ATCF of type SipComponent
+                    SUT component IUT of type SipComponent
+                    connection between IMS_S_CSCF.g and IUT.g
+                    connection between ATCF.g and IUT.g;
                     
             Test Configuration CFG_SCSCF_01 
                 containing 
