@@ -24,7 +24,7 @@ Package TP_SCCAS_Chapter_6_3 {
     	 
     	Test Purpose {
         
-        TP Id TP_ISC_SCCAS_REG_01
+        TP Id TP_ISC_SCCAS_RSC_REG_01
         
         Test objective  "Verify that the SCCAS successfully obtain/processes 3pty registration information."
         
@@ -69,11 +69,11 @@ Package TP_SCCAS_Chapter_6_3 {
                     to the IMS_S_CSCF entity
                 }
             }
-    } // End of TP_ISC_SCCAS_REG_01
+    } // End of TP_ISC_SCCAS_RSC_REG_01
     
     Test Purpose {
         
-        TP Id TP_ISC_SCCAS_REG_04
+        TP Id TP_ISC_SCCAS_RSC_REG_02
         
         Test objective  "Verify that the SCCAS successfully obtain/processes de-registration information (Expires=0)."
         
@@ -108,7 +108,7 @@ Package TP_SCCAS_Chapter_6_3 {
                     to the IMS_S_CSCF entity
                 }
             }
-    } // End of TP_ISC_SCCAS_REG_04
+    } // End of TP_ISC_SCCAS_RSC_REG_02
     	
     } //End Group "6.3.1 General" 
     
@@ -119,7 +119,7 @@ Package TP_SCCAS_Chapter_6_3 {
     	
     	Test Purpose {  
         
-        TP Id TP_ISC_SCCAS_REG_02
+        TP Id TP_ISC_SCCAS_RSC_REG_03
         
         Test objective  "Verify that the SCCAS successfully obtain/processes SRVCC information."
         
@@ -162,7 +162,7 @@ Package TP_SCCAS_Chapter_6_3 {
                 
             }
             
-    	} // End of TP_ISC_SCCAS_REG_02
+    	} // End of TP_ISC_SCCAS_RSC_REG_03
     } // end  Group "6.3.2 Triggers for the SCCAS providing information to ATCF"
      
     Group "6.3.3 SCCAS providing the PS to CS related  SRVCC information to the ATCF"{
@@ -171,7 +171,7 @@ Package TP_SCCAS_Chapter_6_3 {
     	
     	Test Purpose {
         
-        TP Id TP_ISC_SCCAS_REG_03
+        TP Id TP_ISC_SCCAS_RSC_REG_04
         
         Test objective  "Verify that the SCCAS successfully sends MESSAGE providing PS to CS SRVCC information."
         
@@ -223,7 +223,7 @@ Package TP_SCCAS_Chapter_6_3 {
                 
             }
             
-    	} // End of TP_ISC_SCCAS_REG_03
+    	} // End of TP_ISC_SCCAS_RSC_REG_03
     } //end  Group "6.3.3 SCCAS providing the PS to CS related  SRVCC information to the ATCF"
    
     
@@ -237,141 +237,5 @@ Package TP_SCCAS_Chapter_6_3 {
     	import all from Sip_Common;
      } //end Group "6.3.5 SCCAS providing the CS to PS SRVCC information to the MSC server"  
     
-    
-    Group "6A.4.1 Common SIP message set up procedures"{
-    	
-    	import all from Sip_Common;	
-    } // end Group "6A.4.1 Common SIP message set up procedures"
-    
-	Group "6A.4.2 SIP INVITE request"{
-		
-    	import all from Sip_Common;
-    	
-    	Test Purpose {
-        
-        TP Id TP_ISC_SCCAS_INI_01
-        
-        Test objective  "Verify that the SCCAS send INVITE for anchored user populated with ."
-        
-        Reference 
-            "ETSI TS 124 237 [1], Clause 6A.4.2, Clause 4.2.2"
-        
-        Config Id CFG_SCCAS_01
-        
-        PICS Selection NONE
-        
-        Initial conditions with {
-            the UE entity isRegisteredTo the IMS_A
-        }
-        
-        Expected behaviour
-            ensure that {
-                the IUT entity sends a INVITE containing
-                    From indicating value PX_IMS_S_CSCF_SIP_URI,
-                    To indicating value PX_UE_A_SIP_URI,
-                    CallId indicating value PX_UE_A_CALLID,
-                    Via indicating value PX_UE_A_VIA,
-                    //... 
-                    FeatureCaps containing //according to RFC6809
-                        g3gppFeatureCapabilityIndicator, //see Annex C
-                        g3gppRemoteLegInfoCapabilityIndicator;, //see Annex C
-                    Accept containing 
-                        MIME indicating value "application/vnd.3gpp.state-and-event-info.xml";, //subclause D.2.3
-                    RecvInfo containing    
-                        g3gppStateAndEventPackageName;; //according to RFC6086
-                to the IMS_S_CSCF entity    
-            }
-    	} // End of TP_ISC_SCCAS_REG_04
-    		
-	} // end Group "6A.4.2 SIP INVITE request"
-	
-    Group "6A.4.3 SIP INVITE responses towards the SC UE"{
-    	
-    	import all from Sip_Common;	
-    } // end Group "6A.4.3 SIP INVITE responses towards the SC UE"
-    
-	Group "6A.4.3A SIP INVITE responses towards the MSC server"{
-		
-    	import all from Sip_Common;	
-	} // end Group "6A.4.3A SIP INVITE responses towards the MSC server"
-	
-	Group "6A.4.4 Handling of OMR specific attributes"{
-		
-    	import all from Sip_Common;	
-	} // end Group "6A.4.4 Handling of OMR specific attributes"
-	
-	Group "6A.4.5 Target refresh request for a dialog and associated responses"{
-		
-    	import all from Sip_Common;	
-	} // end Group "6A.4.5 Target refresh request for a dialog and associated responses"
-	
-	Group "6A.4.6 Rejecting malicious SIP REFER requests from remote UE"{
-		
-    	import all from Sip_Common;	
-	} // end Group "6A.4.6 Rejecting malicious SIP REFER requests from remote UE"
-	
-	Group "6A.4.7 Protecting from malicious SIP INFO requests with remote leg information from remote UE"{
-		
-    	import all from Sip_Common;	
-	} // end roup "6A.4.7 Protecting from malicious SIP INFO requests with remote leg information from remote UE"
-	
-	Group "6A.4.8 Precondition and access transfer"{
-		
-    	import all from Sip_Common;	
-	} // end Group "6A.4.8 Precondition and access transfer"
-    
-    
-//    Test Purpose {
-//        
-//        TP Id TP_SCCAS_INVITE_01
-//        
-//        Test objective  "Verify that the P-CSCF successfully processes an initial INVITE (Originating Leg)."
-//        
-//        Reference 
-//            "ETSI TS 124 229 [1], Clauses 5.2.7.2 and 6.2"
-//        
-//        Config Id CFG_SCCAS_01
-//        
-//        PICS Selection NONE
-//        
-//        Initial conditions with {
-//            the UE entity isRegisteredTo the IMS
-//        }
-//        
-//        Expected behaviour
-//            ensure that {
-//                when {
-//                    the IUT entity receives an INVITE containing
-//                        From indicating value PX_UE_A_SIP_URI,
-//                        To indicating value PX_UE_B_SIP_URI,
-//                        CallId indicating value PX_UE_A_CALLID,
-//                        Via indicating value PX_UE_A_VIA,
-//                        Route indicating value PX_UE_A_SERVICE_ROUTE,
-//                        PAccessNetworkInfo,
-//                        MessageBody containing
-//                            SDP containing
-//                                Version indicating value "0";;;
-//                    from the IMS_S_CSCF entity
-//                }
-//                then {
-//                    the IUT entity sends an r_200_Ok containing
-//                        From indicating value PX_UE_A_SIP_URI,
-//                        To indicating value PX_UE_B_SIP_URI,
-//                        CallId indicating value PX_UE_A_CALLID,
-//                        Via indicating value PX_UE_A_VIA,
-//                        Route indicating value PX_UE_A_SERVICE_ROUTE,
-//                        PAccessNetworkInfo,
-//                        ContentType indicating value "application/sdp",
-//                        ContentLength,
-//                        MessageBody containing
-//                            SDP containing
-//                                Version indicating value "0";;;
-//                     to the IMS_S_CSCF entity
-//                }
-//            }
-//            
-//    } // End of TP_MW_PCSCF_INVITE_01
-
-    
-} // End of Package TP_MW_PS
+} // End of Package TP_SCCAS_Chapter_6_3
 
