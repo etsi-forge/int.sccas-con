@@ -50,6 +50,7 @@ Package Sip_Common {
             - registeredIdentityTelURI
             - registeredIdentitySipURI
             - hasInitiatedDialogWith
+            - hasEstablishedDialog
             - isConfiguredWithENUMentryForTelURI_E164NumberOf
             - hasReceivedInitialRequestForDialog
             - hasReceived200OkOnInitialRequestForDialogWith
@@ -122,6 +123,7 @@ Package Sip_Common {
         SipMessage CANCEL;
         SipMessage BYE;
          // SIP Responses
+        SipMessage r_1xx_Any;
         SipMessage r_100_Trying;
         SipMessage r_180_Ringing;
         SipMessage r_200_Ok;
