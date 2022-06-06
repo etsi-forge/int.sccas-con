@@ -1,0 +1,432 @@
+/*
+Copyright (c) ETSI 2019-2020.
+
+This software is subject to copyrights owned by ETSI. Non-exclusive permission
+is hereby granted, free of charge, to copy, reproduce and amend this file
+under the following conditions: It is provided "as is", without warranty of any
+kind, expressed or implied.
+
+ETSI shall never be liable for any claim, damages, or other liability arising
+from its use or inability of use.This permission does not apply to any documentation
+associated with this file for which ETSI keeps all rights reserved. The present
+copyright notice shall be included in all copies of whole or part of this
+file and shall not imply any sub-license right.
+*/
+
+/* interface ISC at SCCAS */
+Package TP_SCCAS_Chapter_6A_4 { 
+    
+    Group "6A.4.1 Common SIP message set up procedures"{
+    	
+    	import all from Sip_Common;	
+    } // end Group "6A.4.1 Common SIP message set up procedures"
+    
+	Group "6A.4.2 SIP INVITE request"{
+		
+    	import all from Sip_Common;
+    	
+    	Test Purpose {
+        
+        TP Id TP_ISC_SCCAS_GEN_INV_01
+        
+        Test objective  "Verify that the SCCAS send INVITE for anchored user populated with ."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clause 6A.4.2, Clause 4.2.2"
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS_A
+        }
+        
+        Expected behaviour
+            ensure that {
+                the IUT entity sends a INVITE containing
+                    From indicating value PX_IMS_S_CSCF_SIP_URI,
+                    To indicating value PX_UE_A_SIP_URI,
+                    CallId indicating value PX_UE_A_CALLID,
+                    Via indicating value PX_UE_A_VIA,
+                    //... 
+                    FeatureCaps containing //according to RFC6809
+                        g3gppFeatureCapabilityIndicator, //see Annex C
+                        g3gppRemoteLegInfoCapabilityIndicator;, //see Annex C
+                    Accept containing 
+                        MIME indicating value "application/vnd.3gpp.state-and-event-info.xml";, //subclause D.2.3
+                    RecvInfo containing    
+                        g3gppStateAndEventPackageName;; //according to RFC6086
+                to the IMS_S_CSCF entity    
+            }
+    	} // End of TP_ISC_SCCAS_GEN_INV_01
+    		
+	} // end Group "6A.4.2 SIP INVITE request"
+	
+    Group "6A.4.3 SIP INVITE responses towards the SC UE"{
+    	
+    	import all from Sip_Common;
+    	
+    	Test Purpose {
+        
+        TP Id TP_ISC_SCCAS_GEN_INV_02
+        
+        Test objective  "Verify that the SCCAS sends 1xx and/or 2xx response to the SIP INVITE request towards the served user ."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clause 6A.4.3, Clause 4.2.2"
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE //SCCAS_PS2CS_SRVCC, SCCAS_PS2CS_SRVCC_ALERTING,SCCAS_PS2CS_SRVCC_PRE-ALERTING
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS_A
+        }
+        
+        Expected behaviour
+            ensure that {
+            	when {
+                    the IUT entity receives a INVITE containing
+                        From indicating value PX_IMS_S_CSCF_SIP_URI,
+                        To indicating value PX_UE_A_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Contact containing 
+                            g3gppMidcallMediaFeature Tag, //list -B
+                            g3gppSrvccAlertingFeature tag, //list -C
+                            g3gppPs2csSrvccOrigPreAlertingMediaFeature Tag, //list -D
+                        FeatureCaps, 
+                        SipMessageBody;;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+	                the IUT entity sends a r_1xx_Any containing
+	                    From indicating value PX_IMS_S_CSCF_SIP_URI,
+	                    To indicating value PX_UE_A_SIP_URI,
+	                    CallId indicating value PX_UE_A_CALLID,
+	                    Via indicating value PX_UE_A_VIA,
+	                    //... 
+	                    FeatureCaps containing //IETF RFC6809
+	                        g3gppFeatureCapabilityIndicator, //see Annex C
+	                        g3gppMidcallFeatureCapabilityIndicator, //list - B
+	                        g3gppSrvccAlertingFeatureCapabilityIndicator, //list -C
+	                        g3gppPs2csSrvccOrigPreAlertingMediaIndicator, //list -D
+	                        g3gppRemoteLegInfoFeatureCapabilityIndicator //list -E
+	                    //Contact containing
+	                    Accept containing 
+                            MIME indicating value "application/vnd.3gpp.state-and-event-info.xml" //subclause D.2.3
+                        RecvInfo containing    
+                            g3gppStateAndEventPackageName;; //according to RFC6086
+	                    ;;
+	                to the IMS_S_CSCF entity
+	             }    
+            }
+    	} // End of TP_ISC_SCCAS_GEN_INV_02
+    	
+    	//TODO: diferent variants due to 1-4 numbered variants
+    		
+    } // end Group "6A.4.3 SIP INVITE responses towards the SC UE"
+    
+	Group "6A.4.3A SIP INVITE responses towards the MSC server"{
+		
+    	import all from Sip_Common;
+    	
+    	Test Purpose {
+        
+        TP Id TP_ISC_SCCAS_GEN_INV_03
+        
+        Test objective  "Verify that the SCCAS sends 1xx and/or 2xx response to the SIP INVITE request due to STN-SR or STN."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clause 6A.4.3A(1st Numbered list, item 1), Clause 4.2.2"
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE //SCCAS_PS2CS_SRVCC, SCCAS_PS2CS_SRVCC_ALERTING,SCCAS_PS2CS_SRVCC_PRE-ALERTING
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS_A
+        }
+        
+        Expected behaviour
+            ensure that {
+            	when {
+                    the IUT entity receives a INVITE containing
+                        From indicating value PX_IMS_S_CSCF_SIP_URI,
+                        To indicating value PX_STNSR_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Contact containing 
+                            g3gppMidcallMediaFeature_Tag,
+                            g3gppSrvccAlertingFeature_Tag,
+                            g3gppPs2csSrvccOrigPreAlertingMediaFeature_Tag
+                        FeatureCaps, 
+                        SipMessageBody;;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+	                the IUT entity sends a r_2xx_Any containing
+	                    From indicating value PX_IMS_S_CSCF_SIP_URI,
+	                    To indicating value PX_UE_A_SIP_URI,
+	                    CallId indicating value PX_UE_A_CALLID,
+	                    Via indicating value PX_UE_A_VIA,
+	                    //... 
+	                    Contact indicating value UE_CONTACT,
+	                    PAssertedIdentity indicating value UE_PAI,
+	                    FeatureCaps containing //according to RFC6809
+                            g3gppFeatureCapabilityIndicator, //see Annex C
+                            g3gppRemoteLegInfoCapabilityIndicator //see Annex C
+                        Accept containing 
+                            MIME indicating value "application/vnd.3gpp.state-and-event-info.xml" //subclause D.2.3
+                        RecvInfo containing    
+                            g3gppStateAndEventPackageName;; //according to RFC6086
+	                    ;;
+	                to the IMS_S_CSCF entity
+	             }    
+            }
+    	} // End of TP_ISC_SCCAS_GEN_INV_03	
+	} // end Group "6A.4.3A SIP INVITE responses towards the MSC server"
+	
+	Group "6A.4.4 Handling of OMR specific attributes"{
+		
+    	import all from Sip_Common;	
+	} // end Group "6A.4.4 Handling of OMR specific attributes"
+	
+	Group "6A.4.5 Target refresh request for a dialog and associated responses"{
+		
+    	import all from Sip_Common;	
+    	Test Purpose {
+        
+        TP Id TP_ISC_SCCAS_GEN_RIN_01
+        
+        Test objective  "Verify that the SCCAS sends 1xx and/or 2xx response to the SIP INVITE target refresh request towards the served user."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clause 6A.4.5, Clause 4.2.2"
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE 
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS_A and
+            the UE entity hasEstablishedDialog the SCCAS
+        }
+        
+        Expected behaviour
+            ensure that {
+            	when {
+                    the IUT entity receives a INVITE containing
+                        From indicating value PX_IMS_S_CSCF_SIP_URI,
+                        To indicating value PX_UE_A_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Contact containing 
+                            g3gppMidcallMediaFeature Tag, //list -B
+                            g3gppSrvccAlertingFeature tag, //list -C
+                            g3gppPs2csSrvccOrigPreAlertingMediaFeature Tag, //list -D
+                        FeatureCaps, 
+                        SipMessageBody;;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+	                the IUT entity sends a r_1xx_Any containing
+	                    From indicating value PX_IMS_S_CSCF_SIP_URI,
+	                    To indicating value PX_UE_A_SIP_URI,
+	                    CallId indicating value PX_UE_A_CALLID,
+	                    Via indicating value PX_UE_A_VIA,
+	                    //... 
+	                    FeatureCaps containing //IETF RFC6809
+	                        g3gppFeatureCapabilityIndicator, //see Annex C
+	                        g3gppMidcallFeatureCapabilityIndicator, //list - B
+	                        g3gppSrvccAlertingFeatureCapabilityIndicator, //list -C
+	                        g3gppPs2csSrvccOrigPreAlertingMediaIndicator, //list -D
+	                    //Contact containing
+	                    Accept containing 
+                            MIME indicating value "application/vnd.3gpp.state-and-event-info.xml" //subclause D.2.3
+                        RecvInfo containing    
+                            g3gppStateAndEventPackageName;; //according to RFC6086
+	                    ;;
+	                to the IMS_S_CSCF entity
+	             }    
+            }
+    	} // End of TP_ISC_SCCAS_GEN_RIN_01
+    	
+    	Test Purpose {
+        
+        TP Id TP_ISC_SCCAS_GEN_RIN_01
+        
+        Test objective  "Verify that the SCCAS sends the SIP INVITE target refresh request towards the served user."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clause 6A.4.5, Clause 4.2.2"
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE 
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS_A and
+            the UE entity hasEstablishedDialog the SCCAS
+        }
+        
+        Expected behaviour
+            ensure that {
+            	when {
+                    the IUT entity receives a INVITE containing
+                        From indicating value PX_IMS_S_CSCF_SIP_URI,
+                        To indicating value PX_UE_A_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Contact containing 
+                            g3gppMidcallMediaFeature Tag, //list -B
+                            g3gppSrvccAlertingFeature tag, //list -C
+                            g3gppPs2csSrvccOrigPreAlertingMediaFeature Tag, //list -D
+                        FeatureCaps, 
+                        SipMessageBody;;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+	                the IUT entity sends a INVITE containing
+	                    From indicating value PX_IMS_S_CSCF_SIP_URI,
+	                    To indicating value PX_UE_A_SIP_URI,
+	                    CallId indicating value PX_UE_A_CALLID,
+	                    Via indicating value PX_UE_A_VIA,
+	                    //... 
+	                    FeatureCaps containing //IETF RFC6809
+	                        g3gppFeatureCapabilityIndicator, //see Annex C
+	                        g3gppMidcallFeatureCapabilityIndicator, //list - B
+	                        g3gppSrvccAlertingFeatureCapabilityIndicator, //list -C
+	                        
+	                    //Contact containing
+	                    Accept containing 
+                            MIME indicating value "application/vnd.3gpp.state-and-event-info.xml" //subclause D.2.3
+                        RecvInfo containing    
+                            g3gppStateAndEventPackageName;; //according to RFC6086
+	                    ;;
+	                to the IMS_S_CSCF entity
+	             }    
+            }
+    	} // End of TP_ISC_SCCAS_GEN_RIN_02
+	} // end Group "6A.4.5 Target refresh request for a dialog and associated responses"
+	
+	Group "6A.4.6 Rejecting malicious SIP REFER requests from remote UE"{
+		
+    	import all from Sip_Common;
+    	Test Purpose {
+        
+        TP Id TP_ISC_SCCAS_GEN_REF_01
+        
+        Test objective  "Verify that the SCCAS sends 403 response to the SIP REFER request from remote UE."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clause 6A.4.6(1st Numbered list)"
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE //SCCAS_PS2CS_SRVCC, SCCAS_PS2CS_SRVCC_ALERTING
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS_A and 
+            the UE entity hasInitiatedDialogWith the SCCAS
+        }
+        
+        Expected behaviour
+            ensure that {
+            	when {
+                    the IUT entity receives a REFER containing
+                        From indicating value PX_IMS_S_CSCF_SIP_URI,
+                        To indicating value PX_UE_A_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        //Contact
+                        ReferSub indicating value "false",
+                        Supported indicating value "norefersub",
+                        ReferTo  containing "a SIP URI with the Target-Dialog_URI_header_field",
+                        SipMessageBody containing 
+                            MIME indicating value "application/vnd.3gpp.state-and-event-info.xml"; //subclause D.2.3;
+                         ;;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+	                the IUT entity sends a r_403_Forbidden containing
+	                    From indicating value PX_IMS_S_CSCF_SIP_URI,
+	                    To indicating value PX_UE_A_SIP_URI,
+	                    CallId indicating value PX_UE_A_CALLID,
+	                    Via indicating value PX_UE_A_VIA
+	                    //... 
+	                    ;
+	                to the IMS_S_CSCF entity
+	             }    
+            }
+    	} // End of TP_ISC_SCCAS_GEN_REF_01		
+	} // end Group "6A.4.6 Rejecting malicious SIP REFER requests from remote UE"
+	
+	Group "6A.4.7 Protecting from malicious SIP INFO requests with remote leg information from remote UE"{
+		
+    	import all from Sip_Common;
+    	Test Purpose {
+        
+        TP Id TP_ISC_SCCAS_GEN_INF_01
+        
+        Test objective  "Verify that the SCCAS not include Accept,RecvInfo towards remote UE."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clause 6A.4.7"
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE //SCCAS_PS2CS_SRVCC, SCCAS_PS2CS_SRVCC_ALERTING
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS_A and 
+            the UE entity hasInitiatedDialogWith the SCCAS
+        }
+        
+         Expected behaviour
+            ensure that {
+            	when {
+                    the IUT entity receives a INVITE containing
+                        From indicating value PX_IMS_S_CSCF_SIP_URI,
+                        To indicating value PX_UE_A_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Contact containing 
+                            g3gppMidcallMediaFeature Tag, //list -B
+                            g3gppSrvccAlertingFeature tag, //list -C
+                            g3gppPs2csSrvccOrigPreAlertingMediaFeature Tag, //list -D
+                        FeatureCaps, 
+                        SipMessageBody;;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+	                the IUT entity sends a INVITE containing
+	                    From indicating value PX_IMS_S_CSCF_SIP_URI,
+	                    To indicating value PX_UE_A_SIP_URI,
+	                    CallId indicating value PX_UE_A_CALLID,
+	                    Via indicating value PX_UE_A_VIA,
+	                    //... 
+	                    FeatureCaps containing //IETF RFC6809
+	                        g3gppFeatureCapabilityIndicator, //see Annex C
+	                        g3gppMidcallFeatureCapabilityIndicator, //list - B
+	                        g3gppSrvccAlertingFeatureCapabilityIndicator, //list -C
+	                    //Contact
+	                    Accept not indicating value "application/vnd.3gpp.state-and-event-info.xml", //subclause D.2.3
+                        RecvInfo not indicating value g3gppStateAndEventPackageName; //according to RFC6086
+	                    ;
+	                to the IMS_S_CSCF entity
+	             }    
+            }
+    	} // End of TP_ISC_SCCAS_GEN_INF_01	
+    	
+	} // end roup "6A.4.7 Protecting from malicious SIP INFO requests with remote leg information from remote UE"
+	
+	Group "6A.4.8 Precondition and access transfer"{
+		
+    	import all from Sip_Common;	
+	} // end Group "6A.4.8 Precondition and access transfer"
+
+    
+} // End of Package TP_SCCAS_Chapter_6A_4
+

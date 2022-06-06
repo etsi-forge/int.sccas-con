@@ -1,0 +1,90 @@
+/*
+Copyright (c) ETSI 2019-2020.
+
+This software is subject to copyrights owned by ETSI. Non-exclusive permission
+is hereby granted, free of charge, to copy, reproduce and amend this file
+under the following conditions: It is provided "as is", without warranty of any
+kind, expressed or implied.
+
+ETSI shall never be liable for any claim, damages, or other liability arising
+from its use or inability of use.This permission does not apply to any documentation
+associated with this file for which ETSI keeps all rights reserved. The present
+copyright notice shall be included in all copies of whole or part of this
+file and shall not imply any sub-license right.
+*/
+
+/* interface ISC at SCCAS */
+Package TP_SCCAS_Chapter_12_3 { 
+	
+	 Group "12.3.0 General"{
+    	
+    	import all from Sip_Common;	
+    } // end Group "12.3.0 General"
+    
+    Group "12.3.1 SCC AS procedures for PS to CS access transfer, PS to CS SRVCC"{
+    	
+    	import all from Sip_Common;	
+    } // end Group "12.3.1 SCC AS procedures for PS to CS access transfer, PS to CS SRVCC"
+    
+    Group "12.3.2 SCC AS procedures for PS to CS access transfer with MSC server assisted mid-call feature, PS to CS SRVCC"{
+    	
+    	import all from Sip_Common;	
+    } // end Group "12.3.2 SCC AS procedures for PS to CS access transfer with MSC server assisted mid-call feature, PS to CS SRVCC"
+    
+    Group "12.3.3 SCC AS procedures for PS to CS SRVCC, abnormal case"{
+    	
+    	import all from Sip_Common;	
+    	Group "12.3.2.1 General"{
+    		
+    	}
+    	Group "12.3.2.2 Transfer of the first session"{
+    		
+    	}
+    	Group "12.3.2.3 Transfer of an additional session"{
+    		
+    	}
+    	
+    } // end Group "12.3.3 SCC AS procedures for PS to CS SRVCC, abnormal case"
+    
+//    Group "12.3.4 SCC AS procedures for PS to CS access transfer when call is in alerting phase or pre-alerting phase"{
+//    	
+//    	import all from Sip_Common;	
+//    } // end Group "12.3.4 SCC AS procedures for PS to CS access transfer when call is in alerting phase or pre-alerting phase"
+//    
+//    Group "12.3.5 SCC AS procedures for PS to CS access transfer: PS to CS SRVCC enhancement using ATCF"{
+//    	
+//    	import all from Sip_Common;    	
+//    }// end Group "12.3.5 SCC AS procedures for PS to CS access transfer: PS to CS SRVCCenhancement using ATCF"
+//    
+//    Group "12.3.6 SCC AS procedures for PS to CS access transfer, vSRVCC"{
+//    	
+//    	import all from Sip_Common;    	
+//    }// end Group "12.3.6 12.3.6.0 SCC AS procedures for PS to CS access transfer, vSRVCC"
+//    
+//    Group "12.3.7 SCC AS procedures for handling of SIP OPTIONS request"{
+//    	
+//    	import all from Sip_Common;	
+//    } // end Group "12.3.7 SCC AS procedures for handling of SIP OPTIONS request"
+//    
+//    Group "12.3.8 Removal of non-transferred audio media components and superfluous sessions"{
+//    	
+//    	import all from Sip_Common;	
+//    } // end Group "12.3.8 Removal of non-transferred audio media components and superfluous sessions"
+//            
+//    Group "12.3.9 Charging correlation"{
+//    	
+//    	import all from Sip_Common;	
+//    } // end Group "12.3.9 Charging correlation"
+//    
+//    Group "12.3.10 SCC AS procedures for CS to PS SRVCC"{
+//    	
+//    	import all from Sip_Common;	
+//    } // end Group "12.3.10 SCC AS procedures for CS to PS SRVCC"
+//    
+//    Group "12.3.11 SCC AS procedures when the access transfer is completed"{
+//    	
+//    	import all from Sip_Common;	
+//    } // end Group "12.3.11 SCC AS procedures when the access transfer is completed"
+    
+}// End of Package TP_SCCAS_Chapter_9_3
+

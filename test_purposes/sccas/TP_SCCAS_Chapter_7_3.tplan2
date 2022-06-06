@@ -1,0 +1,138 @@
+/*
+Copyright (c) ETSI 2019-2020.
+
+This software is subject to copyrights owned by ETSI. Non-exclusive permission
+is hereby granted, free of charge, to copy, reproduce and amend this file
+under the following conditions: It is provided "as is", without warranty of any
+kind, expressed or implied.
+
+ETSI shall never be liable for any claim, damages, or other liability arising
+from its use or inability of use.This permission does not apply to any documentation
+associated with this file for which ETSI keeps all rights reserved. The present
+copyright notice shall be included in all copies of whole or part of this
+file and shall not imply any sub-license right.
+*/
+
+/* interface ISC at SCCAS */
+Package TP_SCCAS_Chapter_7_3 { 
+	
+	 Group "7.3.1 Distinction of requests sent to the SCC AS"{
+    	
+    	import all from Sip_Common;	
+    	Test Purpose {
+        
+        TP Id TP_ISC_SCCAS_ORI_INI_01
+        
+        Test objective  "Verify that the SCCAS first receives SIP INVITE request from UE/SCSCF"
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clauses 7.3.1, 7.3.2"
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE 
+                
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS_A
+        }
+        
+        Expected behaviour
+            ensure that {
+            	when {
+                    the IUT entity receives a INVITE containing
+                        From indicating value PX_IMS_S_CSCF_SIP_URI,
+                        To indicating value PX_UE_A_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value "sccas as topmost entry",
+                        Contact,
+                        FeatureCaps, 
+                        SipMessageBody;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+	                the IUT entity sends a r_183_SessionProgress containing
+	                    From indicating value PX_IMS_S_CSCF_SIP_URI,
+	                    To indicating value PX_UE_A_SIP_URI,
+	                    CallId indicating value PX_UE_A_CALLID,
+	                    Via indicating value PX_UE_A_VIA,
+	                    //... 
+	                    FeatureCaps 
+	                    //Contact containing
+	                    ;
+	                to the IMS_S_CSCF entity
+	             }    
+            }
+    	} // End of TP_ISC_SCCAS_ORI_INI_01
+    	
+    } // end Group "7.3.1 Distinction of requests sent to the SCC AS"
+    
+    Group "7.3.2 Call origination procedures at the SCC AS"{
+    	
+    	import all from Sip_Common;
+    	Test Purpose {
+        
+        TP Id TP_ISC_SCCAS_ORI_INI_02
+        
+        Test objective  "Verify that the SCCAS sends 2xx response to the SIP INVITE request towards the served user ."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clauses 7.3.2, 6A.4.3, 4.2.2"
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE //SCCAS_PS2CS_SRVCC, SCCAS_PS2CS_SRVCC_ALERTING,SCCAS_PS2CS_SRVCC_PRE-ALERTING
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS_A
+        }
+        
+        Expected behaviour
+            ensure that {
+            	when {
+                    the IUT entity receives a INVITE containing
+                        From indicating value PX_IMS_S_CSCF_SIP_URI,
+                        To indicating value PX_UE_A_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Contact containing 
+                            g3gppMidcallMediaFeature Tag, //list -B
+                            g3gppSrvccAlertingFeature tag, //list -C
+                            g3gppPs2csSrvccOrigPreAlertingMediaFeature Tag, //list -D
+                        FeatureCaps, 
+                        SipMessageBody;;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+	                the IUT entity sends a r_200_Ok containing
+	                    From indicating value PX_IMS_S_CSCF_SIP_URI,
+	                    To indicating value PX_UE_A_SIP_URI,
+	                    CallId indicating value PX_UE_A_CALLID,
+	                    Via indicating value PX_UE_A_VIA,
+	                    //... 
+	                    FeatureCaps containing //IETF RFC6809
+	                        g3gppFeatureCapabilityIndicator, //see Annex C
+	                        g3gppMidcallFeatureCapabilityIndicator, //list - B
+	                        g3gppSrvccAlertingFeatureCapabilityIndicator, //list -C
+	                        g3gppPs2csSrvccOrigPreAlertingMediaIndicator, //list -D
+	                        g3gppRemoteLegInfoFeatureCapabilityIndicator //list -E
+	                    Contact,
+	                    Supported indicating value "tdialog,replaces"
+	                    Accept containing 
+                            MIME indicating value "application/vnd.3gpp.state-and-event-info.xml" //subclause D.2.3
+                        RecvInfo containing    
+                            g3gppStateAndEventPackageName;; //according to RFC6086
+	                    ;;
+	                to the IMS_S_CSCF entity
+	             }    
+            }
+    	} // End of TP_ISC_SCCAS_ORI_INI_02	
+    } // end Group "7.3.2 Call origination procedures at the SCC AS"
+    
+    Group "7.3.3 Subscription related procedures in the SCC AS"{
+    	
+    	import all from Sip_Common;	
+    } // end Group "7.3.3 Subscription related procedures in the SCC AS"
+    
+}// End of Package TP_SCCAS_Chapter_7_3
+
