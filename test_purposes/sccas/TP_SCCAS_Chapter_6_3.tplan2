@@ -146,7 +146,7 @@ Package TP_SCCAS_Chapter_6_3 {
                             g3gppAtcfFeatureCapabilityIndicator;,
                         SipMessageBody containing
                             MIME indicating value "REGISTER from_UE_A",
-                            MIME indicating value "r_200_Ok to_UE_A";;
+                            MIME indicating value "r_200_Ok to_UE_A" containing Contact;;;
                     from the IMS_S_CSCF entity
                 }
                 then {
@@ -178,9 +178,9 @@ Package TP_SCCAS_Chapter_6_3 {
         Reference 
             "ETSI TS 124 237 [1], Clause 6.3.3"
         
-        Config Id CFG_SCCAS_01
+        Config Id CFG_SCCAS_ATCF_01
         
-        PICS Selection NONE
+        PICS Selection NONE //PS2CSSRVCC
         
         Initial conditions with {
             the UE entity isNotRegisteredTo the IMS_A
@@ -195,10 +195,10 @@ Package TP_SCCAS_Chapter_6_3 {
                         CallId indicating value PX_UE_A_CALLID,
                         Via indicating value PX_UE_A_VIA,
                         FeatureCaps containing 
-                            g3gppAtcfFeatureCapabilityIndicator;,
+                            g3gppAtcfFeatureCapabilityIndicator indicating value "g.3gpp.atcf-mgmt-uri";,
                         SipMessageBody containing
                             MIME indicating value "REGISTER from_UE_A",
-                            MIME indicating value "r_200_Ok to_UE_A";;
+                            MIME indicating value "r_200_Ok to_UE_A" containing Contact;;;
                     from the IMS_S_CSCF entity
                 }
                 then {
@@ -217,19 +217,83 @@ Package TP_SCCAS_Chapter_6_3 {
                         ;
                     to the IMS_S_CSCF entity
                     
-                	and the IUT entity sends a MESSAGE
+                	and the IUT entity sends a MESSAGE containing
+                	 RUri indicating value "ATCFManagementUri",
+                	 PAsertedIdentity,
+                	 SipMessageBody containing
+                            MIME indicating value "application/vnd.3gpp.SRVCC-info+xml";,
+                	 PChargingVector indicating value "type 1 orig-ioi";
                 	to the ATCF entity
                 }
                 
             }
             
-    	} // End of TP_ISC_SCCAS_RSC_REG_03
+    	} // End of TP_ISC_SCCAS_RSC_REG_04
     } //end  Group "6.3.3 SCCAS providing the PS to CS related  SRVCC information to the ATCF"
    
     
      Group "6.3.4 Triggers for the SCCAS providing information to MSC server"{
     	
-    	import all from Sip_Common;
+    	import all from Sip_Common;Test Purpose {
+        
+        TP Id TP_ISC_SCCAS_RSC_REG_05
+        
+        Test objective  "Verify that the SCCAS successfully get CS to PS SRVCC information."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clause 6.3.3"
+        
+        Config Id CFG_SCCAS_MSC_01
+        
+        PICS Selection NONE //CS2PSSRVCC
+        
+        Initial conditions with {
+            the UE entity isNotRegisteredTo the IMS_A
+        }
+        
+        Expected behaviour
+            ensure that {
+                when {
+                    the IUT entity receives a REGISTER containing
+                        From indicating value PX_IMS_S_CSCF_SIP_URI,
+                        To indicating value PX_UE_A_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        FeatureCaps containing 
+                            g3gppAtcfFeatureCapabilityIndicator indicating value "g.3gpp.atcf-mgmt-uri";,
+                        SipMessageBody containing
+                            MIME indicating value "REGISTER from_UE_A",
+                            MIME indicating value "r_200_Ok to_UE_A" containing Contact;;;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                    the IUT entity sends a r_200_Ok containing
+                        From indicating value PX_IMS_S_CSCF_SIP_URI,
+                        To indicating value PX_UE_A_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Contact indicating value PX_UE_A_SIP_URI //,
+                        //Path indicating value PX_P_CSCF_A_SIP_URI,
+                        //PChargingVector containing
+                        //    icid indicating value PX_TO_BE_DEFINED,
+                        //PVisitedNetworkID indicating value PX_TO_BE_DEFINED,
+                        //Require indicating value "path",
+                        //Supported indicating value "path"   ;;
+                        ;
+                    to the IMS_S_CSCF entity
+                    
+                	and the IUT entity sends a MESSAGE containing
+                	 RUri indicating value "ATCFManagementUri",
+                	 PAsertedIdentity,
+                	 SipMessageBody containing
+                            MIME indicating value "application/vnd.3gpp.SRVCC-info+xml";,
+                	 PChargingVector indicating value "type 1 orig-ioi";
+                	to the ATCF entity
+                }
+                
+            }
+            
+    	} // End of TP_ISC_SCCAS_RSC_REG_05
      } //end Group "6.3.4 Triggers for the SCCAS providing information to MSC server"
      
      Group "6.3.5 SCCAS providing the CS to PS SRVCC information to the MSC server"{
