@@ -16,11 +16,7 @@ file and shall not imply any sub-license right.
 /* interface at SCCAS */
 Package TP_SCCAS {
     
-    
-   // import all from Sip_Common;
-    
-  
-    
+      
     
     Group "9.3.3 SCC AS procedures for CS to PS access transfer"
     {
@@ -35,8 +31,7 @@ Package TP_SCCAS {
     	// PS media only (PS Packet Switch),
 		// SCC AS shall follow the procedures specified in subclause 10.3.2.
 		
-        
-        TP Id TP_SCCAS_CS_to_PS_access_transfer_01 
+        TP Id TP_ISC_SCCAS_CPT_INV_01 
         
         Test objective  "Verify that the P-CSCF successfully processes an initial INVITE (Originating Leg) with dynamic STI."
         
@@ -103,8 +98,8 @@ Package TP_SCCAS {
 	    	// PS media only (PS Packet Switch),
 			// SCC AS shall follow the procedures specified in subclause 10.3.2.
 			
-	        
-	        TP Id TP_SCCAS_CS_to_PS_access_transfer_02 
+	        // TP_ISC_SCCAS_XXX_INV_01
+	        TP Id TP_ISC_SCCAS_CPT_INV_02 
 	        
 	        Test objective  "Verify that the P-CSCF successfully processes an initial INVITE (Originating Leg) with static STI."
 	        
@@ -168,8 +163,8 @@ Package TP_SCCAS {
 	    	// Note: Consider alternative with: 
 	    	// if the SCC AS supports CS to PS dual radio access transfer for calls in alerting phase according to operator policy
 		
-        
-	        TP Id TP_SCCAS_CS_to_PS_access_transfer_03 
+        	
+	        TP Id TP_ISC_SCCAS_CPT_RIN_01
 	        
 	        Test objective  "Verify that the P-CSCF successfully processes an re-INVITE (Originating Leg)"
 	        
