@@ -178,7 +178,7 @@ Package TP_SCCAS_Chapter_6_3 {
         Reference 
             "ETSI TS 124 237 [1], Clause 6.3.3"
         
-        Config Id CFG_SCCAS_ATCF_01
+        Config Id CFG_SCCAS_02
         
         PICS Selection NONE //PS2CSSRVCC
         
@@ -243,7 +243,7 @@ Package TP_SCCAS_Chapter_6_3 {
         Reference 
             "ETSI TS 124 237 [1], Clause 6.3.3"
         
-        Config Id CFG_SCCAS_MSC_01
+        Config Id CFG_SCCAS_01
         
         PICS Selection NONE //CS2PSSRVCC
         

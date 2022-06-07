@@ -29,7 +29,7 @@ Package TP_SCCAS_Chapter_6A_4 {
         
         TP Id TP_ISC_SCCAS_GEN_INV_01
         
-        Test objective  "Verify that the SCCAS send INVITE for anchored user populated with ."
+        Test objective  "Verify that the SCCAS send INVITE for anchored user populated with FeatureCaps header."
         
         Reference 
             "ETSI TS 124 237 [1], Clause 6A.4.2, Clause 4.2.2"
@@ -44,6 +44,11 @@ Package TP_SCCAS_Chapter_6A_4 {
         
         Expected behaviour
             ensure that {
+            	when {
+                    the IUT entity receives a INVITE
+                    from the IMS_S_CSCF entity
+                    }
+                then {   
                 the IUT entity sends a INVITE containing
                     From indicating value PX_IMS_S_CSCF_SIP_URI,
                     To indicating value PX_UE_A_SIP_URI,
@@ -57,7 +62,8 @@ Package TP_SCCAS_Chapter_6A_4 {
                         MIME indicating value "application/vnd.3gpp.state-and-event-info.xml";, //subclause D.2.3
                     RecvInfo containing    
                         g3gppStateAndEventPackageName;; //according to RFC6086
-                to the IMS_S_CSCF entity    
+                to the IMS_S_CSCF entity
+                }    
             }
     	} // End of TP_ISC_SCCAS_GEN_INV_01
     		
@@ -81,27 +87,28 @@ Package TP_SCCAS_Chapter_6A_4 {
         PICS Selection NONE //SCCAS_PS2CS_SRVCC, SCCAS_PS2CS_SRVCC_ALERTING,SCCAS_PS2CS_SRVCC_PRE-ALERTING
         
         Initial conditions with {
-            the UE entity isRegisteredTo the IMS_A
+            the UE entity isRegisteredTo the IMS_A and
+            the UE entity hasInitiatedDialogWith the UE_TERM
         }
         
         Expected behaviour
             ensure that {
             	when {
-                    the IUT entity receives a INVITE containing
+                    the IUT entity receives a r_183_SessionProgress containing
                         From indicating value PX_IMS_S_CSCF_SIP_URI,
                         To indicating value PX_UE_A_SIP_URI,
                         CallId indicating value PX_UE_A_CALLID,
                         Via indicating value PX_UE_A_VIA,
-                        Contact containing 
-                            g3gppMidcallMediaFeature Tag, //list -B
-                            g3gppSrvccAlertingFeature tag, //list -C
-                            g3gppPs2csSrvccOrigPreAlertingMediaFeature Tag, //list -D
+                        //Contact containing 
+                        //    g3gppMidcallMediaFeature Tag, //list -B
+                        //    g3gppSrvccAlertingFeature tag, //list -C
+                        //    g3gppPs2csSrvccOrigPreAlertingMediaFeature Tag, //list -D
                         FeatureCaps, 
-                        SipMessageBody;;
+                        SipMessageBody;
                     from the IMS_S_CSCF entity
                 }
                 then {
-	                the IUT entity sends a r_1xx_Any containing
+	                the IUT entity sends a r_183_SessionProgress containing
 	                    From indicating value PX_IMS_S_CSCF_SIP_URI,
 	                    To indicating value PX_UE_A_SIP_URI,
 	                    CallId indicating value PX_UE_A_CALLID,
@@ -141,12 +148,13 @@ Package TP_SCCAS_Chapter_6A_4 {
         Reference 
             "ETSI TS 124 237 [1], Clause 6A.4.3A(1st Numbered list, item 1), Clause 4.2.2"
         
-        Config Id CFG_SCCAS_01
+        Config Id CFG_SCCAS_03
         
         PICS Selection NONE //SCCAS_PS2CS_SRVCC, SCCAS_PS2CS_SRVCC_ALERTING,SCCAS_PS2CS_SRVCC_PRE-ALERTING
         
         Initial conditions with {
-            the UE entity isRegisteredTo the IMS_A
+            the UE entity isRegisteredTo the IMS_A  and
+            the UE entity hasInitiatedDialogWith the UE_TERM
         }
         
         Expected behaviour
@@ -166,9 +174,9 @@ Package TP_SCCAS_Chapter_6A_4 {
                     from the IMS_S_CSCF entity
                 }
                 then {
-	                the IUT entity sends a r_2xx_Any containing
+	                the IUT entity sends a r_200_Ok containing
 	                    From indicating value PX_IMS_S_CSCF_SIP_URI,
-	                    To indicating value PX_UE_A_SIP_URI,
+	                    To indicating value PX_STNSR_SIP_URI,
 	                    CallId indicating value PX_UE_A_CALLID,
 	                    Via indicating value PX_UE_A_VIA,
 	                    //... 
@@ -230,8 +238,14 @@ Package TP_SCCAS_Chapter_6A_4 {
                         SipMessageBody;;
                     from the IMS_S_CSCF entity
                 }
-                then {
-	                the IUT entity sends a r_1xx_Any containing
+                then{
+                	the IUT entity sends a INVITE
+                	to the IMS_S_CSCF entity and 
+                	
+                	the IUT entity receives a r_183_SessionProgress 
+                	from the IMS_S_CSCF entity and 
+                	
+                	the IUT entity sends a r_183_SessionProgress containing
 	                    From indicating value PX_IMS_S_CSCF_SIP_URI,
 	                    To indicating value PX_UE_A_SIP_URI,
 	                    CallId indicating value PX_UE_A_CALLID,
@@ -249,13 +263,13 @@ Package TP_SCCAS_Chapter_6A_4 {
                             g3gppStateAndEventPackageName;; //according to RFC6086
 	                    ;;
 	                to the IMS_S_CSCF entity
-	             }    
+                }  
             }
     	} // End of TP_ISC_SCCAS_GEN_RIN_01
     	
     	Test Purpose {
         
-        TP Id TP_ISC_SCCAS_GEN_RIN_01
+        TP Id TP_ISC_SCCAS_GEN_RIN_02
         
         Test objective  "Verify that the SCCAS sends the SIP INVITE target refresh request towards the served user."
         
