@@ -234,14 +234,65 @@ Package TP_SCCAS_Chapter_6_3 {
     
      Group "6.3.4 Triggers for the SCCAS providing information to MSC server"{
     	
-    	import all from Sip_Common;Test Purpose {
+    	import all from Sip_Common;
+    	
+    	Test Purpose {
         
         TP Id TP_ISC_SCCAS_RSC_REG_05
         
         Test objective  "Verify that the SCCAS successfully get CS to PS SRVCC information."
         
         Reference 
-            "ETSI TS 124 237 [1], Clause 6.3.3"
+            "ETSI TS 124 237 [1], Clause 6.3.4"
+        
+        Config Id CFG_SCCAS_03
+        
+        PICS Selection NONE //CS2PSSRVCC
+        
+        Initial conditions with {
+            the UE entity isNotRegisteredTo the IMS_A
+        }
+        
+        Expected behaviour
+            ensure that {
+                when {
+                    the IUT entity receives a REGISTER containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_A_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Contact containing 
+                           g3gppCs2psSsrvccTag,
+                           g3gppPathTag
+                        FeatureCaps;;    
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                    the IUT entity sends a r_200_Ok containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_A_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Contact indicating value PX_UE_A_SIP_URI
+                        ;
+                    to the IMS_S_CSCF entity 
+                }               
+            }
+            
+    	} // End of TP_ISC_SCCAS_RSC_REG_05
+     } //end Group "6.3.4 Triggers for the SCCAS providing information to MSC server"
+     
+     Group "6.3.5 SCCAS providing the CS to PS SRVCC information to the MSC server"{
+    	
+    	import all from Sip_Common;
+    	Test Purpose {
+        
+        TP Id TP_ISC_SCCAS_RSC_REG_06
+        
+        Test objective  "Verify that the SCCAS successfully provide CS to PS SRVCC information."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clause 6.3.5"
         
         Config Id CFG_SCCAS_03
         
@@ -266,7 +317,7 @@ Package TP_SCCAS_Chapter_6_3 {
                 }
                 then {
                     the IUT entity sends a r_200_Ok containing
-                        From indicating value PPX_UE_A_SIP_URI,
+                        From indicating value PX_UE_A_SIP_URI,
                         To indicating value PX_UE_A_SIP_URI,
                         CallId indicating value PX_UE_A_CALLID,
                         Via indicating value PX_UE_A_VIA,
@@ -286,12 +337,7 @@ Package TP_SCCAS_Chapter_6_3 {
                 }               
             }
             
-    	} // End of TP_ISC_SCCAS_RSC_REG_05
-     } //end Group "6.3.4 Triggers for the SCCAS providing information to MSC server"
-     
-     Group "6.3.5 SCCAS providing the CS to PS SRVCC information to the MSC server"{
-    	
-    	import all from Sip_Common;
+    	} // End of TP_ISC_SCCAS_RSC_REG_06
      } //end Group "6.3.5 SCCAS providing the CS to PS SRVCC information to the MSC server"  
     
 } // End of Package TP_SCCAS_Chapter_6_3
