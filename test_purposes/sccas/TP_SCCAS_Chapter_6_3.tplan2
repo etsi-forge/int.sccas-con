@@ -330,8 +330,7 @@ Package TP_SCCAS_Chapter_6_3 {
                         PassertedIdentity indicating value PX_SCCAS_URI
                         //Supported indicating value "path"   ;;
                         SipMessageBody containing
-                            MIME indicating value "application/vnd.3gpp.srvcc-ext+xml"
-                        
+                            MIME indicating value "application/vnd.3gpp.srvcc-ext+xml"    
                         ;;;
                     to the IMS_S_CSCF entity 
                 }               
