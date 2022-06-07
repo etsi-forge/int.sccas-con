@@ -29,8 +29,10 @@ Package Sip_Common {
             - SCCAS
             - IMS_S_CSCF
             - UE
+            - UE_TERM
             - IUT
             - ATCF
+            - MSC
         ;
         events:
             - receives
@@ -126,6 +128,7 @@ Package Sip_Common {
         SipMessage r_1xx_Any;
         SipMessage r_100_Trying;
         SipMessage r_180_Ringing;
+        SipMessage r_183_SessionProgress;
         SipMessage r_200_Ok;
         SipMessage r_2xx_Any;
         SipMessage r_401_Unauthorized;
@@ -163,6 +166,14 @@ Package Sip_Common {
                     SUT component IUT of type SipComponent
                     connection between IMS_S_CSCF.g and IUT.g
                     connection between ATCF.g and IUT.g;
+            
+            Test Configuration CFG_SCCAS_03 
+                containing 
+                    Tester component IMS_S_CSCF of type SipComponent
+                    Tester component MSC of type SipComponent
+                    SUT component IUT of type SipComponent
+                    connection between IMS_S_CSCF.g and IUT.g
+                    connection between MSC.g and IUT.g;
                     
             Test Configuration CFG_SCSCF_01 
                 containing 
