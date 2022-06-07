@@ -124,6 +124,7 @@ Package Sip_Common {
         SipMessage ACK;
         SipMessage CANCEL;
         SipMessage BYE;
+        SipMessage REFER;
          // SIP Responses
         SipMessage r_1xx_Any;
         SipMessage r_100_Trying;

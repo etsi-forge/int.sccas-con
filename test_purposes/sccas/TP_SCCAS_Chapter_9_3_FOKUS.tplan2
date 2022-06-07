@@ -308,20 +308,171 @@ Package TP_SCCAS {
     	Group "9.3.5.2 SCC AS procedures for PS to CS dual radio access transfer of a originating session in the alerting phase"
     	{
     		
+    		import all from Sip_Common;
+    	
+    	 
+            Test Purpose {
+            	
+				// When the SCC AS receives a SIP INVITE request due to PS to CS STN and if there are one or more dialogs in an early
+				// dialog phase supporting a session with active speech media component such that:
+				//		1) all dialogs are early dialogs created by the same SIP INVITE request;
+				//		2) a SIP 180 (Ringing) response to SIP INVITE request was received in at least one of those early dialogs;
+				//		3) a g.3gpp.drvcc-alerting feature-capability indicator as described in annex C was included in a Feature-Caps
+				//		header field by the SCC AS in the SIP 180 (Ringing) response; and
+				//		4) the Contact header field in the initial SIP INVITE request sent by the SC UE towards the SCC AS included the
+				//		g.3gpp.drvcc-alerting media feature tag as described in annex C,
+				// then the SCC AS shall for each early dialog send an SIP UPDATE request towards the remote UE and populate each
+				// SIP UPDATE request as follows:
+				// 		1) set the Request-URI set to the URI contained in the Contact header field returned at the creation of the dialog
+				// 		with the remote UE;
+				// 		2) the Contact header field set to the Contact header field provided by the served UE at the creation of the dialog
+				// 		with the remote UE; and
+				//		3) a new SDP offer, including:
+				//			a) if the remote leg is not a precondition enabled dialog, the media characteristics as received in the SIP
+				//			INVITE request due to PS to CS STN but excluding any precondition mechanism specific SDP attributes, by
+				//			following the rules of 3GPP TS 24.229 [2];
+				//			b) if the remote leg is a precondition enabled dialog, include a new SDP offer including:
+				//				- the media characteristics as received in the SIP INVITE request due to PS to CS STN (including any
+				//				precondition mechanism specific SDP attributes); and
+				//				- if the SIP INVITE request due to PS to CS STN is not a precondition enabled initial SIP INVITE request,
+				//				indicate preconditions as met, using the segmented status type, as defined in IETF RFC 3312 [88] and
+				//				IETF RFC 4032 [89], as well as the strength-tag value "mandatory" for the local segment and the
+				//				strength-tag value either "optional" or as specified in RFC 3312 [88] and RFC 4032 [89] for the remote
+				//				segment.
+            	
+            	TP Id TP_ICS_SCCAS_XXX_XXX_01 
+            	
+            	Test objective "Verify that the SCC AS "
+            	
+            }
+            
+            
+            
+            Test Purpose {
+            	
+            	
+				// For each SIP 200 (OK) response to the SIP UPDATE request (triggered by the SIP INVITE request due to PS to CS
+				// STN) from a remote UE the SCC AS shall:
+				// 		1) if one of the following is true:
+				// 			A) if the remote leg is not a precondition enabled dialog;
+				// 			B) if the remote leg is a precondition enabled dialog, the SIP INVITE request due to PS to CS STN is a
+				// 			precondition enabled initial SIP INVITE request and both local and remote preconditions are met:
+				// send a SIP provisional response to the SIP INVITE request due to PS to CS STN following the rules of
+				// 3GPP TS 24.229 [2] with the response code corresponding to the actual dialog state populated with:
+				// 		- an SDP answer based on the SDP answer received from the remote UE; and
+				// 		- the last received P-Early-Media header field, including the SIP 2xx response to the SIP UPDATE request, if a PEarly-
+				// 		Media has been received from the remote UE.
+				
+				// This TP: only case A
+				
+            	TP Id TP_ICS
+            	
+            	Test objective ""
+            	
+            	
+            }
+            
+            
     	} // end Group "9.3.5.2 SCC AS procedures for PS to CS dual radio access transfer of a originating session in the alerting phase"
 
-		Group "9.3.5.3 SCC AS procedures for PS to CS dual radio, access transfer of a originating session in the prealerting phase"
+		Group "9.3.5.3 SCC AS procedures for PS to CS dual radio, access transfer of a originating session in the pre-alerting phase"
 		{
+			
+			
+			Test Purpose {
+				
+			// When the SCC AS receives a SIP INVITE request due to PS to CS STN and if there are zero, one or more dialogs in an
+			// early dialog phase supporting a session with active speech media component such that:
+			// 		1) all dialogs are early dialogs created by the same SIP INVITE request;
+			// 		2) a SIP 180 (Ringing) response to the SIP INVITE request has not been received yet in any of the existing dialogs;
+			// 		3) the SCC AS included a g.3gpp.ps2cs-drvcc-orig-pre-alerting feature-capability indicator as described in annex C
+			// 		in a Feature-Caps header field of SIP 18x responses; and
+			// 		4) the Contact header field in the initial SIP INVITE request sent by the SC UE towards the SCC AS included a
+			// 		g.3gpp.ps2cs-drvcc-orig-pre-alerting media feature tag as described in annex C,
+			// then the SCC AS shall for each early dialog send a SIP UPDATE request towards the remote UE.
+			// Each SIP UPDATE request shall be populated as follows:
+			// 		1) the Request-URI set to the URI contained in the Contact header field returned at the creation of the dialog with
+			// 		the remote UE;
+			//		2) the Contact header field set to the Contact header field provided by the served UE at the creation of the dialog
+			//		with the remote UE; and
+			//		3) an new SDP offer, including
+			//			a) if the remote leg is not a precondition enabled dialog, the media characteristics as received in the SIP
+			//			INVITE request due to PS to CS STN but excluding any precondition mechanism specific SDP attributes, by
+			//			following the rules of 3GPP TS 24.229 [2];
+			//			b) if the remote leg is a precondition enabled dialog, include a new SDP offer including:
+			//				- the media characteristics as received in the SIP INVITE request due to PS to CS STN (including any
+			//				precondition mechanism specific SDP attributes); and
+			//				- if the SIP INVITE request due to PS to CS STN is not a precondition enabled initial SIP INVITE request,
+			//				indicate preconditions as met, using the segmented status type, as defined in IETF RFC 3312 [88] and
+			//				IETF RFC 4032 [89], as well as the strength-tag value "mandatory" for the local segment and the
+			//				strength-tag value either "optional" or as specified in RFC 3312 [88] and RFC 4032 [89] for the remote
+			//				segment.
+			
+			TP Id TP_ICS
+            	
+            Test objective ""
+            
+			}
+			
 			
 		} // end Group "9.3.5.3 SCC AS procedures for PS to CS dual radio, access transfer of a originating session in the prealerting phase"
 		
 		Group "9.3.5.4 SCC AS procedures for PS to CS dual radio access transfer of an additional session in an early dialog phase"
 		{
+			// Figure A.15.4-1:
+			
 			
 		} // end Group "9.3.5.4 SCC AS procedures for PS to CS dual radio access transfer of an additional session in an early dialog phase"
 		
 		Group "9.3.5.5 SCC AS procedures for PS to CS dual radio access transfer of a terminating session in the alerting phase"
 		{
+			import all from Sip_Common;
+    	
+    	 
+            Test Purpose {
+            	
+			// When the SCC AS receives a SIP 488 (Not Acceptable Here) response to the SIP INVITE request creating the session
+			// in the terminating alerting phase without an SDP MIME body and if the SCC AS supports PS to CS dual radio access
+			// transfer for calls in alerting phase then the SCC AS shall:
+			//		1) if a SIP 180 (Ringing) response to the SIP INVITE request has been received from the SC UE;
+			//		2) if the SCC AS included a g.3gpp.ps2cs-drvcc-orig-pre-alerting feature-capability indicator as described in
+			//		annex C in the SIP INVITE request; and
+			//		3) if the Contact header field in the SIP 180 (Ringing) response request sent by the SC UE towards the SCC AS
+			//		included a g.3gpp.drvcc-alerting media feature tag as described in annex C,
+			// terminate the call over CS as follows:
+			//		1) perform the actions according to the subclause 10.4.7 in 3GPP TS 24.292 [4] with the following clarifications:
+			//			a) the URI in the Request-URI shall be set to C-MSISDN; and
+			//			b) the P-Asserted-Identity header field set to:
+			//				- if the SIP 180 (Ringing) response contained the g.3gpp.dynamic-stn media feature tag as described in
+			//				annex C in the Contact header field, the dynamic STN; and
+			//				- if the SIP 180 (Ringing) response does not contain the g.3gpp.dynamic-stn media feature tag as described
+			//				in annex C in the Contact header field, the static STN.
+            	
+            	TP Id TP_ICS_SCCAS_XXX_XXX_01 
+            	
+            	Test objective "Verify that the SCC AS terminates the call over CS after receiving a SIP 488"
+            	
+            }
+            
+            
+             Test Purpose {
+            	
+			// When the SCC AS receives a SIP 1xx response with an SDP answer the SCC AS shall:
+			//		a) send a SIP PRACK request towards the CS domain; and
+			//		b) send an SIP UPDATE request to the remote UE populated as follows:
+			//			- the Request-URI set to the URI contained in the Contact header field returned at the creation of the dialog
+			//			with the remote UE;
+			//			- the Contact header field set to the Contact header field provided by the served UE at the creation of the
+			//			dialog with the remote UE; and
+			//			- anew SDP offer, including the media characteristics as received in the SIP 1xx response with the SDP
+			//			answer, by following the rules of 3GPP TS 24.229 [2].
+            	
+            	TP Id TP_ICS_SCCAS_XXX_XXX_02 
+            	
+            	Test objective "Verify that the SCC AS sends a SIP PRACK and SIP UPDATE after receiving a SIP 1xx"
+            	
+            }
+			
 			
 		} // end Group "9.3.5.5 SCC AS procedures for PS to CS dual radio access transfer of a terminating session in the alerting phase"
     	
