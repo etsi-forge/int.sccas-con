@@ -136,6 +136,7 @@ Package Sip_Common {
         SipMessage r_403_Forbidden;
         SipMessage r_404_NotFound;
         SipMessage r_486_INVITE;
+        SipMessage r_488_NotAcceptableHere;
         SipMessage r_4xx_Any;
         
         type SipMessageBody
