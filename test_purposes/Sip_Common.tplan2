@@ -137,6 +137,7 @@ Package Sip_Common {
         SipMessage r_401_Unauthorized;
         SipMessage r_403_Forbidden;
         SipMessage r_404_NotFound;
+        SipMessage r_480_TemporaryUnavailable;
         SipMessage r_486_INVITE;
         SipMessage r_488_NotAcceptableHere;
         SipMessage r_4xx_Any;
