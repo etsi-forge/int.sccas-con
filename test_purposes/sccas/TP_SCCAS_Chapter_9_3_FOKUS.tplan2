@@ -609,6 +609,7 @@ Package TP_SCCAS {
             	
             	Test objective "Verify that the SCC AS sends a SIP PRACK and SIP UPDATE after receiving a SIP 1xx"
             	
+            	
             }
 			
 			
