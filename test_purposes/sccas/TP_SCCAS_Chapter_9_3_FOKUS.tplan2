@@ -536,9 +536,61 @@ Package TP_SCCAS {
             	
             	TP Id TP_ICS_SCCAS_XXX_XXX_01 
             	
-            	Test objective "Verify that the SCC AS terminates the call over CS after receiving a SIP 488"
+            	Test objective "Verify that the SCC AS terminates the call over CS after receiving a SIP 488"            	
+    		
+	    		Reference 
+	            "ETSI TS 124 237 [1], Clauses 9.3.5.5 and 10.4.7 in 3GPP TS 24.292 [4]" 
+	        
+	        	Config Id CFG_SCCAS_01
+	        
+	       	 	PICS Selection NONE  // TODO
+	        
+	        	Initial conditions with {
+	            	the UE entity isRegisteredTo the IMS 
+					// TODO: 
+					// SIP INVITE was sent with:
+						//  creating the session in the terminating alerting phase without an SDP MIME body
+					// SCC AS supports PS to CS dual radio access
+	        	}
+	        	
+	        	Expected behaviour
+            	ensure that {
+                	when {                      	     
+                    	the IUT entity receives an r_488_NotAcceptableHere containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE;
+                    from the IMS_S_CSCF entity
+                }                    	             	
+              	then {
+                    	the IUT entity sends an REFER containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+                        ReferSub indicating value false,  			// 1. the Refer-Sub header field with value "false"
+                        Require indicating value "norefersub",	// 2. the Require header field with value "norefersub"
+                        ReferTo containing "a SIP URI with the Target-Dialog_URI_header_field"  // 3. the Refer-To header field containing the additional transferred session SCC AS URI for PS to CS dual radio, where the URI also includes the following header fields containing the information related to the additional transferred session:
+                        	TargetDialog indicating value "TODO: dialog identifier of an dialog in the early phase supporting session of the SC UE", // A. the Target-Dialog header field populated, containing the dialog identifier of an dialog in the early phase supporting session of the SC UE;
+                        	Require indicating value "tdialog", // B. the Require header field populated with the option tag value "tdialog"
+                        	To indicating value "", // C. the To header field populated, containing the value of the P-Asserted-Identity provided by the remote UE during the session establishment;
+                        	From indicating value "", // D. the From header field populated, containing the value of the P-Asserted-Identity provided by the SC UE during the session establishment;
+                        	ContentType indicating value "application/sdp", // E. the Content-Type header field with "application/sdp";
+                        	MessageBody containing  // F. the URI header field with the hname "body" populated with SDP describing the media streams as negotiated in the session with the remote UE
+                            	SDP containing
+                            		TODO indicating value "";
+                        		;
+                        	;,
+                        	PAssertedIdentity indicating value ""; // G. optionally the P-Asserted-Identity URI header field containing value of the P-Asserted-Identity header field of the received SIP INVITE request
+                        		
+                    to the IMS_S_CSCF entity
+                    }
+                }
             	
-            }
+            } // end
             
             
              Test Purpose {
