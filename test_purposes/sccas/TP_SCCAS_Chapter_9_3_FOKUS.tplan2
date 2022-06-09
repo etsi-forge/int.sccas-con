@@ -401,9 +401,50 @@ Package TP_SCCAS {
 				
             	TP Id TP_ICS
             	
-            	Test objective ""
+            	Test objective "Verify that the SCC AS sends SIP provisional response to the SIP INVITE request due to PS to CS STN"
             	
-            	
+            	Reference 
+	            "ETSI TS 124 237 [1], Clauses 9.3.5.2" 
+	        
+	        	Config Id CFG_SCCAS_01
+	        
+	       	 	PICS Selection NONE  // TODO
+	        
+	        	Initial conditions with {
+	            	the UE entity isRegisteredTo the IMS 
+					// a SIP INVITE request due to PS to CS STN tooks place
+					// and
+					// SCC AS has send a SIP UPDATE request according to TP TP_ICS_SCCAS_PCT_UPD_01
+	        	}
+	        	
+	        	Expected behaviour
+            	ensure that {
+                	when {                      	     
+                    	the IUT entity receives an r_200_Ok containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE;
+                    from the IMS_S_CSCF entity
+                }                    	             	
+              	then {
+                    	the IUT entity sends an r_1xx_Any containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+		                PEarlyMedia indicating value "the last received P-Early-Media header field",
+                    	ContentType indicating value "application/sdp", 
+                        	MessageBody containing  // 3) a new SDP offer, including:
+                            	SDP containing
+                            		Media indicating value "SDP answer based on the SDP answer received from the remote UE";
+                        		;
+                        	;
+                    to the IMS_S_CSCF entity
+                    }
+                }
             }
             
             
