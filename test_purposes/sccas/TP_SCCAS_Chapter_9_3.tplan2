@@ -19,6 +19,47 @@ Package TP_SCCAS_Chapter_9_3 {
 	 Group "9.3.1 Distinction of requests sent to the SCC AS"{
     	
     	import all from Sip_Common;	
+    		
+    	Test Purpose {
+        
+        TP Id TP_ISC_SCCAS_PCT_INV_01
+        
+        Test objective  "Verify that the SCCAS distinguish SIP INVITE with STI for subscribed UE due to PS to CS"
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clause 9.3.1"
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE //SCCAS_PS2CS_SRVCC 
+                
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS_A and 
+            the UE entity hasEstablishedDialog the SCCAS_UE_TERM
+        }
+        
+        Expected behaviour
+            ensure that {
+            	when {
+                    the IUT entity receives a INVITE containing
+                        RequestUri indicating value PX_STI_URI,
+                        From indicating value PX__SIP_URI,
+                        To indicating value PX__SIP_URI,
+                        CallId indicating value PX_STI_CALLID,
+                        Via indicating value PX_STI_VIA,
+                        Contact,
+                        TargetDialog containing "dialog info from PS session", 
+                        Require indicating value "tdialog",
+                        PAssertedIdentity indicating value PX_UE_CMSISDN
+                        SipMessageBody;;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                	the IUT entity sends a ReINVITE
+	                to the IMS_S_CSCF entity                
+	             }    
+            }
+    	} // End of TP_ISC_SCCAS_PCT_INV_01
     } // end Group "9.3.1 Distinction of requests sent to the SCC AS"
     
     Group "9.3.2 SCC AS procedures for PS to CS access transfer"{

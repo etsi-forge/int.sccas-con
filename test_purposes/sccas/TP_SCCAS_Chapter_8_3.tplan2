@@ -19,11 +19,57 @@ Package TP_SCCAS_Chapter_8_3 {
 	 Group "8.3.1 Distinction of requests sent to the SCC AS"{
     	
     	import all from Sip_Common;	
+    		
+    	Test Purpose {
+        
+        TP Id TP_ISC_SCCAS_TER_INV_01
+        
+        Test objective  "Verify that the SCCAS last receives SIP INVITE request from UE/SCSCF"
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clauses 7.3.1, 7.3.2"
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE 
+                
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS_A and 
+            the UE_TERM entity isRegisteredTo the IMS_A
+        }
+        
+        Expected behaviour
+            ensure that {
+            	when {
+                    the IUT entity receives a INVITE containing
+                        RequestUri indicating value PX_UE_TERM_SIP_URI,
+                        From indicating value PX_IMS_S_CSCF_SIP_URI,
+                        To indicating value PX_UE_TERM_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value "sccas as topmost entry",
+                        PServedUser indicating value PX_UE_TERM_SIP_URI,
+                        Contact,
+                        FeatureCaps, 
+                        SipMessageBody;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                	the IUT entity sends a INVITE containing
+	                    From indicating value PX_IMS_S_CSCF_SIP_URI,
+	                    To indicating value PX_UE_TERM_SIP_URI,
+	                    CallId indicating value PX_UE_A_CALLID,
+	                    Via indicating value PX_UE_A_VIA;
+	                to the IMS_S_CSCF entity
+	             }    
+            }
+    	} // End of TP_ISC_SCCAS_TER_INV_01
     } // end Group "8.3.1 Distinction of requests sent to the SCC AS"
     
     Group "8.3.2 Call termination procedures in the SCC AS"{
     	
     	import all from Sip_Common;	
+    	
     } // end Group "8.3.2 Call termination procedures in the SCC AS"
     
 }// End of Package TP_SCCAS_Chapter_8_3
