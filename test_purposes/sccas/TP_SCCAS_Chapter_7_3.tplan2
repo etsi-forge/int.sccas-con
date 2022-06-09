@@ -51,15 +51,11 @@ Package TP_SCCAS_Chapter_7_3 {
                     from the IMS_S_CSCF entity
                 }
                 then {
-	                the IUT entity sends a r_183_SessionProgress containing
+                	the IUT entity sends a INVITE containing
 	                    From indicating value PX_IMS_S_CSCF_SIP_URI,
 	                    To indicating value PX_UE_A_SIP_URI,
 	                    CallId indicating value PX_UE_A_CALLID,
-	                    Via indicating value PX_UE_A_VIA,
-	                    //... 
-	                    FeatureCaps 
-	                    //Contact containing
-	                    ;
+	                    Via indicating value PX_UE_A_VIA;
 	                to the IMS_S_CSCF entity
 	             }    
             }
@@ -74,7 +70,7 @@ Package TP_SCCAS_Chapter_7_3 {
         
         TP Id TP_ISC_SCCAS_ORI_INI_02
         
-        Test objective  "Verify that the SCCAS sends 2xx response to the SIP INVITE request towards the served user ."
+        Test objective  "Verify that the SCCAS sends 1xx/2xx response to the SIP INVITE request towards the served user ."
         
         Reference 
             "ETSI TS 124 237 [1], Clauses 7.3.2, 6A.4.3, 4.2.2"
@@ -104,6 +100,34 @@ Package TP_SCCAS_Chapter_7_3 {
                     from the IMS_S_CSCF entity
                 }
                 then {
+                	the IUT entity sends a INVITE
+                	to the IMS_S_CSCF entity and 
+                	
+                	the IUT entity receives a r_183_SessionProgress 
+                	from the IMS_S_CSCF entity and 
+                	
+                	the IUT entity sends a r_183_SessionProgress containing
+	                    From indicating value PX_IMS_S_CSCF_SIP_URI,
+	                    To indicating value PX_UE_A_SIP_URI,
+	                    CallId indicating value PX_UE_A_CALLID,
+	                    Via indicating value PX_UE_A_VIA,
+	                    //... 
+	                    FeatureCaps containing //IETF RFC6809
+	                        g3gppFeatureCapabilityIndicator, //see Annex C
+	                        g3gppMidcallFeatureCapabilityIndicator, //list - B
+	                        g3gppSrvccAlertingFeatureCapabilityIndicator, //list -C
+	                        g3gppPs2csSrvccOrigPreAlertingMediaIndicator, //list -D
+	                    //Contact containing
+	                    Accept containing 
+                            MIME indicating value "application/vnd.3gpp.state-and-event-info.xml" //subclause D.2.3
+                        RecvInfo containing    
+                            g3gppStateAndEventPackageName;; //according to RFC6086
+	                    ;;
+	                to the IMS_S_CSCF entity and 
+                	
+                	the IUT entity receives a r_200_Ok 
+                	from the IMS_S_CSCF entity and
+	                
 	                the IUT entity sends a r_200_Ok containing
 	                    From indicating value PX_IMS_S_CSCF_SIP_URI,
 	                    To indicating value PX_UE_A_SIP_URI,
