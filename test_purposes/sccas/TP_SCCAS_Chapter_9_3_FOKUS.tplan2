@@ -319,12 +319,66 @@ Package TP_SCCAS {
 				//				IETF RFC 4032 [89], as well as the strength-tag value "mandatory" for the local segment and the
 				//				strength-tag value either "optional" or as specified in RFC 3312 [88] and RFC 4032 [89] for the remote
 				//				segment.
+				
+				// this TP: only case A
             	
-            	TP Id TP_ICS_SCCAS_XXX_XXX_01 
+            	TP Id TP_ICS_SCCAS_PCT_UPD_01 
             	
-            	Test objective "Verify that the SCC AS "
+            	Test objective "Verify that the SCC AS sends a SIP UPDATE after receiving a SIP INVITE request due to PS to CS STN and if there are one or more dialogs in an early dialog phase and the remote leg is not a precondition enabled dialog"
             	
-            }
+            	Reference 
+	            "ETSI TS 124 237 [1], Clauses 9.3.5.2" 
+	        
+	        	Config Id CFG_SCCAS_01
+	        
+	       	 	PICS Selection NONE  // TODO
+	        
+	        	Initial conditions with {
+	            	the UE entity isRegisteredTo the IMS 
+					// TODO: 
+					// here are one or more dialogs in an early dialog phase supporting a session with active speech media component such that:
+					//		1) all dialogs are early dialogs created by the same SIP INVITE request;
+					//		2) a SIP 180 (Ringing) response to SIP INVITE request was received in at least one of those early dialogs;
+					//		3) a g.3gpp.drvcc-alerting feature-capability indicator as described in annex C was included in a Feature-Caps
+					//		header field by the SCC AS in the SIP 180 (Ringing) response; and
+					//		4) the Contact header field in the initial SIP INVITE request sent by the SC UE towards the SCC AS included the
+					//		g.3gpp.drvcc-alerting media feature tag as described in annex C,
+					// and
+					// the remote leg is not a precondition enabled dialog
+	        	}
+	        	
+	        	Expected behaviour
+            	ensure that {
+                	when {                      	     
+                    	the IUT entity receives an INVITE containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE;
+                    from the IMS_S_CSCF entity
+                }                    	             	
+              	then {
+                    	the IUT entity sends an UPDATE containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+		                // 1) set the Request-URI set to the URI contained in the Contact header field returned at the creation of the dialog
+						// with the remote UE;
+						Contact indicating value "set to the Contact header field provided by the served UE at the creation of the dialog",// 2) the Contact header field set to the Contact header field provided by the served UE at the creation of the dialog with the remote UE
+                    	ContentType indicating value "application/sdp", 
+                        	MessageBody containing  // 3) a new SDP offer, including:
+                            	SDP containing
+                            		Media indicating value "the media characteristics as received in the SIP INVITE request due to PS to CS STN (including any precondition mechanism specific SDP attributes)";
+                        		;
+                        	;
+                    to the IMS_S_CSCF entity
+                    }
+                }
+            	
+            } // end TP_ICS_SCCAS_PCT_UPD_01
             
             
             
@@ -631,7 +685,7 @@ Package TP_SCCAS {
                         CallId indicating value PX_UE_A_CALLID,
                         Via indicating value PX_UE_A_VIA,
                         Route indicating value PX_UE_A_SERVICE_ROUTE,
-                        Contact indicating value "", // the Contact header field set to the Contact header field provided by the served UE at the creation of the dialog with the remote UE;
+                        Contact indicating value "set to the Contact header field provided by the served UE at the creation of the dialog with the remote UE", // the Contact header field set to the Contact header field provided by the served UE at the creation of the dialog with the remote UE;
                         MessageBody containing  // anew SDP offer, including the media characteristics as received in the SIP 1xx response with the SDP answer, by following the rules of 3GPP TS 24.229 [2].
                             	SDP containing
                             		TODO indicating value "TODO";
