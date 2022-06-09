@@ -1,0 +1,164 @@
+/*
+Copyright (c) ETSI 2019-2022.
+
+This software is subject to copyrights owned by ETSI. Non-exclusive permission
+is hereby granted, free of charge, to copy, reproduce and amend this file
+under the following conditions: It is provided "as is", without warranty of any
+kind, expressed or implied.
+
+ETSI shall never be liable for any claim, damages, or other liability arising
+from its use or inability of use.This permission does not apply to any documentation
+associated with this file for which ETSI keeps all rights reserved. The present
+copyright notice shall be included in all copies of whole or part of this
+file and shall not imply any sub-license right.
+*/
+
+/* interface at SCCAS */
+Package TP_SCCAS {
+    
+      
+    
+    Group "11.3.2 SCC AS procedures for PS to PS+CS access transfer"
+    {
+    	import all from Sip_Common;
+    	 
+    	Test Purpose {
+		
+        TP Id TP_ISC_SCCAS_CON_RIN_01 
+        
+        Test objective "Verify that the SCC AS successfully processes an INVITE that includes an active speech media component using CS bearer."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clauses 11.3.2" 
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS and 
+            the UE entity hasEstablishedDialog
+        }
+        
+        Expected behaviour
+            ensure that {
+                when {
+                    the IUT entity receives an INVITE containing  	// request active speech media component using CS bearer
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Replaces indicating value PX_UE_A_SIP_URI; // indicating access transfer procedure
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                    the IUT entity sends an INVITE containing // reINVITE
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Contact indicating value PX_UE_A_SIP_URI; // added by SCC AS
+                     to the IMS_S_CSCF entity
+                	}
+            	}
+            
+            } // end TP TP_ISC_SCCAS_CON_RIN_01
+
+    	
+    } // end Group "11.3.2 SCC AS procedures for PS to PS+CS access transfer"
+    
+    
+    Group "11.3.3 SCC AS procedures for PS+CS to PS access transfer"
+    {    	    	    	
+
+    	import all from Sip_Common;
+    	
+    	Test Purpose {
+		
+        TP Id TP_ISC_SCCAS_CON_RIN_02 
+        
+        Test objective "Verify that the SCC AS successfully processes an INVITE due to two STIs on the Target Access Leg."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clauses 11.3.3" 
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS and
+            the UE entity hasEstablishedDialog
+        }
+        
+        Expected behaviour
+            ensure that {
+                when {
+                    the IUT entity receives an INVITE containing  	// request CS -> PS
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA;
+                        //Replaces indicating value PX_UE_A_SIP_URI; // indicating access transfer procedure
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                    the IUT entity sends an INVITE containing // reINVITE
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA;
+                        //Contact indicating value PX_UE_A_SIP_URI; // added by SCC AS
+                     to the IMS_S_CSCF entity
+                	}
+            	}
+            
+            } // end TP TP_ISC_SCCAS_CON_RIN_02
+
+    	Test Purpose {
+		
+        TP Id TP_ISC_SCCAS_CON_RIN_03 
+        
+        Test objective "Verify that the SCC AS rejects an INVITE due missing ability to associate it to an ongoing or different SIP dialog."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clauses 11.3.3" 
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS and
+            the UE entity hasEstablishedDialog
+        }
+        
+        Expected behaviour
+            ensure that {
+                when {
+                    the IUT entity receives an INVITE containing  	// request CS -> PS
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA;
+                        //Replaces indicating value PX_UE_A_SIP_URI; // indicating access transfer procedure
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                    the IUT entity sends an r_480 containing // reINVITE
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA;
+                        //Contact indicating value PX_UE_A_SIP_URI; // added by SCC AS
+                     to the IMS_S_CSCF entity
+                	}
+            	}
+            
+            } // end TP TP_ISC_SCCAS_CON_RIN_03
+    	
+    } // end Group 11.3.3 SCC AS procedures for PS+CS to PS access transfer
+
+    
+} // End of Package TP_SCCAS
+
