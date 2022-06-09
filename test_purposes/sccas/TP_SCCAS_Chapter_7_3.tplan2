@@ -21,7 +21,7 @@ Package TP_SCCAS_Chapter_7_3 {
     	import all from Sip_Common;	
     	Test Purpose {
         
-        TP Id TP_ISC_SCCAS_ORI_INI_01
+        TP Id TP_ISC_SCCAS_ORI_INV_01
         
         Test objective  "Verify that the SCCAS first receives SIP INVITE request from UE/SCSCF"
         
@@ -59,7 +59,7 @@ Package TP_SCCAS_Chapter_7_3 {
 	                to the IMS_S_CSCF entity
 	             }    
             }
-    	} // End of TP_ISC_SCCAS_ORI_INI_01
+    	} // End of TP_ISC_SCCAS_ORI_INV_01
     	
     } // end Group "7.3.1 Distinction of requests sent to the SCC AS"
     
@@ -68,7 +68,7 @@ Package TP_SCCAS_Chapter_7_3 {
     	import all from Sip_Common;
     	Test Purpose {
         
-        TP Id TP_ISC_SCCAS_ORI_INI_02
+        TP Id TP_ISC_SCCAS_ORI_INV_02
         
         Test objective  "Verify that the SCCAS sends 1xx/2xx response to the SIP INVITE request towards the served user ."
         
@@ -150,7 +150,7 @@ Package TP_SCCAS_Chapter_7_3 {
 	                to the IMS_S_CSCF entity
 	             }    
             }
-    	} // End of TP_ISC_SCCAS_ORI_INI_02	
+    	} // End of TP_ISC_SCCAS_ORI_INV_02	
     } // end Group "7.3.2 Call origination procedures at the SCC AS"
     
     Group "7.3.3 Subscription related procedures in the SCC AS"{
