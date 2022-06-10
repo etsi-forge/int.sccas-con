@@ -1,0 +1,393 @@
+/*
+Copyright (c) ETSI 2019-2022.
+
+This software is subject to copyrights owned by ETSI. Non-exclusive permission
+is hereby granted, free of charge, to copy, reproduce and amend this file
+under the following conditions: It is provided "as is", without warranty of any
+kind, expressed or implied.
+
+ETSI shall never be liable for any claim, damages, or other liability arising
+from its use or inability of use.This permission does not apply to any documentation
+associated with this file for which ETSI keeps all rights reserved. The present
+copyright notice shall be included in all copies of whole or part of this
+file and shall not imply any sub-license right.
+*/
+
+/* interface at SCCAS */
+Package TP_SCCAS {
+    
+      
+    
+    Group "10.3.2 PS to PS access transfer procedures at the SCC AS"
+    {
+    	import all from Sip_Common;
+    	 
+    	Test Purpose {
+		
+        TP Id TP_ISC_SCCAS_PPT_RIN_01 
+        
+        Test objective "Verify that the SCC AS successfully processes an INVITE on a previously esthablished dialog if the SIP INVITE request contains a Replaces header field."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clauses 10.3.2" 
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS and // include g.3gpp.pstops-sti
+            the UE entity hasEstablishedDialog
+        }
+        
+        Expected behaviour
+            ensure that {
+                when {
+                    the IUT entity receives an INVITE containing  	
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Replaces indicating value PX_UE_A_SIP_URI; // indicating access transfer procedure
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                    the IUT entity sends an INVITE containing // reINVITE
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Contact indicating value PX_UE_A_SIP_URI; // added by SCC AS
+                     to the IMS_S_CSCF entity
+                	}
+            	}
+            
+            } // end TP TP_ISC_SCCAS_PPT_RIN_01
+
+    	Test Purpose {
+
+        TP Id TP_ISC_SCCAS_PPT_RIN_02
+        
+        Test objective "Verify that the SCC AS successfully processes an UPDATE on an existing early dialog if the SIP INVITE request contains a Replaces header field."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clauses 10.3.2" 
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS and // include g.3gpp.pstops-sti
+            the UE entity hasInitiatedDialogWith
+        }
+        
+        Expected behaviour
+            ensure that {
+                when {
+                    the IUT entity receives an INVITE containing  	
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Replaces indicating value PX_UE_A_SIP_URI; // indicating access transfer procedure
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                    the IUT entity sends an UPDATE containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Contact indicating value PX_UE_A_SIP_URI; // added by SCC AS
+                     to the IMS_S_CSCF entity
+                	}
+            	}
+            
+            } // end TP TP_ISC_SCCAS_PPT_RIN_02
+            
+    	Test Purpose {
+		
+        TP Id TP_ISC_SCCAS_PPT_RIN_03 
+        
+        Test objective "Verify that the SCC AS processes an INVITE if it is unable to associate the SIP INVITE request with a confirmed dialog or on a previously esthablished dialog."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clauses 10.3.2" 
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS and  // include g.3gpp.pstops-sti
+            the UE entity not hasEstablishedDialog and
+            the UE entity not hasInitiatedDialogWith
+        }
+        
+        Expected behaviour
+            ensure that {
+                when {
+                    the IUT entity receives an INVITE containing  	
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Replaces indicating value PX_UE_A_SIP_URI; // indicating access transfer procedure
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                    the IUT entity sends an r_480 containing // reject (Temporarily Unavailable)
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID;
+                     to the IMS_S_CSCF entity
+                	}
+            	}
+            
+            } // end TP TP_ISC_SCCAS_PPT_RIN_03            
+
+    	Test Purpose {
+		
+        TP Id TP_ISC_SCCAS_PPT_RIN_04 
+        
+        Test objective "Verify that the SCC AS processes an INVITE if number of media lines in the Target Access Leg is less than the number of media lines in the Source Access Leg."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clauses 10.3.2" 
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS and  // include g.3gpp.pstops-sti
+            the UE entity hasEstablishedDialog
+        }
+        
+        Expected behaviour
+            ensure that {
+                when {
+                    the IUT entity receives an INVITE containing  	
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        TargetDialog indicating value PX_UE_MediaLines; // indicating number of media lines in the Target Access Leg is less than the number of media lines in the Source Access Leg
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                    the IUT entity sends an r_480 containing // reject (Temporarily Unavailable)
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID;
+                     to the IMS_S_CSCF entity
+                	}
+            	}
+            
+            } // end TP TP_ISC_SCCAS_PPT_RIN_04 
+    	
+    } // end Group "10.3.2 PS to PS access transfer procedures at the SCC AS"
+    
+    
+    Group "10.3.4 S-CSCF releasing the source access leg during PS to PS access transfer"
+    {    	    	    	
+
+    	import all from Sip_Common;
+    	
+    	Test Purpose {
+		
+        TP Id TP_ISC_SCCAS_PPT_BYE_01 
+        
+        Test objective "Verify that the SCC AS successfully processes an BYE on a previously esthablished dialog, if does not receive within this time interval an initial SIP INVITE request."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clauses 10.3.4" 
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS and  // include g.3gpp.pstops-sti
+            the UE entity hasEstablishedDialog
+        }
+        
+        Expected behaviour
+            ensure that {
+                when {
+                    (.) at time point t1: the IUT entity receives an BYE containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+                        Reason indicating value 480;   	// status code 480 (Temporarily Unavailable)
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                    (!) "after time interval of 8 seconds" after t1: the IUT entity sends an r_200 containing // 200 OK (BYE) to UE_B
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA;
+                    and
+                    the IUT entity sends an BYE containing // BYE to UE_A
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA;                        
+                     to the IMS_S_CSCF entity
+                	}
+            	}
+            
+            } // end TP TP_ISC_SCCAS_PPT_BYE_01
+    	
+    } // end Group 10.3.4 S-CSCF releasing the source access leg during PS to PS access transfer
+
+    
+    Group "10.3.5 P-CSCF releasing the source access leg during PS to PS access transfer"
+    {    	    	    	
+    	// NOTE: see section 12.3.3.2
+    	
+    } // end Group 10.3.5 P-CSCF releasing the source access leg during PS to PS access transfer
+
+    
+    Group "10.3.6 P-CSCF releasing early dialog during PS to PS access transfer"
+    {    	    	    	
+
+    	import all from Sip_Common;
+    	
+    	Test Purpose {
+		
+        TP Id TP_ISC_SCCAS_PPT_BYE_02 
+        
+        Test objective "Verify that the SCC AS successfully processes an CANDEL on a early dialog."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clauses 10.3.6" 
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS and  // include g.3gpp.pstops-sti
+            the UE entity hasInitiatedDialogWith
+        }
+        
+        Expected behaviour
+            ensure that {
+                when {
+                    (.) at time point t1: the IUT entity receives an BYE containing  	// status code 503
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                    (!) "after time interval of 8 seconds" after t1: the IUT entity sends an r_200 containing // 200 OK (BYE)
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA;
+                    and
+                    the IUT entity sends an CANCEL containing // CANCEL to UE_B
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA;                        
+                     to the IMS_S_CSCF entity
+                	}
+            	}
+            
+            } // end TP TP_ISC_SCCAS_PPT_BYE_02
+
+    	Test Purpose {
+		
+        TP Id TP_ISC_SCCAS_PPT_CAN_01 
+        
+        Test objective "Verify that the SCC AS successfully processes an CANDEL on a early dialog."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clauses 10.3.6" 
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS and  // include g.3gpp.pstops-sti
+            the UE entity hasInitiatedDialogWith
+        }
+        
+        Expected behaviour
+            ensure that {
+                when {
+                    (.) at time point t1: the IUT entity receives an CANCEL containing  	// status code 503
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                    (!) "after time interval of 8 seconds" after t1: the IUT entity sends an r_200 containing // 200 OK (CANCEL)
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA;
+                     to the IMS_S_CSCF entity
+                	}
+            	}
+            
+            } // end TP TP_ISC_SCCAS_PPT_CAN_01
+
+    	Test Purpose {
+		
+        TP Id TP_ISC_SCCAS_PPT_RES_01 
+        
+        Test objective "Verify that the SCC AS successfully processes an SIP 503 (Service Unavailable) response on a early dialog."
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clauses 10.3.6" 
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE
+        
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS and  // include g.3gpp.pstops-sti
+            the UE entity hasInitiatedDialogWith
+        }
+        
+        Expected behaviour
+            ensure that {
+                when {
+                    (.) at time point t1: the IUT entity receives an r_503 containing  	// from UE_B
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE;
+                    from the IMS_S_CSCF entity
+                }
+                then { 
+                    (!) "after time interval of 8 seconds" after t1: the IUT entity sends an r_503 containing // to UE_A
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA;
+                     to the IMS_S_CSCF entity
+                	}
+            	}
+            
+            } // end TP TP_ISC_SCCAS_PPT_RES_01
+    	
+    } // end Group 10.3.6 P-CSCF releasing early dialog during PS to PS access transfer
+    
+} // End of Package TP_SCCAS
+
