@@ -225,7 +225,7 @@ Package TP_SCCAS {
             // Test puposes 4: Upon receiving the SIP ACK request originated from the SC UE, the SCC AS shall:
             Test Purpose {
             	
-            TP Id TP_SCCAS_CS_to_PS_access_transfer_04  
+            TP Id TP_ICS_SCCAS_XXX_YYY_04  
             
             //Upon receiving the SIP ACK request originated from the SC UE, the SCC AS shall:
 			//1) release the source access leg as specified in subclause 9.3.6.; and ...
@@ -271,7 +271,7 @@ Package TP_SCCAS {
                 }
             	
             
-            } // end TP TP_SCCAS_CS_to_PS_access_transfer_04
+            } // end TP TP_ICS_SCCAS_XXX_YYY_04
             
     	
     } // end Group "9.3.3 SCC AS procedures for CS to PS access transfer"
@@ -399,7 +399,7 @@ Package TP_SCCAS {
 				
 				// This TP: only case A
 				
-            	TP Id TP_ICS
+            	TP Id TP_ICS_XXX_YYY_02
             	
             	Test objective "Verify that the SCC AS sends SIP provisional response to the SIP INVITE request due to PS to CS STN"
             	
@@ -539,7 +539,7 @@ Package TP_SCCAS {
                     }
                 }
             
-			}
+			} // end TP_ICS_SCCAS_PCT_INV_01
 			
 			
 		} // end Group "9.3.5.3 SCC AS procedures for PS to CS dual radio, access transfer of a originating session in the prealerting phase"
@@ -561,7 +561,7 @@ Package TP_SCCAS {
         
         	Config Id CFG_SCCAS_01
         
-       	 	PICS Selection NONE  // TODO
+       	 	PICS Selection NONE // TODO
         
         	Initial conditions with {
             	the UE entity isRegisteredTo the IMS 
@@ -600,12 +600,8 @@ Package TP_SCCAS {
             	ensure that {
                 	when {        
                 	    // TODO: Trigger unclear for this refer    
-                    	the IUT entity receives an ACK containing
-//                        From indicating value PX_UE_A_SIP_URI,
-//                        To indicating value PX_UE_B_SIP_URI,
-//                        CallId indicating value PX_UE_A_CALLID,
-//                        Via indicating value PX_UE_A_VIA,
-                        Route indicating value PX_UE_A_SERVICE_ROUTE;
+                    	the IUT entity receives an ACK 
+
                     from the IMS_S_CSCF entity
                 }                    	             	
               	then {
@@ -663,7 +659,7 @@ Package TP_SCCAS {
 			//				- if the SIP 180 (Ringing) response does not contain the g.3gpp.dynamic-stn media feature tag as described
 			//				in annex C in the Contact header field, the static STN.
             	
-            	TP Id TP_ICS_SCCAS_PCT_REF_01 
+            	TP Id TP_ICS_SCCAS_PCT_REF_02 
             	
             	Test objective "Verify that the SCC AS terminates the call over CS after receiving a SIP 488"            	
     		
@@ -719,7 +715,7 @@ Package TP_SCCAS {
                     }
                 }
             	
-            } // end
+            } // end TP_ICS_SCCAS_PCT_REF_02
             
             
              Test Purpose {
@@ -781,7 +777,7 @@ Package TP_SCCAS {
                         Contact indicating value "set to the Contact header field provided by the served UE at the creation of the dialog with the remote UE", // the Contact header field set to the Contact header field provided by the served UE at the creation of the dialog with the remote UE;
                         MessageBody containing  // anew SDP offer, including the media characteristics as received in the SIP 1xx response with the SDP answer, by following the rules of 3GPP TS 24.229 [2].
                             	SDP containing
-                            		TODO indicating value "TODO";
+                            		Media indicating value "the same media characteristics as received in the SIP 1xx response with the SDP answer";
                             		;
                         ;		
                     to the IMS_S_CSCF entity
@@ -789,7 +785,7 @@ Package TP_SCCAS {
                 }
             	
             	
-            }
+            } // end TP_ICS_SCCAS_PCT_XXX_02
 			
 			
 		} // end Group "9.3.5.5 SCC AS procedures for PS to CS dual radio access transfer of a terminating session in the alerting phase"
@@ -811,7 +807,7 @@ Package TP_SCCAS {
 			// an early dialog phase on the terminating side, send a SIP BYE request on the source access leg in accordance
 			// with 3GPP TS 24.229 [2];
         
-        	Test objective  "Verify that the SCC AS sends a SIP BYE after transfer of a session is successfully completed and the source access leg is an ongoing session containing only an active or inactive media component"
+        	Test objective "Verify that the SCC AS sends a SIP BYE after transfer of a session is successfully completed and the source access leg is an ongoing session containing only an active or inactive media component"
        
         
         	Reference 
@@ -824,21 +820,15 @@ Package TP_SCCAS {
         	Initial conditions with {
             	the UE entity isRegisteredTo the IMS 
             	// TODO
-//            	// source access leg is an ongoing session containing only an active or inactive media component
+            	// source access leg is an ongoing session containing only an active or inactive media component
 				
         	}
-//        	
+        	
         	Expected behaviour
             	ensure that {
                 	when {                 
                     	the IUT entity receives an ACK 
                     	// TODO: trigger for event unclear, transfer of a session is successfully completed
-                    	
-//                        From indicating value PX_UE_A_SIP_URI,
-//                        To indicating value PX_UE_B_SIP_URI,
-//                        CallId indicating value PX_UE_A_CALLID,
-//                        Via indicating value PX_UE_A_VIA,
-//                        Route indicating value PX_UE_A_SERVICE_ROUTE;
                     from the IMS_S_CSCF entity
                 }                    	             	
               	then {
@@ -888,11 +878,6 @@ Package TP_SCCAS {
                     	
                     	// TODO: trigger for event unclear, transfer of a session is successfully completed
                     	
-//                        From indicating value PX_UE_A_SIP_URI,
-//                        To indicating value PX_UE_B_SIP_URI,
-//                        CallId indicating value PX_UE_A_CALLID,
-//                        Via indicating value PX_UE_A_VIA,
-//                        Route indicating value PX_UE_A_SERVICE_ROUTE;
                     from the IMS_S_CSCF entity
                 }                    	             	
               	then {
@@ -914,7 +899,7 @@ Package TP_SCCAS {
             Test Purpose {
             	
             	
-            TP Id TP_ICS_SCCAS_MED_RIN_03  
+            TP Id TP_ICS_SCCAS_MED_RIN_01  
             
             // When the transfer of a session is successfully completed, then the SCC AS shall release the source legs as follows:
             // 3) the source access leg contains media components other than speech media component, the SCC AS should send
@@ -963,7 +948,7 @@ Package TP_SCCAS {
                 }
             	
             
-            } // end TP_ICS_SCCAS_MED_RIN_03
+            } // end TP_ICS_SCCAS_MED_RIN_01
             
     } // end Group "9.3.6 Removal of non-transferred audio media components and release of source access legs"
     
