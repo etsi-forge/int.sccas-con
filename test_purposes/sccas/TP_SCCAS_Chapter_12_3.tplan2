@@ -23,12 +23,94 @@ Package TP_SCCAS_Chapter_12_3 {
     
     Group "12.3.1 SCC AS procedures for PS to CS access transfer, PS to CS SRVCC"{
     	
-    	import all from Sip_Common;	
+    	import all from Sip_Common;
+    	Test Purpose {
+        
+        TP Id TP_ISC_SCCAS_SRA_INV_01
+        
+        Test objective  "Verify that the SCCAS distinguish SIP INVITE with STN-SR for nonexisting dialog"
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clause 12.3.1"
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE //SCCAS_PS2CS_SRVCC 
+                
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS_A and 
+            the UE entity hasEstablishedDialog the SCCAS_UE_TERM
+        }
+        
+        Expected behaviour
+            ensure that {
+            	when {
+                    the IUT entity receives a INVITE containing
+                        RequestUri indicating value PX_STI_URI,
+                        From indicating value PX__SIP_URI,
+                        To indicating value PX__SIP_URI,
+                        CallId indicating value PX_STI_CALLID,
+                        Via indicating value PX_STI_VIA,
+                        Contact,
+                        TargetDialog containing "dialog info from nonexisting PS session", 
+                        Require indicating value "tdialog",
+                        PAssertedIdentity indicating value PX_UE_CMSISDN
+                        SipMessageBody;;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                	the IUT entity sends a r_480_TemporaryUnavailable
+	                to the IMS_S_CSCF entity                
+	             }    
+            }
+    	} // End of TP_ISC_SCCAS_SRA_INV_01	
     } // end Group "12.3.1 SCC AS procedures for PS to CS access transfer, PS to CS SRVCC"
     
     Group "12.3.2 SCC AS procedures for PS to CS access transfer with MSC server assisted mid-call feature, PS to CS SRVCC"{
     	
-    	import all from Sip_Common;	
+    	import all from Sip_Common;
+    	Test Purpose {
+        
+        TP Id TP_ISC_SCCAS_SRA_INV_02
+        
+        Test objective  "Verify that the SCCAS distinguish Transfer of first session"
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clauses 12.3.2.1,12.3.2.2"
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE //SCCAS_PS2CS_SRVCC 
+                
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS_A and 
+            the UE entity hasEstablishedDialog the SCCAS_UE_TERM
+        }
+        
+        Expected behaviour
+            ensure that {
+            	when {
+                    the IUT entity receives a INVITE containing
+                        RequestUri indicating value PX_STI_URI,
+                        From indicating value PX__SIP_URI,
+                        To indicating value PX__SIP_URI,
+                        CallId indicating value PX_STI_CALLID,
+                        Via indicating value PX_STI_VIA,
+                        Contact containing 
+                            g3gppMidcallMediaFeature Tag
+                        TargetDialog containing "dialog info existing PS session", 
+                        Require indicating value "tdialog",
+                        PAssertedIdentity indicating value PX_UE_CMSISDN
+                        SipMessageBody;;;
+                    from the IMS_S_CSCF entity and
+                    the IUT entity receives a  r_200_Ok
+                }
+                then {
+                	the IUT entity sends a r_200_Ok
+	                to the IMS_S_CSCF entity                
+	             }    
+            }
+    	} // End of TP_ISC_SCCAS_SRA_INV_02		
     } // end Group "12.3.2 SCC AS procedures for PS to CS access transfer with MSC server assisted mid-call feature, PS to CS SRVCC"
     
     Group "12.3.3 SCC AS procedures for PS to CS SRVCC, abnormal case"{
