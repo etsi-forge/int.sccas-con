@@ -64,6 +64,51 @@ Package TP_SCCAS_Chapter_12_3 {
 	             }    
             }
     	} // End of TP_ISC_SCCAS_SRA_INV_01	
+    	
+    	Test Purpose {
+        
+        TP Id TP_ISC_SCCAS_SRA_INI_02
+        
+        Test objective  "Verify that the SCCAS distinguish SIP INVITE with STN-SR and informs remote UE"
+        
+        Reference 
+            "ETSI TS 124 237 [1], Clause 12.3.1"
+        
+        Config Id CFG_SCCAS_01
+        
+        PICS Selection NONE //SCCAS_PS2CS_SRVCC 
+                
+        Initial conditions with {
+            the UE entity isRegisteredTo the IMS_A and 
+            the UE entity hasEstablishedDialog the SCCAS_UE_TERM
+        }
+        
+        Expected behaviour
+            ensure that {
+            	when {
+                    the IUT entity receives a INVITE containing
+                        RequestUri indicating value PX_STNSR_URI,
+                        From indicating value PX__SIP_URI,
+                        To indicating value PX__SIP_URI,
+                        CallId indicating value PX_STI_CALLID,
+                        Via indicating value PX_STNSR_VIA,
+                        Contact,
+                        TargetDialog containing "dialog info from PS session", 
+                        Require indicating value "tdialog",
+                        PAssertedIdentity indicating value PX_UE_CMSISDN
+                        SipMessageBody;;
+                    from the IMS_S_CSCF entity
+                }
+                then {
+                	the IUT entity sends a ReINVITE //for remote UE leg
+	                to the IMS_S_CSCF entity and 
+	               
+                    the IUT entity receives a r_200_Ok and
+                    
+                    the IUT entity sends a r_200_Ok 
+	             }    
+            }
+    	} // End of TP_ISC_SCCAS_SRA_INV_02
     } // end Group "12.3.1 SCC AS procedures for PS to CS access transfer, PS to CS SRVCC"
     
     Group "12.3.2 SCC AS procedures for PS to CS access transfer with MSC server assisted mid-call feature, PS to CS SRVCC"{
@@ -71,7 +116,7 @@ Package TP_SCCAS_Chapter_12_3 {
     	import all from Sip_Common;
     	Test Purpose {
         
-        TP Id TP_ISC_SCCAS_SRA_INV_02
+        TP Id TP_ISC_SCCAS_SRA_INV_03
         
         Test objective  "Verify that the SCCAS distinguish Transfer of first session"
         
@@ -110,19 +155,70 @@ Package TP_SCCAS_Chapter_12_3 {
 	                to the IMS_S_CSCF entity                
 	             }    
             }
-    	} // End of TP_ISC_SCCAS_SRA_INV_02		
+    	} // End of TP_ISC_SCCAS_SRA_INV_03	
+    		
     } // end Group "12.3.2 SCC AS procedures for PS to CS access transfer with MSC server assisted mid-call feature, PS to CS SRVCC"
     
     Group "12.3.3 SCC AS procedures for PS to CS SRVCC, abnormal case"{
     	
     	import all from Sip_Common;	
-    	Group "12.3.2.1 General"{
+    	Group "12.3.3.1 PS to CS SRVCC cancelled by MME/SGSN or failure by UE to transition to CS domain for ongoing session"{
+    		
+    		import all from Sip_Common;	
+    		Test Purpose {
+        
+	        TP Id TP_ISC_SCCAS_SRA_INI_04
+	        
+	        Test objective  "Verify that the SCCAS distinguish SIP INVITE with STN-SR and not release source leg"
+	        
+	        Reference 
+	            "ETSI TS 124 237 [1], Clause 12.3.1"
+	        
+	        Config Id CFG_SCCAS_01
+	        
+	        PICS Selection NONE //SCCAS_PS2CS_SRVCC 
+	                
+	        Initial conditions with {
+	            the UE entity isRegisteredTo the IMS_A and 
+	            the UE entity hasEstablishedDialog the SCCAS_UE_TERM
+	        }
+	        
+	        Expected behaviour
+	            ensure that {
+	            	when {
+	                    the IUT entity receives a ReINVITE containing
+	                        RequestUri indicating value PX_STNSR_URI,
+	                        From indicating value PX__SIP_URI,
+	                        To indicating value PX__SIP_URI,
+	                        CallId indicating value PX_STI_CALLID,
+	                        Via indicating value PX_STNSR_VIA,
+	                        Contact,
+	                        TargetDialog containing "dialog info from PS session", 
+	                        Require indicating value "tdialog",
+	                        PAssertedIdentity indicating value PX_UE_CMSISDN
+	                        SipMessageBody,
+	                        Reason containing Cause indicating value "487";
+	                        ;;
+	                    from the IMS_S_CSCF entity
+	                }
+	                then {
+	                	the IUT entity not sends a BYE //for source UE leg
+		                to the IMS_S_CSCF entity 
+
+		             }    
+	            }
+	    	} // End of TP_ISC_SCCAS_SRA_INV_04
+    	}
+    	Group "12.3.3.2 P-CSCF releasing the source access leg during PS to CS SRVCC"{
     		
     	}
-    	Group "12.3.2.2 Transfer of the first session"{
+    	Group "12.3.3.3 P-CSCF releasing the source access leg when call is in alerting phase"{
     		
     	}
-    	Group "12.3.2.3 Transfer of an additional session"{
+    	Group "12.3.3.4 PS to CS SRVCC cancelled by MME/SGSN or release of the target access leg for an ongoing session"{
+    		
+    	}
+    	Group "12.3.3.5 PS to CS SRVCC cancelled by MME/SGSN or release of the target access leg for a session in an early dialog phase"{
     		
     	}
     	
