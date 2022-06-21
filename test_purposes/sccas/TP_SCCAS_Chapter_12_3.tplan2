@@ -211,6 +211,46 @@ Package TP_SCCAS_Chapter_12_3 {
     	}
     	Group "12.3.3.2 P-CSCF releasing the source access leg during PS to CS SRVCC"{
     		
+    		import all from Sip_Common;	
+    		Test Purpose {
+        
+	        TP Id TP_ISC_SCCAS_SRA_BYE_01
+	        
+	        Test objective  "Verify that the SCCAS distinguish SIP INVITE with STN-SR and not release source leg"
+	        
+	        Reference 
+	            "ETSI TS 124 237 [1], Clause 12.3.1"
+	        
+	        Config Id CFG_SCCAS_01
+	        
+	        PICS Selection NONE //SCCAS_PS2CS_SRVCC 
+	                
+	        Initial conditions with {
+	            the UE entity isRegisteredTo the IMS_A and 
+	            the UE entity hasEstablishedDialog the SCCAS_UE_TERM
+	        }
+	        
+	        Expected behaviour
+	            ensure that {
+	            	when {
+	                    the IUT entity receives a BYE containing
+	                        From indicating value PX_IMS_S_CSCF_SIP_URI,
+                            To indicating value PX_UE_A_SIP_URI,
+                            CallId indicating value PX_UE_A_CALLID,
+                            Via indicating value PX_UE_A_VIA,
+	                        Reason containing Cause indicating value "503";
+	                        ;
+	                    from the IMS_S_CSCF entity
+	                }
+	                then {
+	                	the IUT entity receives a INVITE and
+	                	the IUT entity not sends a BYE //for¸ source UE leg
+		                to the IMS_S_CSCF entity 
+
+		             }    
+	            }
+	    	} // End of TP_ISC_SCCAS_SRA_INV_04
+    		
     	}
     	Group "12.3.3.3 P-CSCF releasing the source access leg when call is in alerting phase"{
     		
