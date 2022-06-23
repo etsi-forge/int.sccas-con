@@ -161,7 +161,7 @@ Package TP_SCCAS_Chapter_12_3 {
     
     Group "12.3.3 SCC AS procedures for PS to CS SRVCC, abnormal case"{
     	
-    	import all from Sip_Common;	
+    	//import all from Sip_Common;	
     	Group "12.3.3.1 PS to CS SRVCC cancelled by MME/SGSN or failure by UE to transition to CS domain for ongoing session"{
     		
     		import all from Sip_Common;	
@@ -219,7 +219,7 @@ Package TP_SCCAS_Chapter_12_3 {
 	        Test objective  "Verify that the SCCAS distinguish SIP INVITE with STN-SR and not release source leg"
 	        
 	        Reference 
-	            "ETSI TS 124 237 [1], Clause 12.3.1"
+	            "ETSI TS 124 237 [1], Clause 12.3.3.2"
 	        
 	        Config Id CFG_SCCAS_01
 	        
@@ -249,7 +249,7 @@ Package TP_SCCAS_Chapter_12_3 {
 
 		             }    
 	            }
-	    	} // End of TP_ISC_SCCAS_SRA_INV_04
+	    	} // End of TP_ISC_SCCAS_SRA_BYE_01
     		
     	}
     	Group "12.3.3.3 P-CSCF releasing the source access leg when call is in alerting phase"{
@@ -257,7 +257,98 @@ Package TP_SCCAS_Chapter_12_3 {
     	}
     	Group "12.3.3.4 PS to CS SRVCC cancelled by MME/SGSN or release of the target access leg for an ongoing session"{
     		
+    		import all from Sip_Common;	
+    		Test Purpose {
+        
+	        TP Id TP_ISC_SCCAS_SRA_BYE_02
+	        
+	        Test objective  "Verify that the SCCAS distinguish SIP BYE with STN-SR and release source leg after OperatiorSpecificTimer timeout"
+	        
+	        Reference 
+	            "ETSI TS 124 237 [1], Clause 12.3.3.4"
+	        
+	        Config Id CFG_SCCAS_01
+	        
+	        PICS Selection NONE //SCCAS_PS2CS_SRVCC 
+	                
+	        Initial conditions with {
+	            the UE entity isRegisteredTo the IMS_A and 
+	            the UE entity hasEstablishedDialog the SCCAS_UE_TERM
+	        }
+	        
+	        Expected behaviour
+	            ensure that {
+	            	when {
+	                    the IUT entity receives a BYE containing
+	                        RequestUri indicating value PX_STNSR_URI,
+	                        From indicating value PX__SIP_URI,
+	                        To indicating value PX__SIP_URI,
+	                        CallId indicating value PX_STI_CALLID,
+	                        Via indicating value PX_STNSR_VIA,
+	                        Contact,
+	                        TargetDialog containing "dialog info from PS session", 
+	                        Require indicating value "tdialog",
+	                        PAssertedIdentity indicating value PX_UE_CMSISDN
+	                        SipMessageBody,
+	                        Reason containing Cause indicating value "Reason Q.850 31";
+	                        ;;
+	                    from the IMS_S_CSCF entity
+	                }
+	                then {
+	                	the IUT entity sends a r_200_Ok_BYE and
+	                	the IUT entity on timerOperatorSpecificTimeout sends a BYE //for source UE leg
+		                to the IMS_S_CSCF entity 
+		             }    
+	            }
+	    	} // End of TP_ISC_SCCAS_SRA_BYE_02
+	    	
+	    	Test Purpose {
+        
+	        TP Id TP_ISC_SCCAS_SRA_BYE_03
+	        
+	        Test objective  "Verify that the SCCAS distinguish SIP BYE with STN-SR and release source leg on BYE Cause diferent from Cause Q850 31"
+	        
+	        Reference 
+	            "ETSI TS 124 237 [1], Clause 12.3.3.4"
+	        
+	        Config Id CFG_SCCAS_01
+	        
+	        PICS Selection NONE //SCCAS_PS2CS_SRVCC 
+	                
+	        Initial conditions with {
+	            the UE entity isRegisteredTo the IMS_A and 
+	            the UE entity hasEstablishedDialog the SCCAS_UE_TERM
+	        }
+	        
+	        Expected behaviour
+	            ensure that {
+	            	when {
+	                    the IUT entity receives a BYE containing
+	                        RequestUri indicating value PX_STNSR_URI,
+	                        From indicating value PX__SIP_URI,
+	                        To indicating value PX__SIP_URI,
+	                        CallId indicating value PX_STI_CALLID,
+	                        Via indicating value PX_STNSR_VIA,
+	                        Contact,
+	                        TargetDialog containing "dialog info from PS session", 
+	                        Require indicating value "tdialog",
+	                        PAssertedIdentity indicating value PX_UE_CMSISDN
+	                        SipMessageBody,
+	                        Reason containing Cause not indicating value "Reason Q.850 31";
+	                        ;;
+	                    from the IMS_S_CSCF entity
+	                }
+	                then {
+	                	the IUT entity sends a r_200_Ok_BYE and
+	                	the IUT entity sends a BYE //for source UE leg
+		                to the IMS_S_CSCF entity 
+
+		             }    
+	            }
+	    	} // End of TP_ISC_SCCAS_SRA_BYE_03
+    		
     	}
+    	
     	Group "12.3.3.5 PS to CS SRVCC cancelled by MME/SGSN or release of the target access leg for a session in an early dialog phase"{
     		
     	}
