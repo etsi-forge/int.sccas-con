@@ -72,8 +72,10 @@ Package Sip_Common {
             - hasResponded486INVITE
             - hasAchievedInitialINVITE
             - hasAchievedINVITE
+            - timerOperatorSpecificTimeout //NOTE: 8 seconds is an appropriate value for the operator policy.
         ;
     } // End of Domain section
+
 
 //    Const {
 //        PX_Stored_Domain_Uri,
@@ -106,6 +108,7 @@ Package Sip_Common {
 //    } // End of Const section
 
     Data {
+    	
         type SipMessage;
         type EnumMessage;
         
