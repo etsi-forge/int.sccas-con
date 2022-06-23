@@ -28,6 +28,7 @@ Package Sip_Common {
         entities:
             - SCCAS
             - IMS_S_CSCF
+            - IMS_I_CSCF
             - UE
             - UE_TERM
             - IUT
@@ -38,8 +39,8 @@ Package Sip_Common {
             - receives
             - sends
             - forwards
+            - isRequestedToPlaceACall
             // Initial conditions
-            - isTriggeredToStart
             - isNotRegisteredTo
             - hasAchievedFirstRegistration
             - isRegisteredTo
@@ -73,6 +74,8 @@ Package Sip_Common {
             - hasAchievedInitialINVITE
             - hasAchievedINVITE
             - timerOperatorSpecificTimeout //NOTE: 8 seconds is an appropriate value for the operator policy.
+            - isAttachingToNetwork
+            - hasDoneSubscription
         ;
     } // End of Domain section
 
@@ -103,6 +106,14 @@ Package Sip_Common {
 //        PX_S_CSCF_A_SIP_URI,
 //        PX_P_CSCF_A_SIP_URI,
 //        PX_IBCF_B_SIP_URI,
+
+//        PX_MSC_ORIG_ICID, // ETSI TS 124 292 V16.0.0 Clause 6.3.2 Initial registration 11)
+//        PX_MSC_ORIG_IOI, // ETSI TS 124 292 V16.0.0 Clause 6.3.2 Initial registration 11)
+//        PX_MSC_VISITED_NTW // ETSI TS 124 292 V16.0.0 Clause 6.3.2 Initial registration 12)
+//        PX_MSC_PANI_ACCESSTYPE // ETSI TS 124 292 V16.0.0 Clause 6.3.2 Initial registration 13)
+//        PX_MSC_PANI_ACCESSCLASS // ETSI TS 124 292 V16.0.0 Clause 6.3.2 Initial registration 13)
+//        PX_MSC_FORWARD_URI // ETSI TS 124 292 V16.0.0 Clause 6.3.2 Initial registration 14)
+
 //        PX_TO_BE_DEFINED
 //        ;
 //    } // End of Const section
@@ -196,6 +207,13 @@ Package Sip_Common {
                     SUT component IUT of type SipComponent
                     connection between SCCAS.g and IUT.g
                     connection between UE.g and IUT.g;
+            Test Configuration CFG_MSC_01 
+                containing 
+                    Tester component IMS_I_CSCF of type SipComponent
+                    Tester component MSC of type SipComponent
+                    SUT component IUT of type SipComponent
+                    connection between IMS_I_CSCF.g and IUT.g;
+                    
         }
     
     //Type MSG (optional TCP of type CONTENT);

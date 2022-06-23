@@ -1,5 +1,5 @@
 /*
-Copyright (c) ETSI 2019-2020.
+Copyright (c) ETSI 2019-2022.
 
 This software is subject to copyrights owned by ETSI. Non-exclusive permission
 is hereby granted, free of charge, to copy, reproduce and amend this file
@@ -26,7 +26,8 @@ Package TP_SCCAS_Chapter_7_3 {
         Test objective  "Verify that the SCCAS first receives SIP INVITE request from UE/SCSCF"
         
         Reference 
-            "ETSI TS 124 237 [1], Clauses 7.3.1, 7.3.2"
+            "ETSI TS 124 237 [1], Clauses 7.3.1, 7.3.2",
+            "ETSI TS 124 292 [1], Clauses 7.4.2"
         
         Config Id CFG_SCCAS_01
         
@@ -45,7 +46,11 @@ Package TP_SCCAS_Chapter_7_3 {
                         CallId indicating value PX_UE_A_CALLID,
                         Via indicating value PX_UE_A_VIA,
                         Route indicating value "sccas as topmost entry",
-                        Contact,
+                        RecordRoute indicating value PX_UE_A_ACCEPT,
+                        PAssertedIdentity indicating value PX_UE_A_PAS,
+                        Accept indicating value PX_UE_A_ACCEPT,
+                        Contact indicating value PX_UE_A_CONTACT,
+                        AcceptContact indicating value PX_UE_A_ACCEPT_CONTACT, 
                         FeatureCaps, 
                         SipMessageBody;
                     from the IMS_S_CSCF entity
@@ -73,7 +78,8 @@ Package TP_SCCAS_Chapter_7_3 {
         Test objective  "Verify that the SCCAS sends 1xx/2xx response to the SIP INVITE request towards the served user ."
         
         Reference 
-            "ETSI TS 124 237 [1], Clauses 7.3.2, 6A.4.3, 4.2.2"
+            "ETSI TS 124 237 [1], Clauses 7.3.2, 6A.4.3, 4.2.2",
+            "ETSI TS 124 292 [1], Clauses 7.4.2"
         
         Config Id CFG_SCCAS_01
         
@@ -91,6 +97,11 @@ Package TP_SCCAS_Chapter_7_3 {
                         To indicating value PX_UE_A_SIP_URI,
                         CallId indicating value PX_UE_A_CALLID,
                         Via indicating value PX_UE_A_VIA,
+                        Route indicating value "sccas as topmost entry",
+                        RecordRoute indicating value PX_UE_A_ACCEPT,
+                        PAssertedIdentity indicating value PX_UE_A_PAS,
+                        Accept indicating value PX_UE_A_ACCEPT,
+                        AcceptContact indicating value PX_UE_A_ACCEPT_CONTACT, 
                         Contact containing 
                             g3gppMidcallMediaFeature Tag, //list -B
                             g3gppSrvccAlertingFeature tag, //list -C

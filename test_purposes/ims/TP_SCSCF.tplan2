@@ -1,5 +1,5 @@
 /*
-Copyright (c) ETSI 2019-2020.
+Copyright (c) ETSI 2019-2022.
 
 This software is subject to copyrights owned by ETSI. Non-exclusive permission
 is hereby granted, free of charge, to copy, reproduce and amend this file
@@ -60,7 +60,7 @@ Package TP_SCSCF {
                     to the IMS_S_CSCF entity
                 }
             }
-    } // End of TP_MW_PCSCF_REGISTER_01
+    } // End of TP_SCCAS_REGISTER_01
     
     Test Purpose {
         
@@ -111,7 +111,7 @@ Package TP_SCSCF {
                 }
             }
             
-    } // End of TP_MW_PCSCF_INVITE_01
+    } // End of TP_SCCAS_INVITE_01
     
-} // End of Package TP_MW_PS
+} // End of Package TP_SCSCF
 
