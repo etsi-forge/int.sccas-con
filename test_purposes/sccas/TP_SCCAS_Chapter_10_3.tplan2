@@ -26,7 +26,7 @@ Package TP_SCCAS {
 		
         TP Id TP_ISC_SCCAS_PPT_RIN_01 
         
-        Test objective "Verify that the SCC AS successfully processes an INVITE on a previously esthablished dialog if the SIP INVITE request contains a Replaces header field."
+        Test objective "Verify that the SCC AS successfully processes an INVITE on a previously established dialog if the SIP INVITE request contains a Replaces header field."
         
         Reference 
             "ETSI TS 124 237 [1], Clauses 10.3.2" 
@@ -110,7 +110,7 @@ Package TP_SCCAS {
 		
         TP Id TP_ISC_SCCAS_PPT_RIN_03 
         
-        Test objective "Verify that the SCC AS processes an INVITE if it is unable to associate the SIP INVITE request with a confirmed dialog or on a previously esthablished dialog."
+        Test objective "Verify that the SCC AS processes an INVITE if it is unable to associate the SIP INVITE request with a confirmed dialog or on a previously established dialog."
         
         Reference 
             "ETSI TS 124 237 [1], Clauses 10.3.2" 
@@ -199,7 +199,7 @@ Package TP_SCCAS {
 		
         TP Id TP_ISC_SCCAS_PPT_BYE_01 
         
-        Test objective "Verify that the SCC AS successfully processes an BYE on a previously esthablished dialog, if does not receive within this time interval an initial SIP INVITE request."
+        Test objective "Verify that the SCC AS successfully processes an BYE on a previously established dialog, if does not receive within this time interval an initial SIP INVITE request."
         
         Reference 
             "ETSI TS 124 237 [1], Clauses 10.3.4" 
@@ -262,7 +262,7 @@ Package TP_SCCAS {
 		
         TP Id TP_ISC_SCCAS_PPT_BYE_02 
         
-        Test objective "Verify that the SCC AS successfully processes an CANDEL on a early dialog."
+        Test objective "Verify that the SCC AS successfully processes an CANCEL on a early dialog."
         
         Reference 
             "ETSI TS 124 237 [1], Clauses 10.3.6" 
@@ -309,7 +309,7 @@ Package TP_SCCAS {
 		
         TP Id TP_ISC_SCCAS_PPT_CAN_01 
         
-        Test objective "Verify that the SCC AS successfully processes an CANDEL on a early dialog."
+        Test objective "Verify that the SCC AS successfully processes an CANCEL on a early dialog."
         
         Reference 
             "ETSI TS 124 237 [1], Clauses 10.3.6" 
