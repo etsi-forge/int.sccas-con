@@ -54,6 +54,7 @@ Package Sip_Common {
             - registeredIdentitySipURI
             - hasInitiatedDialogWith
             - hasInitiatedPS2CSinEarlydialog
+            - hasInitiatedPS2CSinAlertingState
             - hasEstablishedDialog
             - hasEstablishedPS2CSDialog
             - isConfiguredWithENUMentryForTelURI_E164NumberOf
