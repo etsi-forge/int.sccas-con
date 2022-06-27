@@ -76,6 +76,7 @@ Package Sip_Common {
             - hasResponded486INVITE
             - hasAchievedInitialINVITE
             - hasAchievedINVITE
+            - hasAchievedUPDATEuponINVITE
             - timerOperatorSpecificTimeout //NOTE: 8 seconds is an appropriate value for the operator policy.
             - isAttachingToNetwork
             - hasDoneSubscription

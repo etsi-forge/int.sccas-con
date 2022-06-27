@@ -598,7 +598,7 @@ Package TP_SCCAS {
 			//				strength-tag value either "optional" or as specified in RFC 3312 [88] and RFC 4032 [89] for the remote
 			//				segment.
 			
-			TP Id TP_ISC_SCCAS_PCT_INV_01
+			TP Id TP_ISC_SCCAS_PCT_INV_05
             	
             Test objective "Verify that the SCC AS send a SIP UPDATE request towards the remote UE after receiving a SIP INVITE request due to PS to CS STN in early dialog phase supporting a session with active speech media component such"
             
@@ -651,7 +651,7 @@ Package TP_SCCAS {
                     }
                 }
             
-			} // end TP_ISC_SCCAS_PCT_INV_01
+			} // end TP_ISC_SCCAS_PCT_INV_05
 			
 			
 		} // end Group "9.3.5.3 SCC AS procedures for PS to CS dual radio, access transfer of a originating session in the prealerting phase"
@@ -771,7 +771,7 @@ Package TP_SCCAS {
 			//				- if the SIP 180 (Ringing) response does not contain the g.3gpp.dynamic-stn media feature tag as described
 			//				in annex C in the Contact header field, the static STN.
             	
-            	TP Id TP_ISC_SCCAS_PCT_REF_01 
+            	TP Id TP_ISC_SCCAS_PCT_REF_02
             	
             	Test objective "Verify that the SCC AS terminates the call over CS after receiving a SIP 488"            	
     		
@@ -1216,6 +1216,103 @@ Package TP_SCCAS {
     	
     	Group "9.3.7.4 SCC AS procedures for PS to CS dual radio access transfer of an additional session in an early dialog phase"
     	{
+    		
+    		import all from Sip_Common;
+    		
+    		Test Purpose {
+			// In order to transfer of an additional session that can be in originating pre-alerting phase or in an alerting phase, the
+			// SCC AS supporting CS to PS dual radio access transfer for calls in an early phase, shall send a SIP REFER request
+			// according to 3GPP TS 24.229 [2], IETF RFC 4488 [20] and IETF RFC 3515 [13] as updated by IETF RFC 6665 [81]
+			// and IETF RFC 7647 [90] in the dialog created by the SIP INVITE request due to static STI populated as follows:
+			//		1) include a Refer-Sub header field with value "false" as specified in IETF RFC 4488 [20];
+			//		2) include a Require header field with value "norefersub" as specified in IETF RFC 4488 [20];
+			//		3) include a Refer-To header field containing the additional transferred session SCC AS URI for PS to CS dual
+			//		radio, where the URI also includes the following URI header fields containing the information related to the
+			//		additional transferred session:
+			//			a) if an early dialog supporting the additional transferred session exists, the Target-Dialog header field
+			//			populated as specified in IETF RFC 4538 [11], containing the dialog identifier of the dialog in the early
+			//			phase;
+			//			b) if the SCC AS supports the PS to CS dual radio access transfer for originating calls in pre-alerting phase, if
+			//			no early dialog supporting the additional transferred session exists, there is a SIP INVITE request from the
+			//			served user for which a final SIP response has not been received yet and if an early dialog supporting the
+			//			additional transferred session existed and was terminated, the Target-Dialog header field populated as
+			//			specified in IETF RFC 4538 [11], containing the dialog identifier on the source access leg of the early dialog
+			//			supporting the additional transferred session which existed and was terminated;
+			//			c) the Require header field populated with the option tag value "tdialog";
+			//			d) if an early dialog supporting the additional transferred session exists, the To header field populated as
+			//			specified in IETF RFC 3261 [19], containing the value of the P-Asserted-Identity provided by the remote UE
+			//			during the session establishment;
+			//			e) the From header field populated as specified in IETF RFC 3261 [19], containing the value of the P-Asserted-
+			//			Identity provided by the SC UE during the session establishment;
+			//			f) the Content-Type header field with "application/sdp";
+			//			g) if an early dialog supporting the additional transferred session exists, the URI header field with hname
+			//			"body" populated with SDP describing the media streams as negotiated in the session with the remote UE;
+			//			and
+			//			h) if the SCC AS supports the PS to CS dual radio access transfer for originating calls in pre-alerting phase, no
+			//			early dialog supporting the additional transferred session exists, there is a SIP INVITE request from the
+			//			served user for which a final SIP response has not been received yet, the URI header field with the hname
+			//			"body" populated with the SDP offer received in the SIP INVITE request from the served user; and
+			//		4) application/vnd.3gpp.state-and-event-info+xml MIME with:
+			//			a) if a SIP 180 (Ringing) response to the SIP INVITE request has already been received from the remote UE in
+			//			any of the early dialogs associated with the originating early session not accepted yet, the state-info XML
+			//			element containing "early" and the direction XML element containing "initiator";
+			//			b) if a SIP 180 (Ringing) response to the SIP INVITE request has not been received yet from the remote UE in
+			//			any of the early dialogs associated with the originating early session not accepted yet and the additional
+			//			transferred session was originated by the SC UE, the state-info XML element containing "pre-alerting" and
+			//			the direction XML element containing "initiator"; and
+			//			c) if a SIP 180 (Ringing) response to the INVITE request has already been received on the source access leg,
+			//			the state-info XML element containing "early" and the direction XML element containing "receiver"
+    		
+    		 TP Id TP_ISC_SCCAS_PCT_INV_04
+	            
+	            Test objective "Verify that SCC AS correctly recognizes and initiated procedures for PS to CS dual radio access transfer of an additional session in an early dialog phase "
+	        
+	        	Reference 
+	            "ETSI TS 124 237 [1], Clauses 9.3.7.4." 
+	        
+	        	Config Id CFG_SCCAS_01
+	        
+	       	 	PICS Selection NONE // TODO
+	        
+	        	Initial conditions with {
+	            	the UE entity isRegisteredTo the IMS and
+	            	 the IUT entity hasAchievedInitialINVITE 
+	        		// SCC AS the SCC AS supporting CS to PS dual radio access transfer for calls in an early phase
+	        	}
+	        	
+	        	 Expected behaviour
+		            ensure that {
+		            	when {
+		                   the IUT entity receives an r_180_Ringing                    	
+		                   from the IMS_S_CSCF entity
+		                }
+		                then {
+		                	the IUT entity sends an REFER containing
+	                        From indicating value PX_UE_A_SIP_URI,
+	                        To indicating value PX_UE_B_SIP_URI,
+	                        CallId indicating value PX_UE_A_CALLID,
+	                        Via indicating value PX_UE_A_VIA,
+	                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+	                        ReferSub indicating value false, //	1) include a Refer-Sub header field with value "false" as specified in IETF RFC 4488 [20];			
+							Supported indicating value "norefersub", // 2) include a Require header field with value "norefersub" as specified in IETF RFC 4488 [20];
+							ReferTo containing  // 3) include a Refer-To header field
+								TargetDialog indicating value "Target-Dialog header field containing the dialog identifier of the dialog in the early phase, if exist", // a) if an early dialog supporting the additional transferred session exists, the Target-Dialog header field
+	                        	Require indicating value "tdialog", // c) the Require header field populated with the option tag value "tdialog";
+	                        	From indicating value "value of the P-Asserted-Identity provided by the SC UE during the session establishment", //the From header field populated as specified in IETF RFC 3261 [19], containing the value of the P-Asserted-Identity provided by the SC UE during the session establishment
+	                        	ContentType indicating value "application/sdp", // E. the Content-Type header field with "application/sdp";	                        	
+	                        	MessageBody containing  // F. the URI header field with the hname "body" populated with SDP describing the media streams as negotiated in the session with the remote UE
+	                            	SDP containing
+	                            		TODO indicating value "";;;
+	                        		,
+	                        Accept containing  // if a SIP 180 (Ringing) response to the INVITE request has already been received on the source access leg, the state-info XML element containing "early" and the direction XML element containing "receiver"
+                            	MIME indicating value "application/vnd.3gpp.state-and-event-info.xml";; //subclause D.2.3	
+                        			
+							to the IMS_S_CSCF entity
+			             }    
+		            }
+                        	
+             	} // end TP TP_ISC_SCCAS_PCT_INV_04
+    		
     		
     	} // end Group 9.3.7.4 SCC AS procedures for PS to CS dual radio access transfer of an additional session in an early dialog phase
     	
