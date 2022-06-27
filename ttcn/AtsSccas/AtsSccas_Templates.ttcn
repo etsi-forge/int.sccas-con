@@ -10,6 +10,8 @@ module AtsSccas_Templates
     //LibSip
     import from LibSip_SIPTypesAndValues all;
     import from LibSip_Templates all;
+    //LibIms
+    import from LibIms_Templates all;
   
     group HeaderTemplates 
     {                
@@ -25,6 +27,47 @@ module AtsSccas_Templates
             }//end group request_sent    
             
             group request_receive { 
+
+
+                group msc {
+
+                    template (present) LibSip_SIPTypesAndValues.Contact mw_sccas_contact(
+                                                                                         template (present) ContactBody p_contact_body := ?
+                                                                                         ) := {
+                        contactBody := p_contact_body
+                    } // End of template mw_sccas_contact
+
+                    template(value) Supported mw_supported_gruu 
+                    modifies m_supported := {
+                        optionsTags := {"gruu"}
+                    } // End of template mw_supported_gruu
+
+                    template (present) PAccessNetworkInfo mw_pAccessNetworkInfo := { // TODO To be refined
+                        fieldName := P_ACCESS_NETWORK_INFO_E,
+                        accessType := ?,
+                        genericParams := ?
+                    } // End of template mw_pAccessNetworkInfo
+
+                    template (present) REGISTER_Request mw_msc_register(
+                                                                        template (present) Path p_Path := ?,
+                                                                        template (present) PChargingVector p_pChargingVector := ?,
+                                                                        template (present) PVisitedNetworkID p_pVisitedNetworkID := ?,
+                                                                        template (present) LibSip_SIPTypesAndValues.Contact p_contact := mw_sccas_contact,
+                                                                        template (present) Authorization p_authorization := mw_Authorization_digest,
+                                                                        template (present) Expires p_expires := ?,
+                                                                        template (present) Supported p_supported := ?,
+                                                                        template (present) Require p_require := ?,
+                                                                        template (present) PAccessNetworkInfo p_pPAccessNetworkInfo := ?
+                                                                        ) modifies mw_REGISTER_Request_IMS := {
+                        msgHeader := {
+                            contact            := p_contact,
+                            authorization      := p_authorization,
+                            expires            := p_expires,
+                            supported          := p_supported,
+                            pAccessNetworkInfo := p_pPAccessNetworkInfo
+                        }
+                    } // End of template mw_msc_register
+                }
             }//end group request_receive
         }//end group modified_templates
     }//end group MessageTemplates

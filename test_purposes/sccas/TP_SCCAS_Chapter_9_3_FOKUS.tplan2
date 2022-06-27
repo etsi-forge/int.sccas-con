@@ -278,6 +278,59 @@ Package TP_SCCAS {
     
     Group "9.3.4 SCC AS procedures for CS to PS access transfer with MSC server assisted mid-call feature"
     {
+    	import all from Sip_Common;
+    	
+    	 
+    	Test Purpose {
+    		TP Id TP_ISC_SCCAS_CPT_INV_03
+            	
+        	Test objective "Verify that the SCC AS Conditions for selecting a sessions in an early dialog phase"
+        	
+        	Reference 
+            "ETSI TS 124 237 [1], Clauses 9.3.4 and 6A.4.3" 
+        
+        	Config Id CFG_SCCAS_01
+        
+       	 	PICS Selection NONE  // TODO
+       	 	
+       	 	Initial conditions with {
+       	 		the UE entity isRegisteredTo the IMS
+       	 		// TODO: SCC AS supports the MSC Server assisted mid-call feature according to operator policy 
+       	 	}
+       	 	
+       	 	Expected behaviour
+            	ensure that {
+                	when {                      	     
+                    	the IUT entity receives an INVITE containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+                        Contact containing 
+                            g3gppSrvccAlertingFeatureCapabilityIndicator Tag;;
+                        
+                    from the IMS_S_CSCF entity
+                }                    	             	
+              	then {
+                    	the IUT entity sends an r_2xx_Any containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+                        FeatureCaps containing 
+                        	g3gppMidcallFeatureCapabilityIndicator;,  
+		                MessageBody containing
+                            SDP containing
+                             	Media indicating value PX_PSMediaOnly;;; // TODO: PX for media only 
+                    to the IMS_S_CSCF entity
+                    }
+                    
+               }
+       	 	
+    	} // end TP TP_ISC_SCCAS_CPT_INV_03
+    	
     	
 
     	
@@ -285,6 +338,65 @@ Package TP_SCCAS {
     
     Group "9.3.5 SCC AS procedures for PS to CS dual radio access transfer of calls in an early dialog phase"
     {
+    	
+    	Group "9.3.5.1 Conditions for selecting a sessions in an early dialog phase"
+    	{
+    		import all from Sip_Common;
+    		
+    		
+    		Test Purpose {
+	    		TP Id TP_ISC_SCCAS_CPT_INV_04
+	            	
+	            // An early session is subject for PS to CS dual radio access transfer when one of the following conditions is fulfilled:
+	            // d. the Contact header field provided by the SC UE towards the SCC AS in the initial SIP INVITE request
+				// included the g.3gpp.drvcc-alerting media feature tag field as described in annex C; 
+				
+	        	Test objective "Verify that the SCC AS accepts conditions in an early dialog phase"
+	        	
+	        	Reference 
+	            "ETSI TS 124 237 [1], Clauses 9.3.5.1" 
+	        
+	        	Config Id CFG_SCCAS_01
+	        
+	       	 	PICS Selection NONE  // TODO
+	       	 	
+	       	 	Initial conditions with {
+	       	 		the UE entity isRegisteredTo the IMS
+	       	 		// TODO: SCC AS supports the MSC Server g.3gpp.drvcc-alerting feature 
+	       	 	}
+	       	 	
+	       	 	Expected behaviour
+	            	ensure that {
+	                	when {                      	     
+	                    	the IUT entity receives an INVITE containing
+	                        From indicating value PX_UE_A_SIP_URI,
+	                        To indicating value PX_UE_B_SIP_URI,
+	                        CallId indicating value PX_UE_A_CALLID,
+	                        Via indicating value PX_UE_A_VIA,
+	                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+	                        Contact containing 
+                            	g3gppDrvccAlertingFeature tag;; //Annex C.15
+	                    from the IMS_S_CSCF entity
+	                }                    	             	
+	              	then {
+	                    	the IUT entity sends an r_2xx_Any containing
+	                        From indicating value PX_UE_A_SIP_URI,
+	                        To indicating value PX_UE_B_SIP_URI,
+	                        CallId indicating value PX_UE_A_CALLID,
+	                        Via indicating value PX_UE_A_VIA,
+	                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+	                        FeatureCaps containing 
+	                        	g3gppDrvccAlertingFeatureCapabilityIndicator;;  
+	                    to the IMS_S_CSCF entity
+	                    }
+	                    
+	               }
+	       	 	
+	    	} // end TP TP_ISC_SCCAS_CPT_INV_04
+    	} // end group 9.3.5.1 Conditions for selecting a sessions in an early dialog phase
+    	
+    	
+    	
     	Group "9.3.5.2 SCC AS procedures for PS to CS dual radio access transfer of a originating session in the alerting phase"
     	{
     		
@@ -951,6 +1063,164 @@ Package TP_SCCAS {
             } // end TP_ISC_SCCAS_MED_RIN_01
             
     } // end Group "9.3.6 Removal of non-transferred audio media components and release of source access legs"
+    
+    
+    Group "9.3.7 SCC AS procedures for CS to PS dual radio access transfer for calls in an early phase"
+    {
+    	
+    	Group "9.3.7.2 SCC AS procedures for CS to PS dual radio access transfer for originating calls in pre-alerting phase or in alerting phase on the originating side"
+    	{
+    		
+    		import all from Sip_Common;
+    		
+    		Test Purpose {
+            	
+            TP Id TP_ISC_SCCAS_CPT_INV_05 
+            
+         	// When the SCC AS receives a SIP INVITE request due to static STI and if the SCC AS supports CS to PS dual radio
+			// access transfer for calls in alerting phase or CS to PS dual radio access transfer for originating calls in pre-alerting phase
+			// and:
+			//	2) if there are zero, one or more dialog in an early dialog phase such that:
+			//		a) all dialogs are early dialogs created by the same SIP INVITE request;
+			//		b) a SIP 180 (Ringing) response to the SIP INVITE request has not been received yet in any of the existing
+			//		dialogs;
+			//		c) a g.3gpp.drvcc-orig-pre-alerting media feature tag as described in annex C in the Contact header field was
+			//		included in the SIP INVITE due to static STI; and
+			//		d) the SCC AS supports CS to PS dual radio access transfer for originating calls in pre-alerting phase,
+			// then the SCC AS shall
+			// A) for each existing early dialog towards remote UEs send an SIP UPDATE request and populate as follows:
+			// 		a) the Contact header field set to the Contact header field provided on the source leg at the creation of the dialog
+			//		with the remote UE; and
+			//		b) a new SDP offer, including the media characteristics as received in the SIP INVITE request due to static STI,
+			//		by following the rules of 3GPP TS 24.229 [2]
+        
+        	Test objective  "Verify that the SCC AS performs the procedures correctly for CS to PS dual radio access transfer for originating calls in pre-alerting phase or in alerting phase on the originating side"
+        
+        	Reference 
+            "ETSI TS 124 237 [1], Clauses 9.3.7.2." 
+        
+        	Config Id CFG_SCCAS_01
+        
+       	 	PICS Selection NONE 
+        
+        	Initial conditions with {
+            	the UE entity isRegisteredTo the IMS 
+        		// the SCC AS supports CS to PS dual radio access transfer for originating calls in pre-alerting phase
+        	}
+        	
+        	Expected behaviour
+            	ensure that {
+                	when {                      	     
+                    	the IUT entity receives an INVITE containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+                        Contact containing 
+                            g3gppDrvccOrigPreAlertingFeature Tag;, 	// a g.3gpp.drvcc-orig-pre-alerting media feature tag as described in annex C in the Contact header field was
+																	// included in the SIP INVITE due to static STI
+						MessageBody containing
+	                    	SDP containing  
+	                    		Media indicating value PX_PSMedia;;; // TODO: PIX for media
+                    from the IMS_S_CSCF entity
+                }                    	             	
+              	then {
+                    	the IUT entity sends an UPDATE containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID, 
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+						Contact indicating value "set to the Contact header field provided on the source leg at the creation of the dialog",// a) the Contact header field set to the Contact header field provided on the source leg at the creation of the dialog with the remote UE;
+                    	ContentType indicating value "application/sdp", 
+                        	MessageBody containing  // 3) a new SDP offer, including:
+                            	SDP containing
+                            		Media indicating value PX_PSMedia; // TODO: PIX for media, media characteristics as received in the SIP INVITE request
+                        		;
+                        	;
+                    to the IMS_S_CSCF entity
+                    }
+                }
+        	
+        	
+        	} // end TP TP_ISC_SCCAS_CPT_INV_05
+    	} // end Group 9.3.7.2 SCC AS procedures for CS to PS dual radio access transfer for originating calls in pre-alerting phase or in alerting phase on the originating side"
+    	
+    	
+    	Group "9.3.7.3 SCC AS procedures for CS to PS dual radio access transfer for a call in the alerting phase on the terminating side"
+    	{
+    		import all from Sip_Common;
+    		
+    		Test Purpose {
+            
+			// When the SCC AS receives a SIP INVITE request due to static STI and if SCC AS supports CS to PS dual radio access
+			// transfer for calls in alerting phase and:
+			// 1) if there is one dialog in an early dialog phase such that:
+			//		a) a SIP 180 (Ringing) response to the SIP INVITE request has been received from the SC UE; and
+			//		b) a g.3gpp.drvcc-alerting media feature tag as described in annex C in the Contact header field was included in
+			// 		the SIP INVITE request due to static STI,
+			// then the SCC AS shall send a SIP UPDATE request towards the remote UE populated as follows:
+			// 1) include the Contact header field set to the Contact header field provided on the source leg at the creation of the
+			// dialog with the remote UE; and
+			// 2) include a new SDP offer, including the media characteristics as received in the SIP INVITE request due to static
+			// STI, by following the rules of 3GPP TS 24.229 [2].
+            
+	            TP Id TP_ISC_SCCAS_CPT_INV_06
+	            
+	            Test objective "Verify that SCC AS correctly recognizes and initiated for CS to PS dual radio access transfer for a call in the alerting phase on the terminating side "
+	        
+	        	Reference 
+	            "ETSI TS 124 237 [1], Clauses 9.3.7.3." 
+	        
+	        	Config Id CFG_SCCAS_01
+	        
+	       	 	PICS Selection NONE 
+	        
+	        	Initial conditions with {
+	            	the UE entity isRegisteredTo the IMS and
+	            	 the IUT entity hasAchievedInitialINVITE // TODO: INVITE contains: g3gppDrvccAlerting
+	        		// SCC AS supports CS to PS dual radio access transfer for calls in alerting phase
+	        	}
+	        	
+	        	Expected behaviour
+	            	ensure that {
+	                	when {                      	                         	
+			                the IUT entity receives an r_180_Ringing                    	
+			                from the IMS_S_CSCF entity		              
+	                }                    	             	
+	              	then {
+	                    	the IUT entity sends an UPDATE containing
+	                        From indicating value PX_UE_A_SIP_URI,
+	                        To indicating value PX_UE_B_SIP_URI,
+	                        CallId indicating value PX_UE_A_CALLID, 
+	                        Via indicating value PX_UE_A_VIA,
+	                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+							Contact indicating value "set to the Contact header field provided on the source leg at the creation of the dialog",// a) the Contact header field set to the Contact header field provided on the source leg at the creation of the dialog with the remote UE;
+	                    	ContentType indicating value "application/sdp", 
+	                        	MessageBody containing  // 3) a new SDP offer, including:
+	                            	SDP containing
+	                            		Media indicating value PX_PSMedia; // TODO: PIX for media, media characteristics as received in the SIP INVITE request
+	                        		;
+	                        	;
+	                    to the IMS_S_CSCF entity
+	                }
+                
+             	}
+        	
+            
+            } // end TP TP_ISC_SCCAS_CPT_INV_06
+            
+    	} // end Group"9.3.7.3 SCC AS procedures for CS to PS dual radio access transfer for a call in the alerting phase on the terminating side
+    
+    	
+    	Group "9.3.7.4 SCC AS procedures for PS to CS dual radio access transfer of an additional session in an early dialog phase"
+    	{
+    		
+    	} // end Group 9.3.7.4 SCC AS procedures for PS to CS dual radio access transfer of an additional session in an early dialog phase
+    	
+    	
+    } // end Group 9.3.7 SCC AS procedures for CS to PS dual radio access transfer for calls in an early phase
     
 } // End of Package TP_SCCAS
 

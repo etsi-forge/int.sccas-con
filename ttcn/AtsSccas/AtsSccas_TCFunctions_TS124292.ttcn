@@ -27,7 +27,9 @@ module AtsSccas_TCFunctions_TS124292 {
 
     // AtsSccas
     // import from AtsSccas_TestSystem all;
-    import from AtsSccas_PICS all;
+    import from AtsSccas_Templates all;
+     import from AtsSccas_Steps all;
+   import from AtsSccas_PICS all;
     import from AtsSccas_PIXITS all;
 
     group isc_registration {
@@ -38,26 +40,45 @@ module AtsSccas_TCFunctions_TS124292 {
          */
         function f_TC_ISC_SCCAS_MSC_REG_01(in CSeq p_cSeq_s) runs on ImsComponent {
             // Local variables
-            var template REGISTER_Request v_register;
+            var CSeq v_cSeq_s;
 
             // Preambule
-            v_register := valueof(
-                                  m_REGISTER_Request_Base(
-                                                          vc_requestUri,
-                                                          vc_callId, 
-                                                          p_cSeq_s, 
-                                                          vc_from, vc_to, vc_via_REG, 
-                                                          vc_contact,
-                                                          vc_authorization
-                                  ));
+            f_init_userprofile(c_userProfile_UE1atSUThome);
+            f_initSipUrl(c_serviceProfile_EMERGENCY);
+            f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+            action("Please register UE")
             f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
             // Registration
-
+            f_awaitingRegistration_IMS(
+                                       v_cSeq_s, 
+                                       valueof(m_SipUrl_currDomain(vc_userprofile)),
+                                       PX_IMS_SUT_UE1_QOP,
+                                       mw_msc_register(
+                                                       -, 
+                                                       mw_pChargingVector(-, *),  // TODO To be refined during validation - Clause 6.3.2 Initial registration Point 11
+                                                       mw_pVisitedNetworkID(?), // TODO To be refined during validation - Clause 6.3.2 Initial registration Point 12
+                                                       -, // See helper f_check_contact_msc
+                                                       mw_Authorization_digest( // Clause 6.3.2 Initial registration Point 4
+                                                                               mw_digestResponse(
+                                                                                                 (
+                                                                                                  {"username", {tokenOrHost := PX_IMS_SUT_UE1_PRIVAT_USERNAME}}, 
+                                                                                                  {"realm", {tokenOrHost := PX_IMS_SUT_UE1_PUBLIC_USER}}, 
+                                                                                                  {"integrity-protected", {tokenOrHost := "auth-done"}}, 
+                                                                                                  {"nonce", {tokenOrHost := ""}}
+                                                                                                  ))
+                                                                               ),
+                                                       m_expires(600000), // Clause 6.3.2 Initial registration Point 7
+                                                       mw_supported_gruu, // Clause 6.3.2 Initial registration Point 8
+                                                       mw_require_path, // Clause 6.3.2 Initial registration Point 9
+                                                       mw_pAccessNetworkInfo // TODO To be refined during validation - Clause 6.3.2 Initial registration Point 13
+                                       ));
+            // Check vc_request.msgHeader.contact for 3GPP requirement
+            f_check_contact_msc(vc_request.msgHeader.contact); // Clause 6.3.2 Initial registration Point 5
+            f_check_via_msc(vc_request.msgHeader.via); // Clause 6.3.2 Initial registration Point 6
             f_selfOrClientSyncAndVerdict(c_tbDone, f_getVerdict()); // sync
 
             // Deregistration
-            
             f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
         } // End of function f_TC_ISC_SCCAS_MSC_REG_01
@@ -68,26 +89,45 @@ module AtsSccas_TCFunctions_TS124292 {
          */
         function f_TC_ISC_SCCAS_MSC_REG_02(in CSeq p_cSeq_s) runs on ImsComponent {
             // Local variables
-            var template REGISTER_Request v_register;
+            var CSeq v_cSeq_s;
 
             // Preambule
-            v_register := valueof(
-                                  m_REGISTER_Request_Base(
-                                                          vc_requestUri,
-                                                          vc_callId, 
-                                                          p_cSeq_s, 
-                                                          vc_from, vc_to, vc_via_REG, 
-                                                          vc_contact,
-                                                          vc_authorization
-                                  ));
+            f_init_userprofile(c_userProfile_UE1atSUThome);
+            f_initSipUrl(c_serviceProfile_EMERGENCY);
+            f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+            action("Please register UE")
             f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
             // Registration
-
+            f_awaitingRegistration_IMS(
+                                       v_cSeq_s, 
+                                       valueof(m_SipUrl_currDomain(vc_userprofile)),
+                                       PX_IMS_SUT_UE1_QOP,
+                                       mw_msc_register(
+                                                       -, 
+                                                       mw_pChargingVector(-, *),  // TODO To be refined during validation - Clause 6.3.2 Initial registration Point 11
+                                                       mw_pVisitedNetworkID(?), // TODO To be refined during validation - Clause 6.3.2 Initial registration Point 12
+                                                       -, // See helper f_check_contact_msc
+                                                       mw_Authorization_digest( // Clause 6.3.2 Initial registration Point 4
+                                                                               mw_digestResponse(
+                                                                                                 (
+                                                                                                  {"username", {tokenOrHost := PX_IMS_SUT_UE1_PRIVAT_USERNAME}}, 
+                                                                                                  {"realm", {tokenOrHost := PX_IMS_SUT_UE1_PUBLIC_USER}}, 
+                                                                                                  {"integrity-protected", {tokenOrHost := "auth-done"}}, 
+                                                                                                  {"nonce", {tokenOrHost := ""}}
+                                                                                                  ))
+                                                                               ),
+                                                       m_expires(600000), // Clause 6.3.2 Initial registration Point 7
+                                                       mw_supported_gruu, // Clause 6.3.2 Initial registration Point 8
+                                                       mw_require_path, // Clause 6.3.2 Initial registration Point 9
+                                                       mw_pAccessNetworkInfo // TODO To be refined during validation - Clause 6.3.2 Initial registration Point 13
+                                       ));
+            // Check vc_request.msgHeader.contact for 3GPP requirement
+            f_check_contact_msc(vc_request.msgHeader.contact); // Clause 6.3.2 Initial registration Point 5
+            f_check_via_msc(vc_request.msgHeader.via); // Clause 6.3.2 Initial registration Point 6
             f_selfOrClientSyncAndVerdict(c_tbDone, f_getVerdict()); // sync
 
             // Deregistration
-            
             f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
         } // End of function f_TC_ISC_SCCAS_MSC_REG_02
@@ -277,6 +317,67 @@ module AtsSccas_TCFunctions_TS124292 {
 
         } // End of function f_TC_ISC_SCCAS_MSC_CALL_ORG_02
         
-    } // End of call_origination
+    } // End of group call_origination
+
+    group helpers {
+
+        // Check vc_request.msgHeader.contact for 3GPP requirement
+        function f_check_contact_msc(in Contact p_contact) runs on ImsComponent {
+
+            if (ispresent(p_contact.contactBody.wildcard) == false) {
+                log("f_check_contact_msc: FAIL: Invalid contact content")
+                f_setVerdict(e_error);
+                return;
+            }
+
+            // Looking for g.3gpp.icsi-ref
+            var template charstring m_found_pattern := pattern "*g.3gpp.icsi-ref*";
+            if (regexp(p_contact.contactBody.wildcard, m_found_pattern, 0) == "") {
+                log("f_check_contact_msc: FAIL: g.3gpp.icsi-ref is not present")
+                f_setVerdict(e_error); // g.3gpp.icsi-ref is not present
+                return;
+            }
+
+            // Looking for g.3gpp.icsi-ref media
+            m_found_pattern := pattern "*g.3gpp.icsi-ref media*";
+            if (regexp(p_contact.contactBody.wildcard, m_found_pattern, 0) == "") {
+                log("f_check_contact_msc: FAIL: g.3gpp.icsi-ref media is not present")
+                f_setVerdict(e_error); // g.3gpp.icsi-ref media is not present
+                return;
+            }
+
+            // not containing "reg-id"
+            m_found_pattern := pattern "*reg-id*";
+            if (regexp(p_contact.contactBody.wildcard, m_found_pattern, 0) != "") {
+                log("f_check_contact_msc: FAIL: reg-id should not be present")
+                f_setVerdict(e_error); // reg-id should not be present
+                return;
+            }
+
+            // Checking succeed, keep current status
+        } // End of f_check_contact_msc
+
+        // Check vc_request.msgHeader.via for IP address or FQDN of the MSC Server
+        function f_check_via_msc(in Via p_via) runs on ImsComponent {
+
+            for (var integer i := 0; i < lengthof(p_via.viaBody); i := i + 1) {
+                // TODO: check
+                /*record ViaBody {
+                        SentProtocol sentProtocol,
+                        HostPort sentBy,
+                        SemicolonParam_List viaParams optional
+                    }
+                    record SentProtocol {
+                    charstring protocolName,
+                    charstring protocolVersion,
+                    charstring transport
+                }
+*/
+            } // End of 'for' statement
+
+            // Checking succeed, keep current status
+        } // End of function f_check_via_msc
+
+    } // End of group helpers
     
 } // End of module AtsSccas_TCFunctions_TS124292
