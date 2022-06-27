@@ -53,7 +53,9 @@ Package Sip_Common {
             - registeredIdentityTelURI
             - registeredIdentitySipURI
             - hasInitiatedDialogWith
+            - hasInitiatedPS2CSinEarlydialog
             - hasEstablishedDialog
+            - hasEstablishedPS2CSDialog
             - isConfiguredWithENUMentryForTelURI_E164NumberOf
             - hasReceivedInitialRequestForDialog
             - hasReceived200OkOnInitialRequestForDialogWith
