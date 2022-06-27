@@ -364,7 +364,7 @@ Package TP_SCCAS_Chapter_12_3 {
 		        Test objective  "Verify that the SCCAS distinguish SIP CANCEL and release session transfered leg after OperatiorSpecificTimer timeout"
 		        
 		        Reference 
-		            "ETSI TS 124 237 [1], Clause 12.3.3.5.1"
+		            "ETSI TS 124 237 [1], Clause 12.3.3.5.1, 1A"
 		        
 		        Config Id CFG_SCCAS_01
 		        
@@ -404,6 +404,52 @@ Package TP_SCCAS_Chapter_12_3 {
     		}
     		Group "12.3.3.5.2 SCC AS serving a terminating user"{
     			
+    		    import all from Sip_Common;
+    			
+	    		Test Purpose {
+	        
+		        TP Id TP_ISC_SCCAS_SRA_CNL_02
+		        
+		        Test objective  "Verify that the SCCAS send 200Ok_CANCEL and release PStoCS session transfered leg in alerting state for terminating user"
+		        
+		        Reference 
+		            "ETSI TS 124 237 [1], Clause 12.3.3.5.2, 1A"
+		        
+		        Config Id CFG_SCCAS_01
+		        
+		        PICS Selection NONE //SCCAS_PS2CS_SRVCC 
+		                
+		        Initial conditions with {
+		            the UE entity isRegisteredTo the IMS_A and 
+		            the UE entity hasInitiatedDialogWith the SCCAS_UE_TERM and
+		            the UE entity hasInitiatedPS2CSinAlertingState
+		        }
+		        
+		        Expected behaviour
+		            ensure that {
+		            	when {
+		                    the IUT entity receives a CANCEL containing
+		                        RequestUri indicating value PX_STNSR_URI,
+		                        From indicating value PX__SIP_URI,
+		                        To indicating value PX__SIP_URI,
+		                        CallId indicating value PX_STI_CALLID,
+		                        Via indicating value PX_STNSR_VIA,
+		                        Contact,
+		                        TargetDialog containing "dialog info from PS session", 
+		                        Require indicating value "tdialog",
+		                        PAssertedIdentity indicating value PX_UE_CMSISDN
+		                        SipMessageBody,
+		                        Reason containing Cause not indicating value "Reason Q.850 31";
+		                        ;;
+		                    from the IMS_S_CSCF entity
+		                }
+		                then {
+		                	the IUT entity sends a r_200_Ok_CANCEL //and
+		                	//the IUT entity on timerOperatorSpecificTimeout sends a CANCEL
+		                    //to the IMS_S_CSCF entity 	
+			             }    
+		            }
+		    	} // End of TP_ISC_SCCAS_SRA_CNL_02	
     		}
     		
     	}
