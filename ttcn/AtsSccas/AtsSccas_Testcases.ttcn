@@ -1,0 +1,50 @@
+/*
+ *    @author     TTF T016
+ *    @version    $Id$
+ *    @desc       This module provides the Test Cases for SCCAS.
+ */
+
+module AtsSccas_Testcases
+{
+    //LibCommon
+    import from LibCommon_Sync all ;
+    import from LibCommon_VerdictControl all;
+    //LibSip
+    import from LibSip_Interface all;
+    import from LibSip_SIPTypesAndValues all;
+    //LibIms
+    import from LibIms_SIPTypesAndValues all;
+    import from LibIms_Interface all;
+    //AtsIms
+    import from AtsSccas_TestConfiguration all;
+    import from AtsSccas_TestSystem all;
+    import from AtsSccas_TCFunctions all;
+    import from AtsSccas_PICS all;
+
+    group Group_6_3 {
+        group TP_6_3_1_General {
+            /*
+            * @desc TC_IMST2_GM_GEN_01
+            * @param p_cSeq_s Transaction Id
+            */
+            testcase TC_ISC_SCCAS_RSC_REG_01(inout CSeq p_cSeq_s) 
+            runs on ServerSyncComp
+            system TestAdapter {
+                //Variables
+                var ImsComponent v_imsComponent_ueims;
+                f_cf_1IscUp(v_imsComponent_ueims);
+
+                //Start
+                f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_RSC_REG_01(p_cSeq_s));
+
+                // synchronize both PTCs on 3 sychronization points
+                f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+                f_cf_1IscDown(v_imsComponent_ueims);
+
+            } // end TC_ISC_SCCAS_RSC_REG_01
+          }//group TP_6_3_1_General
+          
+     }//Group_6_3
+
+} // end module AtsSccas_Testcases

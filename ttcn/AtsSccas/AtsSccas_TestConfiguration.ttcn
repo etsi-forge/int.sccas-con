@@ -1,0 +1,306 @@
+/*
+ *    @author     TTF T016
+ *    @version    $Id$
+ *    @desc        This module provides test component configurations for SCCAS tests.
+ */
+
+module AtsSccas_TestConfiguration
+{    
+    //LibCommon
+    import from LibCommon_Sync all ;
+    import from LibCommon_VerdictControl all;
+    //LibSip
+    import from LibSip_Interface all;
+    import from LibSip_SIPTypesAndValues all;
+    import from LibSip_PIXITS all;
+    //LibIms
+    import from LibIms_SIPTypesAndValues all;
+    import from LibIms_Interface all;
+    //AtsIms
+    import from AtsSccas_TestSystem all;
+    import from AtsSccas_PIXITS all;
+
+group auxSipFunction {
+        
+    /*
+    ** @desc f_IncCSeq returns an input parameter incremented by 1000
+    ** reason is to run the next testcase with a higher CSeq value
+    */
+    function f_IncCSeq(inout CSeq loc_CSeq) 
+        runs on ServerSyncComp 
+        {    loc_CSeq.seqNumber := loc_CSeq.seqNumber + 1000;
+            return
+        }; 
+    // end f_IncCSeq
+        
+}//end group auxSipFunction
+    
+    group cfUp {
+    
+        
+        /**
+         * 
+         * @desc Creates test configuration of CF_1Isc
+         * @param p_imsComponent_ims - ims component
+         */
+        function f_cf_1IscUp(out ImsComponent p_imsComponent_ueims)
+        runs on ServerSyncComp 
+        {
+            //Variables
+            var FncRetCode v_ret := e_success;
+
+            //Create
+            p_imsComponent_ueims := ImsComponent.create("UEIMS") ;
+
+            //Connect
+            connect(p_imsComponent_ueims:syncPort, self:syncPort) ;        
+            
+            //Map 
+            map(p_imsComponent_ueims:SIPP, system:UEIMS);// Init test Configuration
+            
+            f_setVerdict(v_ret);
+        }//end f_cf_1IscUp
+        
+        /**
+         * 
+         * @desc Creates test configuration of CF_1Isc1AtcfUp
+         * @param p_imsComponent_ueims - ueims component
+         * @param p_imsComponent_atcf  - atcf component
+         */
+        function f_cf_1Isc1AtcfUp(out ImsComponent p_imsComponent_ueims, 
+                                out ImsComponent p_imsComponent_atcf)
+        runs on ServerSyncComp 
+        {
+            //Variables
+            var FncRetCode v_ret := e_success;
+
+            //Create
+            p_imsComponent_ueims := ImsComponent.create("UEIMS") ;
+            p_imsComponent_atcf  := ImsComponent.create("ATCF") ;
+
+            //Connect
+            connect(p_imsComponent_ueims:syncPort, self:syncPort) ;        
+            connect(p_imsComponent_atcf:syncPort, self:syncPort) ;
+            //Map 
+            map(p_imsComponent_ueims:SIPP, system:UEIMS);// Init test Configuration
+            map(p_imsComponent_atcf:SIPP, system:ATCF);// Init test Configuration
+            
+            f_setVerdict(v_ret);
+        }//end f_cf_1Isc1AtcfUp
+        
+        /**
+         * 
+         * @desc Creates test configuration of CF_1Isc1MscfUp
+         * @param p_imsComponent_ueims - ueims component
+         * @param p_imsComponent_msc  - msc component
+         */
+        function f_cf_1Isc1MscUp(out ImsComponent p_imsComponent_ueims, 
+                                 out ImsComponent p_imsComponent_msc)
+        runs on ServerSyncComp 
+        {
+            //Variables
+            var FncRetCode v_ret := e_success;
+
+            //Create
+            p_imsComponent_ueims := ImsComponent.create("UEIMS") ;
+            p_imsComponent_msc  := ImsComponent.create("MSC") ;
+
+            //Connect
+            connect(p_imsComponent_ueims:syncPort, self:syncPort) ;        
+            connect(p_imsComponent_msc:syncPort, self:syncPort) ;
+            //Map 
+            map(p_imsComponent_ueims:SIPP, system:UEIMS);// Init test Configuration
+            map(p_imsComponent_msc:SIPP, system:MSC);// Init test Configuration
+            
+            f_setVerdict(v_ret);
+        }//end f_cf_1Isc1MscUp
+        
+        /**
+         * 
+         * @desc Creates test configuration of CF_1Gm1SccasUp
+         * @param p_imsComponent_ue     - ue component
+         * @param p_imsComponent_sccas  - sccas component
+         */
+        function f_cf_1Gm1SccasUp(out ImsComponent p_imsComponent_ue, 
+                                  out ImsComponent p_imsComponent_sccas)
+        runs on ServerSyncComp 
+        {
+            //Variables
+            var FncRetCode v_ret := e_success;
+
+            //Create
+            p_imsComponent_ue     := ImsComponent.create("UE") ;
+            p_imsComponent_sccas  := ImsComponent.create("SCCAS") ;
+
+            //Connect
+            connect(p_imsComponent_ue:syncPort, self:syncPort) ;        
+            connect(p_imsComponent_sccas:syncPort, self:syncPort) ;
+            //Map 
+            map(p_imsComponent_ue:SIPP, system:UE);// Init test Configuration
+            map(p_imsComponent_sccas:SIPP, system:SCCAS);// Init test Configuration
+            
+            f_setVerdict(v_ret);
+        }//end f_cf_1Gm1SccasfUp 
+
+    }//end group cfUp
+    
+    group cfDown {
+
+        /**
+        * 
+        * @desc Deletes configuration of CF_1Isc 
+        * @param p_imsComponent_ueims    ueims component
+        */
+        function f_cf_1IscDown(in ImsComponent p_imsComponent_ueims)
+        runs on ServerSyncComp 
+        {
+            f_serverWaitForAllClientsToStop();
+    
+            //Disconnect
+            disconnect(p_imsComponent_ueims:syncPort, self:syncPort) ;
+            //Unmap
+            unmap(p_imsComponent_ueims:SIPP, system:UEIMS);                
+        }//end f_cf_1IscDown
+
+        /**
+        * 
+        * @desc Deletes configuration of CF_1Isc1Atcf
+        * @param p_imsComponent_ueims    - ueims component
+        * @param p_imsComponent_atcf     - atcf component        
+        */
+        function f_cf_1Isc1AtcfDown(in ImsComponent p_imsComponent_ueims,
+                                    in ImsComponent p_imsComponent_atcf)
+        runs on ServerSyncComp 
+        {
+            f_serverWaitForAllClientsToStop();
+
+            //Disconnect
+            disconnect(p_imsComponent_ueims:syncPort, self:syncPort);
+            disconnect(p_imsComponent_atcf:syncPort, self:syncPort);
+            //Unmap
+            unmap(p_imsComponent_ueims:SIPP, system:UEIMS);
+            unmap(p_imsComponent_atcf:SIPP, system:ATCF);
+        }//end f_cf_1Isc1AtcfDown
+
+        /**
+        * 
+        * @desc Deletes configuration of CF_1Isc1Msc
+        * @param p_imsComponent_ueims    - ueims component
+        * @param p_imsComponent_msc     - msc component        
+        */
+        function f_cf_1Isc1MscDown(in ImsComponent p_imsComponent_ueims,
+                                   in ImsComponent p_imsComponent_msc)
+        runs on ServerSyncComp 
+        {
+            f_serverWaitForAllClientsToStop();
+
+            //Disconnect
+            disconnect(p_imsComponent_ueims:syncPort, self:syncPort);
+            disconnect(p_imsComponent_msc:syncPort, self:syncPort);
+            //Unmap
+            unmap(p_imsComponent_ueims:SIPP, system:UEIMS);
+            unmap(p_imsComponent_msc:SIPP, system:MSC);
+        }//end f_cf_1Isc1MscDown
+
+        /**
+        * 
+        * @desc Deletes configuration of CF_1Isc1Msc
+        * @param p_imsComponent_ueims    - ueims component
+        * @param p_imsComponent_msc     - msc component        
+        */
+        function f_cf_1Gm1SccasDown(in ImsComponent p_imsComponent_ue,
+                                   in ImsComponent p_imsComponent_sccas)
+        runs on ServerSyncComp 
+        {
+            f_serverWaitForAllClientsToStop();
+
+            //Disconnect
+            disconnect(p_imsComponent_ue:syncPort, self:syncPort);
+            disconnect(p_imsComponent_sccas:syncPort, self:syncPort);
+            //Unmap
+            unmap(p_imsComponent_ue:SIPP, system:UE);
+            unmap(p_imsComponent_sccas:SIPP, system:SCCAS);
+        }//end f_cf_1Gm1SccasDown
+
+
+    } //end group cfDown
+    
+    group syncNoStop // Same functions as in LibCommon but without call of f_serverWaitForAllClientsToStop()
+    {
+    /* @desc    Implements synchronization of client from server side
+     *          on one or more synchronization points.
+     *            If problem occurs, then server sends STOP to client.
+     *            Waits for PX_TSYNC_TIME_LIMIT to let client
+     *            finish executing behavior until this
+     *            synchronization point.
+     * @remark    The use of this function requires prior connection  of
+     *            the server sync ports!
+     * @param   p_syncPointIds list of synchronization point name/ids
+     * @return  execution status
+     */
+    function f_serverSync1Client( in SyncPointList p_syncPointIds )
+    runs on ServerSyncComp {
+        var integer i, v_noOfSyncIds := sizeof(p_syncPointIds);
+        for ( i := 0; i < v_noOfSyncIds; i := i+1 ) {
+            f_serverSyncClientsTimed(1,p_syncPointIds[i], PX_TSYNC_TIME_LIMIT);
+        }
+    }
+        
+    /* @desc    Implements synchronization of 2 clients from server side
+     *          on one or more synchronization points.
+     *            If problem occurs, then server sends STOP to all clients.
+     *            Waits for PX_TSYNC_TIME_LIMIT to let clients
+     *            finish executing their behavior until this
+     *            synchronization point.
+     * @remark    The use of this function requires prior connection  of
+     *            the server sync ports!
+     * @param   p_syncPointIds list of synchronization point name/ids
+     * @return  execution status
+     */
+    function f_serverSync2Clients( in SyncPointList p_syncPointIds )
+    runs on ServerSyncComp {
+        var integer i, v_noOfSyncIds := sizeof(p_syncPointIds);
+        for ( i := 0; i < v_noOfSyncIds; i := i+1 ) {
+            f_serverSyncClientsTimed(2,p_syncPointIds[i], PX_TSYNC_TIME_LIMIT);
+        }
+    }
+    
+    /* @desc    Implements synchronization of 3 clients from server side
+     *          on one or more synchronization points.
+     *            If problem occurs, then server sends STOP to all clients.
+     *            Waits for PX_TSYNC_TIME_LIMIT to let clients
+     *            finish executing their behavior until this
+     *            synchronization point.
+     * @remark    The use of this function requires prior connection  of
+     *            the server sync ports!
+     * @param   p_syncPointIds list of synchronization point name/ids
+     * @return  execution status
+     */
+    function f_serverSync3Clients( in SyncPointList p_syncPointIds )
+    runs on ServerSyncComp {
+        var integer i, v_noOfSyncIds := sizeof(p_syncPointIds);
+        for ( i := 0; i < v_noOfSyncIds; i := i+1 ) {
+            f_serverSyncClientsTimed(3,p_syncPointIds[i], PX_TSYNC_TIME_LIMIT);
+        }
+    }
+        
+    /* @desc    Implements synchronization of 4 clients from server side
+     *          on one or more synchronization points.
+     *            If problem occurs, then server sends STOP to all clients.
+     *            Waits for PX_TSYNC_TIME_LIMIT to let clients
+     *            finish executing their behavior until this
+     *            synchronization point.
+     * @remark    The use of this function requires prior connection  of
+     *            the server sync ports!
+     * @param   p_syncPointIds list of synchronization point name/ids
+     * @return  execution status
+     */
+    function f_serverSync4Clients( in SyncPointList p_syncPointIds )
+    runs on ServerSyncComp {
+        var integer i, v_noOfSyncIds := sizeof(p_syncPointIds);
+        for ( i := 0; i < v_noOfSyncIds; i := i+1 ) {
+            f_serverSyncClientsTimed(4,p_syncPointIds[i], PX_TSYNC_TIME_LIMIT);
+        }
+    }
+    } //end group syncNoStop
+} // end module AtsSccas_TestConfiguration

@@ -1,0 +1,21 @@
+/*
+ *    @author     TTF T016
+ *    @version    $Id$
+ *    @desc       This module provides the PIXIT used for the SIP-IMS tests.
+ */
+
+module AtsSccas_PIXITS
+{    
+
+
+// SUT specific implementation variants
+
+modulepar {
+
+    /** @desc    boolean  for SUT working mode due to 
+    */
+    boolean PX_SCCAS__ := true;
+    
+}
+
+} // end module AtsSccas_PIXITS

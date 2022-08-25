@@ -1,0 +1,32 @@
+/*
+ *    @author     TTF T016
+ *    @version    $Id: AtsIms_Templates.ttcn
+ *    @desc        This module provides the templates used by the SCCAS
+ */
+
+module AtsSccas_Templates
+{    
+    
+    //LibSip
+    import from LibSip_SIPTypesAndValues all;
+    import from LibSip_Templates all;
+  
+    group HeaderTemplates 
+    {                
+        
+    
+    }//end group HeaderTemplates
+    
+    group MessageTemplates {
+        group modified_templates {
+            group request_sent {
+      
+               
+            }//end group request_sent    
+            
+            group request_receive { 
+            }//end group request_receive
+        }//end group modified_templates
+    }//end group MessageTemplates
+    
+} // end module AtsSccas_Templates

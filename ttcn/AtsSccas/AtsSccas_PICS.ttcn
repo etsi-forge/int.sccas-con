@@ -1,0 +1,21 @@
+/*
+ *@author     TTF T016
+ *@version    $Id$
+ *@desc       This module provides the PICS used for the SCCAS_IMS tests.
+*/
+
+module AtsSccas_PICS
+{
+modulepar {
+
+/* ****************************************************************************************************
+PICS used for test case selection
+*************************************************************************************************** */
+
+    /** @desc   boolean PICS ref: A-3/5
+                True, if SUT/SCSCF requires ...
+    */
+    boolean PC_SCCAS_TODO := false;
+    
+}
+} // end module AtsSccas_PICS
