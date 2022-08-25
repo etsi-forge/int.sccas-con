@@ -1,0 +1,12 @@
+[submodule "ttcn/LibCommon"]
+	path = ttcn/LibCommon
+	url = https://forge.etsi.org/rep/LIBS/LibCommon.git
+	branch = STF574
+[submodule "ttcn/LibSip"]
+	path = ttcn/LibSip
+	url = https://forge.etsi.org/rep/LIBS/LibSip.git
+	branch = STF574
+[submodule "ttcn/LibIms"]
+	path = ttcn/LibIms
+	url = https://forge.etsi.org/rep/LIBS/LibIms.git
+	branch = STF574
