@@ -4,7 +4,7 @@
  *    @desc       This module provides the Test Cases for SCCAS ETSI TS 124 292 v1.6.0.
  */
 
-module AtsSccas_TS124292_Testcases
+module AtsSccas_Testcases_TS124292
 {
     //LibCommon
     import from LibCommon_Sync all ;
@@ -24,12 +24,10 @@ module AtsSccas_TS124292_Testcases
     group isc_registration {
         
         /*
-         * @desc TC_IMST2_GM_GEN_01
+         * @desc Verify that the MSC successfully register to the IM CN Subsystem
          * @param p_cSeq_s Transaction Id
          */
-        testcase TC_ISC_SCCAS_MSC_REG_01(inout CSeq p_cSeq_s) 
-        runs on ServerSyncComp
-        system TestAdapter {
+        testcase TC_ISC_SCCAS_MSC_REG_01(inout CSeq p_cSeq_s) runs on ServerSyncComp system TestAdapter {
             //Variables
             var ImsComponent v_imsComponent_ueims;
             f_cf_1IscUp(v_imsComponent_ueims);
@@ -46,4 +44,4 @@ module AtsSccas_TS124292_Testcases
           
      } // End of isc_registration
 
-} // End of module AtsSccas_TS124292_Testcases
+} // End of module AtsSccas_Testcases_TS124292

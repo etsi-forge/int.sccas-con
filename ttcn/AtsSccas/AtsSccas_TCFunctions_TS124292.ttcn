@@ -4,7 +4,7 @@
  *    @desc       This module provides the TCfunctions used by the test component
  *          for SCCAS tests.
  */
-module AtsSccas_TCFunctions {
+module AtsSccas_TCFunctions_TS124292 {
     // LibCommon
     import from LibCommon_Sync all;
     import from LibCommon_VerdictControl all;
@@ -27,11 +27,10 @@ module AtsSccas_TCFunctions {
     import from AtsSccas_PICS all;
     import from AtsSccas_PIXITS all;
 
-
     group isc_registration {
 
         /*
-         *  @desc    This is the test case function for TC_ISC_SCCAS_MSC_REG_01
+         *  @desc     This is the test case function for TC_ISC_SCCAS_MSC_REG_01
          *  @param    p_cSeq_s
          */
         function f_TC_ISC_SCCAS_MSC_REG_01(in CSeq p_cSeq_s) runs on ImsComponent {
@@ -56,4 +55,4 @@ module AtsSccas_TCFunctions {
         
      } // End of group isc_registration
      
-} // End of module AtsSccas_TCFunctions
+} // End of module AtsSccas_TCFunctions_TS124292
