@@ -46,5 +46,24 @@ module AtsSccas_Testcases
           }//group TP_6_3_1_General
           
      }//Group_6_3
+     
+     group Group_6A_4 {
+     }//Group_6A_4
+     
+     group Group_7_3 {
+     }//Group_7_3
+     
+     group Group_8_3 {
+     }//Group_8_3
+     
+     group Group_9_3 {
+     }//Group_9_3
+     
+     group Group_10_3 {
+     }//Group_10_3
+     
+     group Group_11_3 {
+     }//Group_11_3
+     
 
 } // end module AtsSccas_Testcases
