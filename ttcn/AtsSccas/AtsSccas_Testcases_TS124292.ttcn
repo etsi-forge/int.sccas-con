@@ -15,7 +15,7 @@ module AtsSccas_Testcases_TS124292
     //LibIms
     import from LibIms_SIPTypesAndValues all;
     import from LibIms_Interface all;
-    //AtsIms
+    //AtsSccas
     import from AtsSccas_TestConfiguration all;
     import from AtsSccas_TestSystem all;
     import from AtsSccas_TCFunctions_TS124292 all;

@@ -17,5 +17,6 @@ PICS used for test case selection
     */
     boolean PC_SCCAS_TODO := false;
     
+    boolean PICS_MSC_GM := false;
 }
 } // end module AtsSccas_PICS

@@ -5,6 +5,9 @@
  *          for SCCAS tests.
  */
 module AtsSccas_TCFunctions_TS124292 {
+    // XSD support
+    import from XSD all;
+
     // LibCommon
     import from LibCommon_Sync all;
     import from LibCommon_VerdictControl all;
@@ -22,8 +25,8 @@ module AtsSccas_TCFunctions_TS124292 {
     import from LibIms_SIPTypesAndValues all;
     import from LibIms_Interface all;
 
-    // AtsIms
-    // import from AtsIms_TestSystem all;
+    // AtsSccas
+    // import from AtsSccas_TestSystem all;
     import from AtsSccas_PICS all;
     import from AtsSccas_PIXITS all;
 
@@ -41,7 +44,10 @@ module AtsSccas_TCFunctions_TS124292 {
             v_register := valueof(
                                   m_REGISTER_Request_Base(
                                                           vc_requestUri,
-                                                          vc_callId, p_cSeq_s, vc_from, vc_to, vc_via_REG, vc_contact,
+                                                          vc_callId, 
+                                                          p_cSeq_s, 
+                                                          vc_from, vc_to, vc_via_REG, 
+                                                          vc_contact,
                                                           vc_authorization
                                   ));
             f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
@@ -54,7 +60,7 @@ module AtsSccas_TCFunctions_TS124292 {
             
             f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-        } // End of function f_TC_ISC_SCCAS_RSC_REG_01
+        } // End of function f_TC_ISC_SCCAS_MSC_REG_01
         
         /*
          *  @desc     This is the test case function for TC_ISC_SCCAS_MSC_REG_02
@@ -68,7 +74,10 @@ module AtsSccas_TCFunctions_TS124292 {
             v_register := valueof(
                                   m_REGISTER_Request_Base(
                                                           vc_requestUri,
-                                                          vc_callId, p_cSeq_s, vc_from, vc_to, vc_via_REG, vc_contact,
+                                                          vc_callId, 
+                                                          p_cSeq_s, 
+                                                          vc_from, vc_to, vc_via_REG, 
+                                                          vc_contact,
                                                           vc_authorization
                                   ));
             f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
@@ -81,7 +90,7 @@ module AtsSccas_TCFunctions_TS124292 {
             
             f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-        } // End of function f_TC_ISC_SCCAS_RSC_REG_02
+        } // End of function f_TC_ISC_SCCAS_MSC_REG_02
         
      } // End of group isc_registration
      
@@ -93,14 +102,15 @@ module AtsSccas_TCFunctions_TS124292 {
          */
         function f_TC_ISC_SCCAS_MSC_SUB_01(in CSeq p_cSeq_s) runs on ImsComponent {
             // Local variables
-            var template REGISTER_Request v_register;
+            var template SUBSCRIBE_Request v_subscibe;
 
             // Preambule
             v_register := valueof(
-                                  m_REGISTER_Request_Base(
-                                                          vc_requestUri,
-                                                          vc_callId, p_cSeq_s, vc_from, vc_to, vc_via_REG, vc_contact,
-                                                          vc_authorization
+                                  m_SUBSCRIBE_Request_Base(
+                                                           vc_requestUri,
+                                                           vc_callId, 
+                                                           p_cSeq_s, 
+                                                           vc_from, vc_to, vc_via_REG
                                   ));
             f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
@@ -112,7 +122,7 @@ module AtsSccas_TCFunctions_TS124292 {
             
             f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-        } // End of function f_TC_ISC_SCCAS_RSC_SUB_01
+        } // End of function f_TC_ISC_SCCAS_MSC_SUB_01
         
         /*
          *  @desc     This is the test case function for TC_ISC_SCCAS_MSC_SUB_02
@@ -120,14 +130,15 @@ module AtsSccas_TCFunctions_TS124292 {
          */
         function f_TC_ISC_SCCAS_MSC_SUB_02(in CSeq p_cSeq_s) runs on ImsComponent {
             // Local variables
-            var template REGISTER_Request v_register;
+            var template SUBSCRIBE_Request v_subscibe;
 
             // Preambule
             v_register := valueof(
-                                  m_REGISTER_Request_Base(
-                                                          vc_requestUri,
-                                                          vc_callId, p_cSeq_s, vc_from, vc_to, vc_via_REG, vc_contact,
-                                                          vc_authorization
+                                  m_SUBSCRIBE_Request_Base(
+                                                           vc_requestUri,
+                                                           vc_callId, 
+                                                           p_cSeq_s, 
+                                                           vc_from, vc_to, vc_via_REG
                                   ));
             f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
@@ -139,7 +150,7 @@ module AtsSccas_TCFunctions_TS124292 {
             
             f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-        } // End of function f_TC_ISC_SCCAS_RSC_SUB_02
+        } // End of function f_TC_ISC_SCCAS_MSC_SUB_02
         
     } // End of isc_subscribe
     
@@ -170,7 +181,7 @@ module AtsSccas_TCFunctions_TS124292 {
             
             f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-        } // End of function f_TC_ISC_SCCAS_RSC_REREG_01
+        } // End of function f_TC_ISC_SCCAS_MSC_REREG_01
         
         /*
          *  @desc     This is the test case function for TC_ISC_SCCAS_MSC_REREG_02
@@ -197,7 +208,7 @@ module AtsSccas_TCFunctions_TS124292 {
             
             f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-        } // End of function f_TC_ISC_SCCAS_RSC_REREG_02
+        } // End of function f_TC_ISC_SCCAS_MSC_REREG_02
         
     } // End of isc_reregistration
     
@@ -209,15 +220,24 @@ module AtsSccas_TCFunctions_TS124292 {
          */
         function f_TC_ISC_SCCAS_MSC_CALL_ORG_01(in CSeq p_cSeq_s) runs on ImsComponent {
             // Local variables
-            var template REGISTER_Request v_register;
+            var template INVITE_Request v_invite;
 
             // Preambule
+            /*f_init_userprofile(c_userProfile_UE1atSUThome);
+            f_initSipUrl(c_userProfile_UE1atSUThome);
+            f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_BCF);
+            LibIms_Steps.f_setHeadersINVITE(p_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+            f_init_sdp_userprofile(vc_sdp_local, c_userProfile_UE1atSUThome, c_userProfile_Huawei);
             v_register := valueof(
-                                  m_REGISTER_Request_Base(
-                                                          vc_requestUri,
-                                                          vc_callId, p_cSeq_s, vc_from, vc_to, vc_via_REG, vc_contact,
-                                                          vc_authorization
-                                  ));
+                                  m_INVITE_Request_sdp(
+                                                       vc_requestUri,
+                                                       vc_callId, 
+                                                       p_cSeq_s, 
+                                                       vc_from, vc_to, vc_via_REG, 
+                                                       vc_contact,
+                                                       vc_authorization,
+                                                       m_MBody_SDP(vc_sdp_local)
+                                  ));*/
             f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
             // Registration
@@ -228,7 +248,7 @@ module AtsSccas_TCFunctions_TS124292 {
             
             f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-        } // End of function f_TC_ISC_SCCAS_RSC_CALL_ORG_01
+        } // End of function f_TC_ISC_SCCAS_MSC_CALL_ORG_01
         
         /*
          *  @desc     This is the test case function for TC_ISC_SCCAS_MSC_CALL_ORG_02
@@ -236,7 +256,7 @@ module AtsSccas_TCFunctions_TS124292 {
          */
         function f_TC_ISC_SCCAS_MSC_CALL_ORG_02(in CSeq p_cSeq_s) runs on ImsComponent {
             // Local variables
-            var template REGISTER_Request v_register;
+            var template INVITE_Request v_invite;
 
             // Preambule
             v_register := valueof(
@@ -255,7 +275,7 @@ module AtsSccas_TCFunctions_TS124292 {
             
             f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-        } // End of function f_TC_ISC_SCCAS_RSC_CALL_ORG_02
+        } // End of function f_TC_ISC_SCCAS_MSC_CALL_ORG_02
         
     } // End of call_origination
     
