@@ -1,0 +1,351 @@
+module AtsSccas_Steps {
+    // LibSip
+    import from LibSip_SIPTypesAndValues all;
+    import from LibSip_SDPTypes all;
+    import from LibSip_Steps all;
+    import from LibSip_Templates all;
+    import from LibSip_Interface all;
+    import from LibSip_PIXITS all;
+    
+    // LibIms
+    import from LibIms_SIPTypesAndValues all;
+    import from LibIms_Steps all;
+    import from LibIms_Templates all;
+    import from LibIms_Interface all;
+    
+    // AtsSccas
+    import from AtsSccas_PIXITS all;
+
+    group Constants {
+    
+        group SdpUserProfileConstants {
+        
+            const integer c_userProfile_Vendor1 := 1;
+        
+        } // End of group SdpUserProfileConstants
+    
+        group UserProfileConstants {
+            // number of user profile (RESERVED: from 1-10 for SIP profile)
+            const integer c_userProfile_UE1atSUThome := 11;               // location is SUT domain
+            const integer c_userProfile_UE2atSUThome := 12;               // location is SUT domain
+            const integer c_userProfile_UE3atSUThome := 13;               // location is SUT domain
+            const integer c_userProfile_UE4atSUThome := 14;               // location is SUT domain
+            const integer c_userProfile_UE1atSUTvisiting := 21; 			// location is SUT domain
+            //const integer c_userProfile_UE2atSUTvisiting := 22;			// location is SUT domain
+            const integer c_userProfile_IBCFwithUnknownUE := 28; 			// location is IMS1 domain
+            const integer c_userProfile_IBCFwithHomeUE := 29; 			// location is IMS1 domain
+            const integer c_userProfile_IBCFwithVisitingUE := 31; 		// location is IMS1 domain
+            const integer c_userProfile_PCSCFwithHomeUE := 41;	    	// location is IMS1 domain
+            const integer c_userProfile_PCSCFwithVisitingUE := 42;	    // location is IMS1 domain
+            const integer c_userProfile_PCSCFwithVisitingUE2 := 43;		// location is IMS1 domain
+            const integer c_userProfile_PCSCFwithUnknownVisitingUE := 44;	// location is IMS1 domain
+            const integer c_userProfile_ICSCFwithHomeUE := 45; 			// location is IMS1 domain
+            const integer c_userProfile_SCSCFwithHomeUE := 46; 			// location is IMS1 domain
+            const integer c_userProfile_SCSCFwithHomeUE_domain :=55;
+            const integer c_userProfile_ECSCFwithHomeUE := 47; 			// location is IMS1 domain
+            const integer c_userProfile_ISUP := 49;               		//
+            const integer c_userProfile_AS1 := 51;                      	// Isc userProfile at AS1
+            const integer c_userProfile_AS2 := 52;               		// Isc userProfile at AS2
+
+            const integer c_userProfile_ESINetSubscriber := 53;
+            const integer c_userProfile_ESINetPSAP        := 54;
+            const integer c_userProfile_ESINetUpstreamElement := 55;
+
+            // number of interface profile
+            const integer c_interfaceProfile_IMS_SUT_IBCF1  := 100;		// Ic interface at IBCF1 located in SUT
+            const integer c_interfaceProfile_IMS_SUT_IBCF2  := 101;		// Ic interface at IBCF2 located in SUT
+            const integer c_interfaceProfile_IMS_SUT_PCSCF1 := 110; 		// Gm interface towards UE1 located in SUT
+            const integer c_interfaceProfile_IMS_SUT_PCSCF2 := 111; 		// Gm interface towards UE2 located in SUT
+            const integer c_interfaceProfile_IMS_SUT_PCSCF  := 112; 		// Mw interface at P-CSCF located in SUT
+            const integer c_interfaceProfile_IMS_SUT_SCSCF  := 113; 		// Mw interface at S-CSCF located in SUT
+            const integer c_interfaceProfile_IMS_SUT_ICSCF  := 114; 		// Mw interface at I-CSCF located in SUT
+            const integer c_interfaceProfile_IMS_SUT_MGCF   := 115; 		// Mw interface at MGCF located in SUT
+            const integer c_interfaceProfile_IMS_SUT_AS     := 116; 			// Isc interface at AS located in SUT
+            const integer c_interfaceProfile_IMS_SUT_ECSCF  := 117; 		// Mw interface at E-CSCF located in SUT
+            const integer c_interfaceProfile_IMS_SUT_BCF    := 118;          // SIP interface at BCF located in SUT
+            const integer c_interfaceProfile_SUT_LIS        := 119;
+            const integer c_interfaceProfile_SUT_ECRF       := 120;
+            const integer c_interfaceProfile_SUT_ESRP       := 121;
+
+            // number of conference profile
+            const integer c_conferenceProfile_factoryURI := 800;			// conference factory URI
+
+            // number of service profile
+            const integer c_serviceProfile_EMERGENCY := 112;
+            const integer c_serviceProfile_EMERGENCY_INVALID := 666;
+            const integer c_serviceProfile_SUBSCRIBER := 115;
+            const integer c_serviceProfile_SUBSCRIPTION_SERVICE := 116;
+
+            // number of SIPURL identifiers
+            const integer c_interfaceSIPURL_IMS_SUT_PCSCF1_domain := 1101; // c_interfaceProfile_IMS_SUT_PCSCF1
+            const integer c_interfaceSIPURL_IMS_SUT_PCSCF1_ip := 1102;	 // c_interfaceProfile_IMS_SUT_PCSCF1
+
+        } // End of group UserProfileConstants
+
+    } // End of group Constants
+
+    group globalSteps {
+    
+        /*
+        * 
+        * @desc sets user parameters with PIXIT values
+        * @param p_user identifies the selected user configuration and location
+        * @verdict 
+        */
+        function f_init_sdp_userprofile(
+                                        inout SDP_Message p_loc_SDP,
+                                        in integer p_user, // TODO To be removed
+                                        in integer p_sdp_user
+                                        ) runs on ImsComponent {
+        
+        select(p_sdp_user){
+            case (c_userProfile_UE1atSUThome) { // variant c_userProfile_UE1atSUThome
+            p_loc_SDP := valueof(
+                                m_SDP_mediaList(
+                                                {
+                                                    { { c_audio, { 20000, omit}, "RTP/AVP", {"0"} }, omit, omit, omit, omit, omit },
+                                                    { { c_video, { 20002, omit}, "RTP/AVP", {"31"} }, omit, omit, omit, omit, omit }
+                                                },
+                                                vc_userprofile
+                                                )
+                                );
+            vc_sdp_local.origin.user_name := PX_IMS_SUT_UE1_PUBLIC_USER;
+            vc_sdp_local.origin.session_id := "2890844526";
+            vc_sdp_local.origin.session_version := "2890842807";
+            vc_sdp_local.origin.addr := "atlanta.example.com";
+            vc_sdp_local.session_name := "c_userProfile_UE1atSUThome";
+            f_append_media_attribute(vc_sdp_local, { rtpmap := {"0", {"PCMU", "8000", omit} } } );
+            f_append_media_attribute(vc_sdp_local, { rtpmap := {"31", {"H261", "90000", omit} } } );
+            f_append_media_attribute(vc_sdp_local, { sendrecv := { } } );
+            } // c_userProfile_UE1atSUThome
+            case (c_userProfile_Vendor1) { //variant c_userProfile_Vendor1
+            p_loc_SDP := valueof(
+                                m_SDP_mediaList(
+                                                {
+                                                    { { c_audio, { 10500, omit}, "RTP/AVP", {"8", "0", "18", "4", "96", "97"} }, omit, omit, omit, omit, omit }
+                                                },
+                                                vc_userprofile
+                                                )
+                                );
+            vc_sdp_local.origin.user_name := "FAST_V2R1";
+            vc_sdp_local.origin.session_id := "2006";
+            vc_sdp_local.origin.session_version := "2007";
+            vc_sdp_local.origin.addr := "155.11.49.64";
+            vc_sdp_local.session_name := "-";
+            f_append_media_attribute(vc_sdp_local, { rtpmap := {"0", {"PCMU", "8000", omit} } } );
+            f_append_media_attribute(vc_sdp_local, { rtpmap := {"18", {"G729", "8000", omit} } } );
+            f_append_media_attribute(vc_sdp_local, { rtpmap := {"4", {"G723", "8000", omit} } } );
+            f_append_media_attribute(vc_sdp_local, { rtpmap := {"96", {"AMR", "8000", omit} } } );
+            f_append_media_attribute(vc_sdp_local, { rtpmap := {"97", {"telephone-event", "8000", omit} } } );
+            f_append_media_attribute(vc_sdp_local, { fmtp := { "97", { unstructured := "0-15" } } } );
+            f_append_media_attribute(vc_sdp_local, { sendrecv := { } } );
+            } // c_userProfile_Huawei
+        } // End of 'select' statement
+
+        log("<<< f_init_sdp_userprofile: p_loc_SDP= ", p_loc_SDP);
+        } // End of function f_init_sdp_userprofile
+        
+        /*
+        *
+        * @desc sets user parameters with PIXIT values
+        * @param p_user identifies the selected user configuration and location
+        * @verdict
+        */
+        function f_init_userprofile(
+                                    in integer p_user
+                                    ) runs on ImsComponent {
+
+        select(p_user){
+            case (c_userProfile_UE1atSUThome) { //variant c_userProfile_UE1atSUThome
+            vc_userprofile.id := p_user;
+            vc_userprofile.currPort := PX_IMS_TS_UE1_PORT;
+            vc_userprofile.currIpaddr := PX_IMS_TS_UE1_IPADDR;
+            vc_userprofile.contactPort := PX_IMS_TS_UE1_PORT;
+            vc_userprofile.contactIpaddr := PX_IMS_TS_UE1_IPADDR;
+            vc_userprofile.bearerIpaddr := PX_IMS_SUT_UE1_BEARER_IPADDR;
+            vc_userprofile.homeDomain := PX_IMS_SUT_UE1_HOME_DOMAIN;
+            vc_userprofile.publUsername := PX_IMS_SUT_UE1_PUBLIC_USER;
+            vc_userprofile.qop := PX_IMS_SUT_UE1_QOP;
+            vc_userprofile.privUsername := PX_IMS_SUT_UE1_PRIVAT_USERNAME;
+            vc_userprofile.passwd := PX_IMS_SUT_UE1_PRIVAT_PASSWD;
+            vc_userprofile.registrarDomain := PX_IMS_SUT_UE1_REGISTRAR;
+            }
+        } // End of 'select' statement
+
+        } // End of function f_init_userprofile
+
+        function f_initSipUrlFromCharstring(charstring p_uri) return SipUrl {
+        var charstring v_scheme     := regexp(p_uri, charstring:"(sip[s]#(0,1)):([^@\\s]+)@?+", 0);
+        var charstring v_user       := regexp(p_uri, charstring:"(sip[s]#(0,1)):([^@\\s]+)@?+", 1);
+        var charstring v_host_port  := regexp(p_uri, charstring:"(sip[s]#(0,1)):([^@\\s]+)@(?+)", 2);
+        var charstring v_host       := "";
+        var charstring v_port       := "";
+
+        template charstring t_has_port := pattern "?+:?+";
+        if (match(v_host_port,t_has_port)) {
+            v_host := regexp(v_host_port, charstring:"(?+):(?+)",0);
+            v_port := regexp(v_host_port, charstring:"(?+):(?+)",1);
+        } else {
+            v_host := v_host_port;
+            v_port := "5060";
+        }
+
+        var SipUrl p_sipUrl := {
+                            scheme := v_scheme,              // contains "sip"
+                            components := {
+                                            sip := {
+                                                    userInfo := {userOrTelephoneSubscriber:=v_user, password:=omit},
+                                                    hostPort := {
+                                                                host := v_host,          // hostname, IPv4 or IPv6
+                                                                portField := str2int(v_port)      // represented as an integer
+                                                    }
+                                            }
+                                        },
+                            urlParameters := omit,
+                            headers := omit
+                            };
+
+        return(p_sipUrl)
+        }
+
+        function f_initSipUrl(
+                            in integer p_user
+                            )  return SipUrl {
+        var SipUrl p_sipUrl := {
+                                scheme := c_sipScheme,              // contains "sip"
+                                components := {
+                                                sip := {
+                                                        userInfo := omit,
+                                                        hostPort := {
+                                                                    host := omit,          // hostname, IPv4 or IPv6
+                                                                    portField := omit      // represented as an integer
+                                                        }
+                                                }
+                                                },
+                                urlParameters := omit,
+                                headers := omit
+                                };
+
+        select(p_user) {
+            case (c_userProfile_UE1atSUThome) {
+                    p_sipUrl.components.sip.userInfo := {userOrTelephoneSubscriber:=PX_IMS_SUT_UE1_PUBLIC_USER, password:=omit};
+                    p_sipUrl.components.sip.hostPort := {host := PX_IMS_SUT_UE1_HOME_DOMAIN, portField :=omit}
+                    }
+            case (c_userProfile_UE2atSUThome) {
+                    p_sipUrl.components.sip.userInfo := {userOrTelephoneSubscriber:=PX_IMS_SUT_UE2_PUBLIC_USER, password:=omit};
+                    p_sipUrl.components.sip.hostPort := {host := PX_IMS_SUT_UE2_HOME_DOMAIN, portField :=omit}
+                    }
+            case (c_serviceProfile_EMERGENCY) {
+                    p_sipUrl.components.sip.userInfo := {userOrTelephoneSubscriber:=PX_IMS_SUT_EMERGENCY_SERVICE, password:=omit};
+                    p_sipUrl.components.sip.hostPort := {host := PX_IMS_SUT_EMERGENCY_HOME_DOMAIN, portField :=omit}
+                    }
+            case (c_serviceProfile_SUBSCRIBER) {
+                    p_sipUrl.components.sip.userInfo := { userOrTelephoneSubscriber := PX_IMS_SUT_UE1_PUBLIC_USER, password := omit};
+                    p_sipUrl.components.sip.hostPort := {host := PX_IMS_SUT_UE1_HOME_DOMAIN, portField :=omit}
+                    }
+
+        }; // End of 'select' statement
+
+        return(p_sipUrl)
+        } // End of function f_initSipUrl
+
+
+        function f_initTelUrl(
+                            in charstring p_subscriber
+                            )  return SipUrl {
+        var SipUrl p_sipUrl := {
+                                scheme := c_telScheme,              // contains "tel"
+                                components := {
+                                                tel := {
+                                                        subscriber := p_subscriber
+                                                }
+                                                },
+                                urlParameters := omit,
+                                headers := omit
+                                };
+
+        return(p_sipUrl)
+        } // End of function f_initTelUrl
+
+        function f_initUrnUrl(
+                            in charstring p_namespaceId,
+                            in charstring p_namespaceSpecificString
+                            )  return SipUrl {
+        var SipUrl p_sipUrl := {
+                                scheme := c_urnScheme,              // contains "urn"
+                                components := {
+                                                urn := {
+                                                        namespaceId := p_namespaceId,
+                                                        namespaceSpecificString := p_namespaceSpecificString
+                                                }
+                                                },
+                                urlParameters := omit,
+                                headers := omit
+                                };
+
+        return(p_sipUrl)
+        } // End of function f_initUrnUrl
+
+        /*
+        * @desc sets user parameters with PIXIT values
+        * @param p_user identifies the selected user configuration and location
+        * @verdict
+        */
+        function f_init_interfaceprofile(
+                                        in integer p_interface
+                                        ) runs on ImsComponent {
+
+        vc_sent_label := { host := PX_IMS_SUT_UE_IPADDR, portField := PX_IMS_SUT_UE_PORT };
+
+                select(p_interface){
+                case (c_interfaceProfile_IMS_SUT_IBCF1) { //variant c_interfaceProfile_IMS_SUT_IBCF1
+                vc_interfaceprofile.SUTPort := PX_IMS_SUT_IBCF1_PORT;
+                vc_interfaceprofile.SUTIpaddr := PX_IMS_SUT_IBCF1_IPADDR;
+                vc_interfaceprofile.SUTHomeDomain := PX_IMS_SUT_IBCF1_HOME_DOMAIN;
+                }
+                case (c_interfaceProfile_IMS_SUT_IBCF2) { //variant c_interfaceProfile_IMS_SUT_IBCF2
+                vc_interfaceprofile.SUTPort := PX_IMS_SUT_IBCF2_PORT;
+                vc_interfaceprofile.SUTIpaddr := PX_IMS_SUT_IBCF2_IPADDR;
+                vc_interfaceprofile.SUTHomeDomain := PX_IMS_SUT_IBCF2_HOME_DOMAIN;
+                }
+                case (c_interfaceProfile_IMS_SUT_PCSCF1) { //variant c_interfaceProfile_IMS_SUT_PCSCF1
+                vc_interfaceprofile.SUTPort := PX_IMS_SUT_PCSCF1_PORT;
+                vc_interfaceprofile.SUTIpaddr := PX_IMS_SUT_PCSCF1_IPADDR;
+                vc_interfaceprofile.SUTHomeDomain := PX_IMS_SUT_PCSCF1_HOME_DOMAIN;
+                }
+                case (c_interfaceProfile_IMS_SUT_PCSCF2) { //variant c_interfaceProfile_IMS_SUT_PCSCF2
+                vc_interfaceprofile.SUTPort := PX_IMS_SUT_PCSCF2_PORT;
+                vc_interfaceprofile.SUTIpaddr := PX_IMS_SUT_PCSCF2_IPADDR;
+                vc_interfaceprofile.SUTHomeDomain := PX_IMS_SUT_PCSCF2_HOME_DOMAIN;
+                }
+                case (c_interfaceProfile_IMS_SUT_PCSCF) { //variant c_interfaceProfile_IMS_SUT_PCSCF
+                vc_interfaceprofile.SUTPort := PX_IMS_SUT_PCSCF_PORT;
+                vc_interfaceprofile.SUTIpaddr := PX_IMS_SUT_PCSCF_IPADDR;
+                vc_interfaceprofile.SUTHomeDomain := PX_IMS_SUT_PCSCF_HOME_DOMAIN;
+                }
+                case (c_interfaceProfile_IMS_SUT_SCSCF) { //variant c_interfaceProfile_IMS_SUT_SCSCF
+                vc_interfaceprofile.SUTPort := PX_IMS_SUT_SCSCF_PORT;
+                vc_interfaceprofile.SUTIpaddr := PX_IMS_SUT_SCSCF_IPADDR;
+                vc_interfaceprofile.SUTHomeDomain := PX_IMS_SUT_SCSCF_HOME_DOMAIN;
+                }
+                case (c_interfaceProfile_IMS_SUT_ICSCF) { //variant c_interfaceProfile_IMS_SUT_ICSCF
+                vc_interfaceprofile.SUTPort := PX_IMS_SUT_ICSCF_PORT;
+                vc_interfaceprofile.SUTIpaddr := PX_IMS_SUT_ICSCF_IPADDR;
+                vc_interfaceprofile.SUTHomeDomain := PX_IMS_SUT_ICSCF_HOME_DOMAIN;
+                }
+                case (c_interfaceProfile_IMS_SUT_MGCF) { //variant c_interfaceProfile_IMS_SUT_MGCF
+                vc_interfaceprofile.SUTPort := PX_IMS_SUT_IMGCF_PORT;
+                vc_interfaceprofile.SUTIpaddr := PX_IMS_SUT_IMGCF_IPADDR;
+                vc_interfaceprofile.SUTHomeDomain := PX_IMS_SUT_IMGCF_HOME_DOMAIN;
+                }
+                case (c_interfaceProfile_IMS_SUT_AS) { //variant c_interfaceProfile_IMS_SUT_AS
+                vc_interfaceprofile.SUTPort := PX_IMS_SUT_AS_PORT;
+                vc_interfaceprofile.SUTIpaddr := PX_IMS_SUT_AS_IPADDR;
+                vc_interfaceprofile.SUTHomeDomain := PX_IMS_SUT_AS_HOME_DOMAIN;
+                }
+            }
+        } // End of function f_init_interfaceprofile
+
+    } // End of group globalSteps
+
+} // End of module AtsSccas_Steps
