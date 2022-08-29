@@ -34,25 +34,229 @@ module AtsSccas_TCFunctions_TS124292 {
          *  @param    p_cSeq_s
          */
         function f_TC_ISC_SCCAS_MSC_REG_01(in CSeq p_cSeq_s) runs on ImsComponent {
-
+            // Local variables
             var template REGISTER_Request v_register;
 
-            v_register := valueof(m_REGISTER_Request_Base(vc_requestUri,
-            vc_callId, p_cSeq_s, vc_from, vc_to, vc_via_REG, vc_contact,
-            vc_authorization));
-            
+            // Preambule
+            v_register := valueof(
+                                  m_REGISTER_Request_Base(
+                                                          vc_requestUri,
+                                                          vc_callId, p_cSeq_s, vc_from, vc_to, vc_via_REG, vc_contact,
+                                                          vc_authorization
+                                  ));
             f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
             // Registration
 
             f_selfOrClientSyncAndVerdict(c_tbDone, f_getVerdict()); // sync
 
-            // deregistration
+            // Deregistration
             
             f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
         } // End of function f_TC_ISC_SCCAS_RSC_REG_01
         
+        /*
+         *  @desc     This is the test case function for TC_ISC_SCCAS_MSC_REG_02
+         *  @param    p_cSeq_s
+         */
+        function f_TC_ISC_SCCAS_MSC_REG_02(in CSeq p_cSeq_s) runs on ImsComponent {
+            // Local variables
+            var template REGISTER_Request v_register;
+
+            // Preambule
+            v_register := valueof(
+                                  m_REGISTER_Request_Base(
+                                                          vc_requestUri,
+                                                          vc_callId, p_cSeq_s, vc_from, vc_to, vc_via_REG, vc_contact,
+                                                          vc_authorization
+                                  ));
+            f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+
+            // Registration
+
+            f_selfOrClientSyncAndVerdict(c_tbDone, f_getVerdict()); // sync
+
+            // Deregistration
+            
+            f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+
+        } // End of function f_TC_ISC_SCCAS_RSC_REG_02
+        
      } // End of group isc_registration
      
+    group isc_subscribe {
+
+        /*
+         *  @desc     This is the test case function for TC_ISC_SCCAS_MSC_SUB_01
+         *  @param    p_cSeq_s
+         */
+        function f_TC_ISC_SCCAS_MSC_SUB_01(in CSeq p_cSeq_s) runs on ImsComponent {
+            // Local variables
+            var template REGISTER_Request v_register;
+
+            // Preambule
+            v_register := valueof(
+                                  m_REGISTER_Request_Base(
+                                                          vc_requestUri,
+                                                          vc_callId, p_cSeq_s, vc_from, vc_to, vc_via_REG, vc_contact,
+                                                          vc_authorization
+                                  ));
+            f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+
+            // Registration
+
+            f_selfOrClientSyncAndVerdict(c_tbDone, f_getVerdict()); // sync
+
+            // Deregistration
+            
+            f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+
+        } // End of function f_TC_ISC_SCCAS_RSC_SUB_01
+        
+        /*
+         *  @desc     This is the test case function for TC_ISC_SCCAS_MSC_SUB_02
+         *  @param    p_cSeq_s
+         */
+        function f_TC_ISC_SCCAS_MSC_SUB_02(in CSeq p_cSeq_s) runs on ImsComponent {
+            // Local variables
+            var template REGISTER_Request v_register;
+
+            // Preambule
+            v_register := valueof(
+                                  m_REGISTER_Request_Base(
+                                                          vc_requestUri,
+                                                          vc_callId, p_cSeq_s, vc_from, vc_to, vc_via_REG, vc_contact,
+                                                          vc_authorization
+                                  ));
+            f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+
+            // Registration
+
+            f_selfOrClientSyncAndVerdict(c_tbDone, f_getVerdict()); // sync
+
+            // Deregistration
+            
+            f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+
+        } // End of function f_TC_ISC_SCCAS_RSC_SUB_02
+        
+    } // End of isc_subscribe
+    
+    group isc_reregistration {
+
+        /*
+         *  @desc     This is the test case function for TC_ISC_SCCAS_MSC_REREG_01
+         *  @param    p_cSeq_s
+         */
+        function f_TC_ISC_SCCAS_MSC_REREG_01(in CSeq p_cSeq_s) runs on ImsComponent {
+            // Local variables
+            var template REGISTER_Request v_register;
+
+            // Preambule
+            v_register := valueof(
+                                  m_REGISTER_Request_Base(
+                                                          vc_requestUri,
+                                                          vc_callId, p_cSeq_s, vc_from, vc_to, vc_via_REG, vc_contact,
+                                                          vc_authorization
+                                  ));
+            f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+
+            // Registration
+
+            f_selfOrClientSyncAndVerdict(c_tbDone, f_getVerdict()); // sync
+
+            // Deregistration
+            
+            f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+
+        } // End of function f_TC_ISC_SCCAS_RSC_REREG_01
+        
+        /*
+         *  @desc     This is the test case function for TC_ISC_SCCAS_MSC_REREG_02
+         *  @param    p_cSeq_s
+         */
+        function f_TC_ISC_SCCAS_MSC_REREG_02(in CSeq p_cSeq_s) runs on ImsComponent {
+            // Local variables
+            var template REGISTER_Request v_register;
+
+            // Preambule
+            v_register := valueof(
+                                  m_REGISTER_Request_Base(
+                                                          vc_requestUri,
+                                                          vc_callId, p_cSeq_s, vc_from, vc_to, vc_via_REG, vc_contact,
+                                                          vc_authorization
+                                  ));
+            f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+
+            // Registration
+
+            f_selfOrClientSyncAndVerdict(c_tbDone, f_getVerdict()); // sync
+
+            // Deregistration
+            
+            f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+
+        } // End of function f_TC_ISC_SCCAS_RSC_REREG_02
+        
+    } // End of isc_reregistration
+    
+    group call_origination {
+
+        /*
+         *  @desc     This is the test case function for TC_ISC_SCCAS_MSC_CALL_ORG_01
+         *  @param    p_cSeq_s
+         */
+        function f_TC_ISC_SCCAS_MSC_CALL_ORG_01(in CSeq p_cSeq_s) runs on ImsComponent {
+            // Local variables
+            var template REGISTER_Request v_register;
+
+            // Preambule
+            v_register := valueof(
+                                  m_REGISTER_Request_Base(
+                                                          vc_requestUri,
+                                                          vc_callId, p_cSeq_s, vc_from, vc_to, vc_via_REG, vc_contact,
+                                                          vc_authorization
+                                  ));
+            f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+
+            // Registration
+
+            f_selfOrClientSyncAndVerdict(c_tbDone, f_getVerdict()); // sync
+
+            // Deregistration
+            
+            f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+
+        } // End of function f_TC_ISC_SCCAS_RSC_CALL_ORG_01
+        
+        /*
+         *  @desc     This is the test case function for TC_ISC_SCCAS_MSC_CALL_ORG_02
+         *  @param    p_cSeq_s
+         */
+        function f_TC_ISC_SCCAS_MSC_CALL_ORG_02(in CSeq p_cSeq_s) runs on ImsComponent {
+            // Local variables
+            var template REGISTER_Request v_register;
+
+            // Preambule
+            v_register := valueof(
+                                  m_REGISTER_Request_Base(
+                                                          vc_requestUri,
+                                                          vc_callId, p_cSeq_s, vc_from, vc_to, vc_via_REG, vc_contact,
+                                                          vc_authorization
+                                  ));
+            f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+
+            // Registration
+
+            f_selfOrClientSyncAndVerdict(c_tbDone, f_getVerdict()); // sync
+
+            // Deregistration
+            
+            f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+
+        } // End of function f_TC_ISC_SCCAS_RSC_CALL_ORG_02
+        
+    } // End of call_origination
+    
 } // End of module AtsSccas_TCFunctions_TS124292

@@ -18,7 +18,7 @@ module AtsSccas_Testcases_TS124292
     //AtsIms
     import from AtsSccas_TestConfiguration all;
     import from AtsSccas_TestSystem all;
-    import from AtsSccas_TCFunctions all;
+    import from AtsSccas_TCFunctions_TS124292 all;
     import from AtsSccas_PICS all;
 
     group isc_registration {
@@ -28,20 +28,229 @@ module AtsSccas_Testcases_TS124292
          * @param p_cSeq_s Transaction Id
          */
         testcase TC_ISC_SCCAS_MSC_REG_01(inout CSeq p_cSeq_s) runs on ServerSyncComp system TestAdapter {
-            //Variables
+            // Local variables
             var ImsComponent v_imsComponent_ueims;
+            
+            // Test control
+            if (not PICS_MSC_GM) {
+                log("*** " & __SCOPE__ & ": ERROR: 'PICS_MSC_GM' shall be set to true for executing the TC. ***"); 
+                stop;
+            }
+
+            // Test component configuration
             f_cf_1IscUp(v_imsComponent_ueims);
 
-            //Start
+            // Start
             f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_MSC_REG_01(p_cSeq_s));
 
-            // synchronize both PTCs on 3 sychronization points
+            // Synchronize both PTCs on 3 sychronization points
             f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
 
             f_cf_1IscDown(v_imsComponent_ueims);
 
         } // End of TC_ISC_SCCAS_MSC_REG_01
-          
+        
+        /*
+         * @desc Verify that the MSC successfully register to the IM CN Subsystem
+         * @param p_cSeq_s Transaction Id
+         */
+        testcase TC_ISC_SCCAS_MSC_REG_02(inout CSeq p_cSeq_s) runs on ServerSyncComp system TestAdapter {
+            // Local variables
+            var ImsComponent v_imsComponent_ueims;
+            
+            // Test control
+            if (not PICS_MSC_GM) {
+                log("*** " & __SCOPE__ & ": ERROR: 'PICS_MSC_GM' shall be set to true for executing the TC. ***"); 
+                stop;
+            }
+
+            // Test component configuration
+            f_cf_1IscUp(v_imsComponent_ueims);
+
+            // Start
+            f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_MSC_REG_02(p_cSeq_s));
+
+            // Synchronize both PTCs on 3 sychronization points
+            f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+            f_cf_1IscDown(v_imsComponent_ueims);
+
+        } // End of TC_ISC_SCCAS_MSC_REG_02
+        
      } // End of isc_registration
 
+    group isc_subscribe {
+        
+        /*
+         * @desc Verify that the MSC successfully subscribe to the IM CN Subsystem
+         * @param p_cSeq_s Transaction Id
+         */
+        testcase TC_ISC_SCCAS_MSC_SUB_01(inout CSeq p_cSeq_s) runs on ServerSyncComp system TestAdapter {
+            // Local variables
+            var ImsComponent v_imsComponent_ueims;
+            
+            // Test control
+            if (not PICS_MSC_GM) {
+                log("*** " & __SCOPE__ & ": ERROR: 'PICS_MSC_GM' shall be set to true for executing the TC. ***"); 
+                stop;
+            }
+
+            // Test component configuration
+            f_cf_1IscUp(v_imsComponent_ueims);
+
+            // Start
+            f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_MSC_SUB_01(p_cSeq_s));
+
+            // Synchronize both PTCs on 3 sychronization points
+            f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+            f_cf_1IscDown(v_imsComponent_ueims);
+
+        } // End of TC_ISC_SCCAS_MSC_SUB_01
+        
+        /*
+         * @desc Verify that the MSC receive NOTIFY on successfully subscription to the IM CN Subsystem
+         * @param p_cSeq_s Transaction Id
+         */
+        testcase TC_ISC_SCCAS_MSC_SUB_02(inout CSeq p_cSeq_s) runs on ServerSyncComp system TestAdapter {
+            // Local variables
+            var ImsComponent v_imsComponent_ueims;
+            
+            // Test control
+            if (not PICS_MSC_GM) {
+                log("*** " & __SCOPE__ & ": ERROR: 'PICS_MSC_GM' shall be set to true for executing the TC. ***"); 
+                stop;
+            }
+
+            // Test component configuration
+            f_cf_1IscUp(v_imsComponent_ueims);
+
+            // Start
+            f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_MSC_SUB_02(p_cSeq_s));
+
+            // Synchronize both PTCs on 3 sychronization points
+            f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+            f_cf_1IscDown(v_imsComponent_ueims);
+
+        } // End of TC_ISC_SCCAS_MSC_SUB_02
+        
+    } // End of group isc_subscribe
+    
+    group isc_reregistration {
+        
+        /*
+         * @desc Verify that the MSC successfully re-register to the IM CN Subsystem
+         * @param p_cSeq_s Transaction Id
+         */
+        testcase TC_ISC_SCCAS_MSC_REREG_01(inout CSeq p_cSeq_s) runs on ServerSyncComp system TestAdapter {
+            // Local variables
+            var ImsComponent v_imsComponent_ueims;
+            
+            // Test control
+            if (not PICS_MSC_GM) {
+                log("*** " & __SCOPE__ & ": ERROR: 'PICS_MSC_GM' shall be set to true for executing the TC. ***"); 
+                stop;
+            }
+
+            // Test component configuration
+            f_cf_1IscUp(v_imsComponent_ueims);
+
+            // Start
+            f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_MSC_REREG_01(p_cSeq_s));
+
+            // Synchronize both PTCs on 3 sychronization points
+            f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+            f_cf_1IscDown(v_imsComponent_ueims);
+
+        } // End of TC_ISC_SCCAS_MSC_REREG_01
+        
+        /*
+         * @desc Verify that the MSC successfully register to the IM CN Subsystem
+         * @param p_cSeq_s Transaction Id
+         */
+        testcase TC_ISC_SCCAS_MSC_REREG_02(inout CSeq p_cSeq_s) runs on ServerSyncComp system TestAdapter {
+            // Local variables
+            var ImsComponent v_imsComponent_ueims;
+            
+            // Test control
+            if (not PICS_MSC_GM) {
+                log("*** " & __SCOPE__ & ": ERROR: 'PICS_MSC_GM' shall be set to true for executing the TC. ***"); 
+                stop;
+            }
+
+            // Test component configuration
+            f_cf_1IscUp(v_imsComponent_ueims);
+
+            // Start
+            f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_MSC_REREG_02(p_cSeq_s));
+
+            // Synchronize both PTCs on 3 sychronization points
+            f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+            f_cf_1IscDown(v_imsComponent_ueims);
+
+        } // End of TC_ISC_SCCAS_MSC_REREG_02
+        
+    } // End of group isc_reregistration
+    
+    group call_origination {
+        
+        /*
+         * @desc Verify that the MSC successfully sends INVITE to the IM CN Subsystem
+         * @param p_cSeq_s Transaction Id
+         */
+        testcase TC_ISC_SCCAS_MSC_CALL_ORG_01(inout CSeq p_cSeq_s) runs on ServerSyncComp system TestAdapter {
+            // Local variables
+            var ImsComponent v_imsComponent_ueims;
+            
+            // Test control
+            if (not PICS_MSC_GM) {
+                log("*** " & __SCOPE__ & ": ERROR: 'PICS_MSC_GM' shall be set to true for executing the TC. ***"); 
+                stop;
+            }
+
+            // Test component configuration
+            f_cf_1IscUp(v_imsComponent_ueims);
+
+            // Start
+            f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_MSC_CALL_ORG_01(p_cSeq_s));
+
+            // Synchronize both PTCs on 3 sychronization points
+            f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+            f_cf_1IscDown(v_imsComponent_ueims);
+
+        } // End of TC_ISC_SCCAS_MSC_CALL_ORG_01
+        
+        /*
+         * @desc Verify that the MSC successfully sends INVITE to the IM CN Subsystem
+         * @param p_cSeq_s Transaction Id
+         */
+        testcase TC_ISC_SCCAS_MSC_CALL_ORG_02(inout CSeq p_cSeq_s) runs on ServerSyncComp system TestAdapter {
+            // Local variables
+            var ImsComponent v_imsComponent_ueims;
+            
+            // Test control
+            if (not PICS_MSC_GM) {
+                log("*** " & __SCOPE__ & ": ERROR: 'PICS_MSC_GM' shall be set to true for executing the TC. ***"); 
+                stop;
+            }
+
+            // Test component configuration
+            f_cf_1IscUp(v_imsComponent_ueims);
+
+            // Start
+            f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_MSC_CALL_ORG_02(p_cSeq_s));
+
+            // Synchronize both PTCs on 3 sychronization points
+            f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+            f_cf_1IscDown(v_imsComponent_ueims);
+
+        } // End of TC_ISC_SCCAS_MSC_CALL_ORG_02
+        
+    } // End of group call_origination
+    
 } // End of module AtsSccas_Testcases_TS124292
