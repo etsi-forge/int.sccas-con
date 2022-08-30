@@ -282,7 +282,7 @@ Package TP_SCCAS {
     	
     	 
     	Test Purpose {
-    		TP Id TP_ISC_SCCAS_CPT_INV_05
+    		TP Id TP_ISC_SCCAS_CPT_INV_03
             	
         	Test objective "Verify that the SCC AS Conditions for selecting a sessions in an early dialog phase"
         	
@@ -1061,6 +1061,79 @@ Package TP_SCCAS {
             } // end TP_ISC_SCCAS_MED_RIN_01
             
     } // end Group "9.3.6 Removal of non-transferred audio media components and release of source access legs"
+    
+    
+    Group "9.3.7 SCC AS procedures for CS to PS dual radio access transfer for calls in an early phase"
+    {
+    	
+    	Group "9.3.7.2 SCC AS procedures for CS to PS dual radio access transfer for originating calls in pre-alerting phase or in alerting phase on the originating side"
+    	{
+    		
+    		import all from Sip_Common;
+    		
+    		Test Purpose {
+            	
+            TP Id TP_ISC_SCCAS_xxx_yyy_01  
+            
+         
+        
+        	Test objective  "Verify that ..."
+        
+        	Reference 
+            "ETSI TS 124 237 [1], Clauses 9.3.7.2." 
+        
+        	Config Id CFG_SCCAS_01
+        
+       	 	PICS Selection NONE  // TODO
+        
+        	Initial conditions with {
+            	the UE entity isRegisteredTo the IMS 
+        
+        	}
+        	
+        	Expected behaviour
+            	ensure that {
+                	when {                 
+                    	the IUT entity receives an r_180_Ringing 
+                    	
+                       
+                        
+                    from the IMS_S_CSCF entity
+                }                    	             	
+              	then {
+                    	the IUT entity sends an UPDATE containing 
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+                        ContentType indicating value "application/sdp",
+                        ContentLength,
+                        MessageBody containing
+                            SDP containing
+                                Media indicating value "TODO: the source access leg contains media components other than speech media component";;;
+                    to the IMS_S_CSCF entity
+                    }
+                }
+        	
+        	
+        	}
+    	} // end Group 9.3.7.2 SCC AS procedures for CS to PS dual radio access transfer for originating calls in pre-alerting phase or in alerting phase on the originating side"
+    	
+    	
+    	Group "9.3.7.3 SCC AS procedures for CS to PS dual radio access transfer for a call in the alerting phase on the terminating side"
+    	{
+    		
+    	} // end Group"9.3.7.3 SCC AS procedures for CS to PS dual radio access transfer for a call in the alerting phase on the terminating side
+    
+    	
+    	Group "9.3.7.4 SCC AS procedures for PS to CS dual radio access transfer of an additional session in an early dialog phase"
+    	{
+    		
+    	} // end Group 9.3.7.4 SCC AS procedures for PS to CS dual radio access transfer of an additional session in an early dialog phase
+    	
+    	
+    } // end Group 9.3.7 SCC AS procedures for CS to PS dual radio access transfer for calls in an early phase
     
 } // End of Package TP_SCCAS
 
