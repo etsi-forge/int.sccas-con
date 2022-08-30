@@ -284,7 +284,7 @@ Package TP_SCCAS {
     	Test Purpose {
     		TP Id TP_ISC_SCCAS_CPT_INV_03
             	
-        	Test objective "Verify that the SCC AS applys the MSC Server assisted mid-call"
+        	Test objective "Verify that the SCC AS Conditions for selecting a sessions in an early dialog phase"
         	
         	Reference 
             "ETSI TS 124 237 [1], Clauses 9.3.4 and 6A.4.3" 
@@ -308,7 +308,7 @@ Package TP_SCCAS {
                         Via indicating value PX_UE_A_VIA,
                         Route indicating value PX_UE_A_SERVICE_ROUTE,
                         Contact containing 
-                            g3gppMidcallMediaFeature Tag;;
+                            g3gppSrvccAlertingFeatureCapabilityIndicator Tag;;
                         
                     from the IMS_S_CSCF entity
                 }                    	             	
@@ -319,7 +319,8 @@ Package TP_SCCAS {
                         CallId indicating value PX_UE_A_CALLID,
                         Via indicating value PX_UE_A_VIA,
                         Route indicating value PX_UE_A_SERVICE_ROUTE,
-                        FeatureCaps containing g3gppMidcallMediaFeature;;  // 6A.4.3
+                        FeatureCaps containing 
+                        	g3gppMidcallFeatureCapabilityIndicator;;  
 		                
                     to the IMS_S_CSCF entity
                     }
@@ -335,6 +336,65 @@ Package TP_SCCAS {
     
     Group "9.3.5 SCC AS procedures for PS to CS dual radio access transfer of calls in an early dialog phase"
     {
+    	
+    	Group "9.3.5.1 Conditions for selecting a sessions in an early dialog phase"
+    	{
+    		import all from Sip_Common;
+    		
+    		
+    		Test Purpose {
+	    		TP Id TP_ISC_SCCAS_CPT_INV_04
+	            	
+	            // An early session is subject for PS to CS dual radio access transfer when one of the following conditions is fulfilled:
+	            // d. the Contact header field provided by the SC UE towards the SCC AS in the initial SIP INVITE request
+				// included the g.3gpp.drvcc-alerting media feature tag field as described in annex C; 
+				
+	        	Test objective "Verify that the SCC AS accepts conditions in an early dialog phase"
+	        	
+	        	Reference 
+	            "ETSI TS 124 237 [1], Clauses 9.3.5.1" 
+	        
+	        	Config Id CFG_SCCAS_01
+	        
+	       	 	PICS Selection NONE  // TODO
+	       	 	
+	       	 	Initial conditions with {
+	       	 		the UE entity isRegisteredTo the IMS
+	       	 		// TODO: SCC AS supports the MSC Server g.3gpp.drvcc-alerting feature 
+	       	 	}
+	       	 	
+	       	 	Expected behaviour
+	            	ensure that {
+	                	when {                      	     
+	                    	the IUT entity receives an INVITE containing
+	                        From indicating value PX_UE_A_SIP_URI,
+	                        To indicating value PX_UE_B_SIP_URI,
+	                        CallId indicating value PX_UE_A_CALLID,
+	                        Via indicating value PX_UE_A_VIA,
+	                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+	                        Contact containing 
+                            	g3gppDrvccAlertingFeature tag;; //Annex C.15
+	                    from the IMS_S_CSCF entity
+	                }                    	             	
+	              	then {
+	                    	the IUT entity sends an r_2xx_Any containing
+	                        From indicating value PX_UE_A_SIP_URI,
+	                        To indicating value PX_UE_B_SIP_URI,
+	                        CallId indicating value PX_UE_A_CALLID,
+	                        Via indicating value PX_UE_A_VIA,
+	                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+	                        FeatureCaps containing 
+	                        	g3gppDrvccAlertingFeatureCapabilityIndicator;;  
+	                    to the IMS_S_CSCF entity
+	                    }
+	                    
+	               }
+	       	 	
+	    	} // end TP TP_ISC_SCCAS_CPT_INV_04
+    	} // end group 9.3.5.1 Conditions for selecting a sessions in an early dialog phase
+    	
+    	
+    	
     	Group "9.3.5.2 SCC AS procedures for PS to CS dual radio access transfer of a originating session in the alerting phase"
     	{
     		
