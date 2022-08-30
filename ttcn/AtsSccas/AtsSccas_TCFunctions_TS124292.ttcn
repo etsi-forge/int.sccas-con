@@ -27,7 +27,9 @@ module AtsSccas_TCFunctions_TS124292 {
 
     // AtsSccas
     // import from AtsSccas_TestSystem all;
-    import from AtsSccas_PICS all;
+    import from AtsSccas_Templates all;
+     import from AtsSccas_Steps all;
+   import from AtsSccas_PICS all;
     import from AtsSccas_PIXITS all;
 
     group isc_registration {
@@ -38,26 +40,33 @@ module AtsSccas_TCFunctions_TS124292 {
          */
         function f_TC_ISC_SCCAS_MSC_REG_01(in CSeq p_cSeq_s) runs on ImsComponent {
             // Local variables
-            var template REGISTER_Request v_register;
+            var CSeq v_cSeq_s;
 
             // Preambule
-            v_register := valueof(
-                                  m_REGISTER_Request_Base(
-                                                          vc_requestUri,
-                                                          vc_callId, 
-                                                          p_cSeq_s, 
-                                                          vc_from, vc_to, vc_via_REG, 
-                                                          vc_contact,
-                                                          vc_authorization
-                                  ));
+            f_init_userprofile(c_userProfile_UE1atSUThome);
+            f_initSipUrl(c_serviceProfile_EMERGENCY);
+            f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
             f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
             // Registration
-
+            f_awaitingRegistration_IMS(
+                                       v_cSeq_s, 
+                                       valueof(m_SipUrl_currDomain(vc_userprofile)),
+                                       PX_IMS_SUT_UE1_QOP,
+                                       mw_msc_register(
+                                                       -, -, -, -, 
+                                                       mw_Authorization_digest(
+                                                                               mw_digestResponse(
+                                                                                                 (
+                                                                                                  {"username", {tokenOrHost := PX_IMS_SUT_UE1_PRIVAT_USERNAME}}, 
+                                                                                                  c_Integrity_protected_yes, 
+                                                                                                  c_Integrity_protected_ip_assoc_pending
+                                                                                                  )
+                                       ))));
             f_selfOrClientSyncAndVerdict(c_tbDone, f_getVerdict()); // sync
 
             // Deregistration
-            
+            f_IMS_postamble_withDeRegistration(p_cSeq_s);
             f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
         } // End of function f_TC_ISC_SCCAS_MSC_REG_01
