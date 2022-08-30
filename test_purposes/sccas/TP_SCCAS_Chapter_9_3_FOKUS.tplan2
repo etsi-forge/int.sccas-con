@@ -278,6 +278,56 @@ Package TP_SCCAS {
     
     Group "9.3.4 SCC AS procedures for CS to PS access transfer with MSC server assisted mid-call feature"
     {
+    	import all from Sip_Common;
+    	
+    	 
+    	Test Purpose {
+    		TP Id TP_ISC_SCCAS_CPT_INV_03
+            	
+        	Test objective "Verify that the SCC AS applys the MSC Server assisted mid-call"
+        	
+        	Reference 
+            "ETSI TS 124 237 [1], Clauses 9.3.4 and 6A.4.3" 
+        
+        	Config Id CFG_SCCAS_01
+        
+       	 	PICS Selection NONE  // TODO
+       	 	
+       	 	Initial conditions with {
+       	 		the UE entity isRegisteredTo the IMS
+       	 		// TODO: SCC AS supports the MSC Server assisted mid-call feature according to operator policy 
+       	 	}
+       	 	
+       	 	Expected behaviour
+            	ensure that {
+                	when {                      	     
+                    	the IUT entity receives an INVITE containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+                        Contact containing 
+                            g3gppMidcallMediaFeature Tag;;
+                        
+                    from the IMS_S_CSCF entity
+                }                    	             	
+              	then {
+                    	the IUT entity sends an r_2xx_Any containing
+                        From indicating value PX_UE_A_SIP_URI,
+                        To indicating value PX_UE_B_SIP_URI,
+                        CallId indicating value PX_UE_A_CALLID,
+                        Via indicating value PX_UE_A_VIA,
+                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+                        FeatureCaps containing g3gppMidcallMediaFeature;;  // 6A.4.3
+		                
+                    to the IMS_S_CSCF entity
+                    }
+                    
+               }
+       	 	
+    	} // end TP TP_ISC_SCCAS_CPT_INV_03
+    	
     	
 
     	
