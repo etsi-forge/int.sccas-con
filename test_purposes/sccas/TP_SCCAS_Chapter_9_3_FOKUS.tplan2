@@ -282,7 +282,7 @@ Package TP_SCCAS {
     	
     	 
     	Test Purpose {
-    		TP Id TP_ISC_SCCAS_CPT_INV_03
+    		TP Id TP_ISC_SCCAS_CPT_INV_05
             	
         	Test objective "Verify that the SCC AS Conditions for selecting a sessions in an early dialog phase"
         	
