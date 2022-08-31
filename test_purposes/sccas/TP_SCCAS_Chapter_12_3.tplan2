@@ -356,10 +356,141 @@ Package TP_SCCAS_Chapter_12_3 {
     } // end Group "12.3.3 SCC AS procedures for PS to CS SRVCC, abnormal case"
     
     Group "12.3.4 SCC AS procedures for PS to CS access transfer when call is in alerting phase or pre-alerting phase"{
+    	 	
+    	Group "12.3.4.2 SCC AS procedures for PS to CS access transfer for terminating call in alerting phase or pre-alerting phase using PS to CS SRVCC procedure"
+	    {		
+	    	import all from Sip_Common;	
     	
-    	import all from Sip_Common;	
-    	
-    	
+    		Test Purpose {
+        
+		        TP Id TP_ISC_SCCAS_PCT_INV_01
+		        
+		        Test objective  "Verify that SCC AS correctly recognizes and initiated for PS to CS access transfer for terminating call in pre-alerting phase using PS to CS SRVCC procedure"
+		        
+		        Reference 
+		            "ETSI TS 124 237 [1], Clause 12.3.4.2"
+		        
+		        Config Id CFG_SCCAS_01
+		        
+		        PICS Selection NONE 
+		                
+		        Initial conditions with {
+		            the UE entity isRegisteredTo the IMS 
+		        }
+		        
+		        Expected behaviour
+		            ensure that {
+		            	when {
+		                   the IUT entity receives an INVITE containing
+		                        From indicating value PX_UE_A_SIP_URI,
+		                        To indicating value PX_UE_B_SIP_URI,
+		                        CallId indicating value PX_UE_A_CALLID,
+		                        Via indicating value PX_UE_A_VIA,
+		                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+		                        Contact containing 
+		                        	g3gppps2csSrvccTermPreAlerting;;                          	
+		                    from the IMS_S_CSCF entity
+		                }
+		                then {
+		                	the IUT entity sends a r_183_SessionProgress 
+			                to the IMS_S_CSCF entity 
+	
+			             }    
+		            }
+		    	} // End of TP_ISC_SCCAS_PCT_INV_01		    	
+		    	
+		    } // end Group "12.3.4.2 SCC AS procedures for PS to CS access transfer for terminating call in alerting phase or pre-alerting phase using PS to CS SRVCC procedure"
+	    	
+	    	Group "12.3.4.3 SCC AS procedures for PS to CS access transfer for originating call in alerting phase or pre-alerting phase using PS to CS SRVCC procedure"
+	    	{
+	    		
+	    		import all from Sip_Common;	
+	    	
+		    	Test Purpose {
+	        
+		        TP Id TP_ISC_SCCAS_PCT_INV_02
+		        
+		        Test objective  "Verify that SCC AS correctly recognizes and initiated for PS to CS access transfer for originating call in pre-alerting phase using PS to CS SRVCC procedure"
+		        
+		        Reference 
+		            "ETSI TS 124 237 [1], Clause 12.3.4.3"
+		        
+		        Config Id CFG_SCCAS_01
+		        
+		        PICS Selection NONE 
+		                
+		        Initial conditions with {
+		            the UE entity isRegisteredTo the IMS 
+		        }
+	        
+		        Expected behaviour
+		            ensure that {
+		            	when {
+		                   the IUT entity receives an INVITE containing
+		                        From indicating value PX_UE_A_SIP_URI,
+		                        To indicating value PX_UE_B_SIP_URI,
+		                        CallId indicating value PX_UE_A_CALLID,
+		                        Via indicating value PX_UE_A_VIA,
+		                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+		                        Contact containing 
+		                        	g3gppPs2csSrvccOrigPreAlerting;;                          	
+		                    from the IMS_S_CSCF entity
+		                }
+		                then {
+		                	the IUT entity sends a r_183_SessionProgress  // possible r_18x
+			                to the IMS_S_CSCF entity 
+	
+			             }    
+		            }
+		    	} // End of TP_ISC_SCCAS_PCT_INV_02
+	    		    	
+	    	} // end Group "12.3.4.3 SCC AS procedures for PS to CS access transfer for originating call in alerting phase or pre-alerting phase using PS to CS SRVCC procedure"
+	    	
+	    	Group "12.3.4.4 SCC AS procedures for PS to CS access transfer of additional call"
+	    	{
+	    		
+	    		import all from Sip_Common;	
+	    		
+		    	Test Purpose {
+	        
+		        TP Id TP_ISC_SCCAS_PCT_INV_03
+		        
+		        Test objective  "Verify that SCC AS correctly procedures for PS to CS access transfer of additional call"
+		        
+		        Reference 
+		            "ETSI TS 124 237 [1], Clause 12.3.4.4"
+		        
+		        Config Id CFG_SCCAS_01
+		        
+		        PICS Selection NONE 
+		                
+		        Initial conditions with {
+		            the UE entity isRegisteredTo the IMS  and
+		            the IUT entity hasAchievedInitialINVITE // TODO: INVITE contains: g3gppSrvccAlerting 
+		            // TODO: and more conditions to distinguish subchapter from 12.3.4.2, 12.3.4.3
+		        }
+		        
+		        Expected behaviour
+		            ensure that {
+		            	when {
+		                   the IUT entity receives an r_180_Ringing                    	
+		                   from the IMS_S_CSCF entity
+		                }
+		                then {
+		                	the IUT entity sends an REFER containing
+	                        From indicating value PX_UE_A_SIP_URI,
+	                        To indicating value PX_UE_B_SIP_URI,
+	                        CallId indicating value PX_UE_A_CALLID,
+	                        Via indicating value PX_UE_A_VIA,
+	                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+	                        ReferSub indicating value false,	
+							Supported indicating value "norefersub";
+							to the IMS_S_CSCF entity
+			             }    
+		            }
+		    	} // End of TP TP_ISC_SCCAS_PCT_INV_03
+		    	
+		    } // end Group 12.3.4.4 SCC AS procedures for PS to CS access transfer of additional call
     	
     } // end Group "12.3.4 SCC AS procedures for PS to CS access transfer when call is in alerting phase or pre-alerting phase"
 //    
