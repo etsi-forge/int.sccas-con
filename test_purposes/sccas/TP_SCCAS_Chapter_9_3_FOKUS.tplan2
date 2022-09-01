@@ -1263,7 +1263,7 @@ Package TP_SCCAS {
 			//			c) if a SIP 180 (Ringing) response to the INVITE request has already been received on the source access leg,
 			//			the state-info XML element containing "early" and the direction XML element containing "receiver"
     		
-    		 TP Id TP_ISC_SCCAS_CPT_INV_06
+    		 TP Id TP_ISC_SCCAS_PCT_INV_06
 	            
 	            Test objective "Verify that SCC AS correctly recognizes and initiated procedures for PS to CS dual radio access transfer of an additional session in an early dialog phase "
 	        
