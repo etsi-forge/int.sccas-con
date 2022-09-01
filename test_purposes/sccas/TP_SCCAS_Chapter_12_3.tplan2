@@ -723,7 +723,7 @@ Package TP_SCCAS_Chapter_12_3 {
 		                
 		        Initial conditions with {
 		            the UE entity isRegisteredTo the IMS and
-		            the IUT entity hasAchievedInitialINVITE and // INVITE contains TargetDialog header field
+		            the IUT entity hasAchievedInitialINVITE and // INVITE initiated by served User and contains TargetDialog header field
 		            the IUT entity hasAchievedUPDATEuponINVITE 		            
 		        }
 		        
@@ -757,7 +757,7 @@ Package TP_SCCAS_Chapter_12_3 {
 		                
 		        Initial conditions with {
 		            the UE entity isRegisteredTo the IMS and
-		            the IUT entity hasAchievedInitialINVITE and // INVITE contains TargetDialog header field
+		            the IUT entity hasAchievedInitialINVITE and // INVITE initiated by remote user and contains TargetDialog header field
 		            the IUT entity hasAchievedUPDATEuponINVITE  		            
 		        }
 		        
@@ -880,7 +880,7 @@ Package TP_SCCAS_Chapter_12_3 {
 		                
 		        Initial conditions with {
 		            the UE entity isRegisteredTo the IMS and
-		            the IUT entity hasAchievedInitialINVITE and // INVITE contains Accept containing MIME indicating value "application/vnd.3gpp.mid-call+xml"
+		            the IUT entity hasAchievedInitialINVITE and // INVITE initiated by served User and contains Accept containing MIME indicating value "application/vnd.3gpp.mid-call+xml"
 		            the IUT entity hasAchievedUPDATEuponINVITE 	        
 		        }
 		        
@@ -902,7 +902,7 @@ Package TP_SCCAS_Chapter_12_3 {
     	 		
     	 		 TP Id TP_ISC_SCCAS_CPT_INV_14
 		        
-		        Test objective  "Verify that the SCC AS handles correctly transfer of terminating session in alerting phase"
+		        Test objective "Verify that the SCC AS handles correctly transfer of terminating session in alerting phase"
 		        
 		        Reference 
 		            "ETSI TS 124 237 [1], Clause 12.3.10.3.5"
@@ -913,7 +913,7 @@ Package TP_SCCAS_Chapter_12_3 {
 		                
 		        Initial conditions with {
 		            the UE entity isRegisteredTo the IMS and
-		            the IUT entity hasAchievedInitialINVITE and // INVITE contains Accept containing MIME indicating value "application/vnd.3gpp.mid-call+xml"
+		            the IUT entity hasAchievedInitialINVITE and // INVITE initiated by remote user and contains Accept containing MIME indicating value "application/vnd.3gpp.mid-call+xml"
 		            the IUT entity hasAchievedUPDATEuponINVITE 	  	            
 		        }
 		        
