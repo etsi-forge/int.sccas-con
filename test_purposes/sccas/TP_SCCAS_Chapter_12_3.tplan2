@@ -586,12 +586,12 @@ Package TP_SCCAS_Chapter_12_3 {
     	
     	Test Purpose {
 	        
-		        TP Id TP_ISC_SCCAS_PCT_INV_03
+		        TP Id TP_ISC_SCCAS_TER_BYE_01
 		        
-		        Test objective  "Verify that l"
+		        Test objective  "Verify that the SCC AS correctly behave procedures when the access transfer is completed"
 		        
 		        Reference 
-		            "ETSI TS 124 237 [1], Clause 12.3.4.4"
+		            "ETSI TS 124 237 [1], Clause 12.3.11"
 		        
 		        Config Id CFG_SCCAS_01
 		        
@@ -599,8 +599,7 @@ Package TP_SCCAS_Chapter_12_3 {
 		                
 		        Initial conditions with {
 		            the UE entity isRegisteredTo the IMS  and
-		            the IUT entity hasAchievedInitialINVITE // TODO: INVITE contains: g3gppSrvccAlerting 
-		            // TODO: and more conditions to distinguish subchapter from 12.3.4.2, 12.3.4.3
+		            the IUT entity hasAchievedInitialINVITE 		            
 		        }
 		        
 		       	Expected behaviour
@@ -623,11 +622,12 @@ Package TP_SCCAS_Chapter_12_3 {
 	                }
 	                then {
 	                	the IUT entity sends a r_200_Ok_BYE and
-	                	the IUT entity on timerOperatorSpecificTimeout sends a BYE //for source UE leg
+	                	the IUT entity sends a r_404_NotFound //according to 3GPP TS 29.292 table 5.4.8.1.1 and table 5.4.8.1.2
 		                to the IMS_S_CSCF entity 
+		               
 		             }    
 	            }
-		    } // End of TP TP_ISC_SCCAS_PCT_INV_03
+		    } // End of TP TP_ISC_SCCAS_TER_BYE_01
     	
     } // end Group "12.3.11 SCC AS procedures when the access transfer is completed"
     
