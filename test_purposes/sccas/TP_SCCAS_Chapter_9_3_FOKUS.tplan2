@@ -598,7 +598,7 @@ Package TP_SCCAS {
 			//				strength-tag value either "optional" or as specified in RFC 3312 [88] and RFC 4032 [89] for the remote
 			//				segment.
 			
-			TP Id TP_ISC_SCCAS_PCT_INV_01
+			TP Id TP_ISC_SCCAS_PCT_INV_05
             	
             Test objective "Verify that the SCC AS send a SIP UPDATE request towards the remote UE after receiving a SIP INVITE request due to PS to CS STN in early dialog phase supporting a session with active speech media component such"
             
@@ -651,7 +651,7 @@ Package TP_SCCAS {
                     }
                 }
             
-			} // end TP_ISC_SCCAS_PCT_INV_01
+			} // end TP_ISC_SCCAS_PCT_INV_05
 			
 			
 		} // end Group "9.3.5.3 SCC AS procedures for PS to CS dual radio, access transfer of a originating session in the prealerting phase"
@@ -771,7 +771,7 @@ Package TP_SCCAS {
 			//				- if the SIP 180 (Ringing) response does not contain the g.3gpp.dynamic-stn media feature tag as described
 			//				in annex C in the Contact header field, the static STN.
             	
-            	TP Id TP_ISC_SCCAS_PCT_REF_01 
+            	TP Id TP_ISC_SCCAS_PCT_REF_02
             	
             	Test objective "Verify that the SCC AS terminates the call over CS after receiving a SIP 488"            	
     		
@@ -1263,7 +1263,7 @@ Package TP_SCCAS {
 			//			c) if a SIP 180 (Ringing) response to the INVITE request has already been received on the source access leg,
 			//			the state-info XML element containing "early" and the direction XML element containing "receiver"
     		
-    		 TP Id TP_ISC_SCCAS_PCT_INV_06
+    		 TP Id TP_ISC_SCCAS_PCT_INV_04
 	            
 	            Test objective "Verify that SCC AS correctly recognizes and initiated procedures for PS to CS dual radio access transfer of an additional session in an early dialog phase "
 	        
@@ -1311,7 +1311,7 @@ Package TP_SCCAS {
 			             }    
 		            }
                         	
-             	} // end TP 
+             	} // end TP TP_ISC_SCCAS_PCT_INV_04
     		
     		
     	} // end Group 9.3.7.4 SCC AS procedures for PS to CS dual radio access transfer of an additional session in an early dialog phase
