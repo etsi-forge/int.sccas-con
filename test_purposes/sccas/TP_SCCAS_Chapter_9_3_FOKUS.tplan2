@@ -1272,7 +1272,7 @@ Package TP_SCCAS {
 	        
 	        	Config Id CFG_SCCAS_01
 	        
-	       	 	PICS Selection NONE
+	       	 	PICS Selection NONE // TODO
 	        
 	        	Initial conditions with {
 	            	the UE entity isRegisteredTo the IMS and
