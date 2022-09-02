@@ -605,10 +605,56 @@ Package TP_SCCAS_Chapter_12_3 {
 //    	import all from Sip_Common;    	
 //    }// end Group "12.3.6 12.3.6.0 SCC AS procedures for PS to CS access transfer, vSRVCC"
 //    
-//    Group "12.3.7 SCC AS procedures for handling of SIP OPTIONS request"{
-//    	
-//    	import all from Sip_Common;	
-//    } // end Group "12.3.7 SCC AS procedures for handling of SIP OPTIONS request"
+    Group "12.3.7 SCC AS procedures for handling of SIP OPTIONS request"{
+    	
+    	import all from Sip_Common;	
+    	
+    	Test Purpose {
+    	 		
+    	 		TP Id TP_ISC_SCCAS_MED_OPT_01
+		        
+		        Test objective "Verify that the SCC AS handles correctly the procedures for handling of SIP OPTIONS request"
+		        
+		        Reference 
+		            "ETSI TS 124 237 [1], Clause 12.3.7"
+		        
+		        Config Id CFG_SCCAS_01
+		        
+		        PICS Selection NONE 
+		                
+		        Initial conditions with {
+		            the UE entity isRegisteredTo the IMS  		            
+		        }
+		        
+		         Expected behaviour
+		            ensure that {
+		            	when {
+		                   the IUT entity receives an OPTIONS containing
+		                        From indicating value PX_UE_A_SIP_URI,
+		                        To indicating value PX_UE_B_SIP_URI,
+		                        CallId indicating value PX_UE_A_CALLID,
+		                        Via indicating value PX_UE_A_VIA,
+		                        Route indicating value PX_UE_A_SERVICE_ROUTE,
+		                        ReferTo containing 
+		                       		PAssertedIdentity indicating value "the C-MSISDN in the P-Asserted-Identity header field that the session that was most recently made";;                     	
+		                    from the IMS_S_CSCF entity
+		                }
+		                then {
+		                	the IUT entity sends a r_200_Ok containing
+		                	ContentType indicating value "application/sdp",
+                       		ContentLength,
+                        	MessageBody containing
+                            	SDP containing
+                                	Media indicating valuee "audio and video";;;
+			                to the IMS_S_CSCF entity 
+	
+			             }    
+		            }
+    	 		
+    	 	} // end TP TP_ISC_SCCAS_MED_OPT_01
+    	
+    	
+    } // end Group "12.3.7 SCC AS procedures for handling of SIP OPTIONS request"
 //    
 //    Group "12.3.8 Removal of non-transferred audio media components and superfluous sessions"{
 //    	

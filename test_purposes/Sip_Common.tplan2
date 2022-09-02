@@ -145,6 +145,7 @@ Package Sip_Common {
         SipMessage REFER;
         SipMessage PRACK;
         SipMessage UPDATE;
+        SipMessage OPTIONS;
          // SIP Responses
         SipMessage r_1xx_Any;
         SipMessage r_100_Trying;
