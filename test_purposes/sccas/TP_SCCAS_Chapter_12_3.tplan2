@@ -629,7 +629,7 @@ Package TP_SCCAS_Chapter_12_3 {
 		         Expected behaviour
 		            ensure that {
 		            	when {
-		                   the IUT entity receives an OPTIONS containing
+		                   the IUT entity receives an OPTIONS containing 
 		                        From indicating value PX_UE_A_SIP_URI,
 		                        To indicating value PX_UE_B_SIP_URI,
 		                        CallId indicating value PX_UE_A_CALLID,
