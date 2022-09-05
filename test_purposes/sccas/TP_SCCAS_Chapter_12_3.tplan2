@@ -67,7 +67,7 @@ Package TP_SCCAS_Chapter_12_3 {
     	
     	Test Purpose {
         
-        TP Id TP_ISC_SCCAS_SRA_INI_02
+        TP Id TP_ISC_SCCAS_SRA_INV_02
         
         Test objective  "Verify that the SCCAS distinguish SIP INVITE with STN-SR and informs remote UE"
         
@@ -167,7 +167,7 @@ Package TP_SCCAS_Chapter_12_3 {
     		import all from Sip_Common;	
     		Test Purpose {
         
-	        TP Id TP_ISC_SCCAS_SRA_INI_04
+	        TP Id TP_ISC_SCCAS_SRA_INV_04
 	        
 	        Test objective  "Verify that the SCCAS distinguish SIP INVITE with STN-SR and not release source leg"
 	        
@@ -359,7 +359,7 @@ Package TP_SCCAS_Chapter_12_3 {
     			
 	    		Test Purpose {
 	        
-		        TP Id TP_ISC_SCCAS_SRA_CNL_01
+		        TP Id TP_ISC_SCCAS_SRA_CAN_01
 		        
 		        Test objective  "Verify that the SCCAS distinguish SIP CANCEL and release session transfered leg after OperatiorSpecificTimer timeout"
 		        
@@ -400,7 +400,7 @@ Package TP_SCCAS_Chapter_12_3 {
 		                    to the IMS_S_CSCF entity 	
 			             }    
 		            }
-		    	} // End of TP_ISC_SCCAS_SRA_CNL_01
+		    	} // End of TP_ISC_SCCAS_SRA_CAN_01
     		}
     		Group "12.3.3.5.2 SCC AS serving a terminating user"{
     			
@@ -408,7 +408,7 @@ Package TP_SCCAS_Chapter_12_3 {
     			
 	    		Test Purpose {
 	        
-		        TP Id TP_ISC_SCCAS_SRA_CNL_02
+		        TP Id TP_ISC_SCCAS_SRA_CAN_02
 		        
 		        Test objective  "Verify that the SCCAS send 200Ok_CANCEL and release PStoCS session transfered leg in alerting state for terminating user"
 		        
@@ -449,7 +449,7 @@ Package TP_SCCAS_Chapter_12_3 {
 		                    //to the IMS_S_CSCF entity 	
 			             }    
 		            }
-		    	} // End of TP_ISC_SCCAS_SRA_CNL_02	
+		    	} // End of TP_ISC_SCCAS_SRA_CAN_02	
     		}
     		
     	}

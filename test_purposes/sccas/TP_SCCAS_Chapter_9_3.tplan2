@@ -565,7 +565,7 @@ Package TP_SCCAS_Chapter_9_3 {
 				
 				// This TP: only case A
 				
-            	TP Id TP_ISC_PCT_RES_02
+            	TP Id TP_ISC_SCCAS_PCT_RES_02
             	
             	Test objective "Verify that the SCC AS sends SIP provisional response to the SIP INVITE request due to PS to CS STN"
             	
@@ -613,7 +613,7 @@ Package TP_SCCAS_Chapter_9_3 {
                     to the IMS_S_CSCF entity
                     }
                 }
-            } // end TP TP_ISC_PCT_RES_02
+            } // end TP TP_ISC_SCCAS_PCT_RES_02
             
             
     	} // end Group "9.3.5.2 SCC AS procedures for PS to CS dual radio access transfer of a originating session in the alerting phase"
