@@ -22,7 +22,9 @@ module AtsSccas_Testcases
     import from AtsSccas_PICS all;
 
     group Group_6_3 {
+ 
         group TP_6_3_1_General {
+
             /*
             * @desc TC_IMST2_GM_GEN_01
             * @param p_cSeq_s Transaction Id
@@ -43,27 +45,128 @@ module AtsSccas_Testcases
                 f_cf_1IscDown(v_imsComponent_ueims);
 
             } // end TC_ISC_SCCAS_RSC_REG_01
-          }//group TP_6_3_1_General
-          
-     }//Group_6_3
+
+            /*
+            * @desc TC_IMST2_GM_GEN_02
+            * @param p_cSeq_s Transaction Id
+            */
+            testcase TC_ISC_SCCAS_RSC_REG_02(inout CSeq p_cSeq_s) 
+            runs on ServerSyncComp
+            system TestAdapter {
+                //Variables
+                var ImsComponent v_imsComponent_ueims;
+                f_cf_1IscUp(v_imsComponent_ueims);
+
+                //Start
+                f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_RSC_REG_02(p_cSeq_s));
+
+                // synchronize both PTCs on 3 sychronization points
+                f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+                f_cf_1IscDown(v_imsComponent_ueims);
+
+            } // end TC_ISC_SCCAS_RSC_REG_02
+
+          } // End of group TP_6_3_1_General
+
+        group TP_6_3_2_Triggers_To_ATCF {
+
+            /*
+            * @desc TC_IMST2_GM_GEN_03
+            * @param p_cSeq_s Transaction Id
+            */
+            testcase TC_ISC_SCCAS_RSC_REG_03(inout CSeq p_cSeq_s) 
+            runs on ServerSyncComp
+            system TestAdapter {
+                //Variables
+                var ImsComponent v_imsComponent_ueims;
+                f_cf_1IscUp(v_imsComponent_ueims);
+
+                //Start
+                f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_RSC_REG_03(p_cSeq_s));
+
+                // synchronize both PTCs on 3 sychronization points
+                f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+                f_cf_1IscDown(v_imsComponent_ueims);
+
+            } // end TC_ISC_SCCAS_RSC_REG_03
+
+          } // End of group TP_6_3_2_Triggers_To_ATCF
+
+        group TP_6_3_3_SRVCC_Information_To_ATCF {
+
+            /*
+            * @desc TC_IMST2_GM_GEN_04
+            * @param p_cSeq_s Transaction Id
+            */
+            testcase TC_ISC_SCCAS_RSC_REG_04(inout CSeq p_cSeq_s) 
+            runs on ServerSyncComp
+            system TestAdapter {
+                //Variables
+                var ImsComponent v_imsComponent_ueims;
+                var ImsComponent v_imsComponent_atcf;
+                f_cf_1Isc1AtcfUp(v_imsComponent_ueims, v_imsComponent_atcf);
+
+                //Start
+                f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_RSC_REG_04_ueims(p_cSeq_s));
+                f_IncCSeq(p_cSeq_s); v_imsComponent_atcf.start(f_TC_ISC_SCCAS_RSC_REG_04_atcf(p_cSeq_s));
+
+                // synchronize both PTCs on 3 sychronization points
+                f_serverSync2Clients({c_prDone, c_tbDone, c_poDone});
+
+                f_cf_1Isc1AtcfDown(v_imsComponent_ueims, v_imsComponent_atcf);
+
+            } // end TC_ISC_SCCAS_RSC_REG_04
+
+          } // End of group TP_6_3_3_SRVCC_Information_To_ATCF
+
+        group TP_6_3_4_Trigger_SRVCC_To_MSC {
+
+            /*
+            * @desc TC_IMST2_GM_GEN_05
+            * @param p_cSeq_s Transaction Id
+            */
+            testcase TC_ISC_SCCAS_RSC_REG_05(inout CSeq p_cSeq_s) 
+            runs on ServerSyncComp
+            system TestAdapter {
+                //Variables
+                var ImsComponent v_imsComponent_ueims;
+                var ImsComponent v_imsComponent_msc;
+                f_cf_1Isc1AtcfUp(v_imsComponent_ueims, v_imsComponent_msc);
+
+                //Start
+                f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_RSC_REG_05_ueims(p_cSeq_s));
+                                     v_imsComponent_msc.start(f_TC_ISC_SCCAS_RSC_REG_05_msc(p_cSeq_s));
+
+                // synchronize both PTCs on 3 sychronization points
+                f_serverSync2Clients({c_prDone, c_tbDone, c_poDone});
+
+                f_cf_1Isc1AtcfDown(v_imsComponent_ueims, v_imsComponent_msc);
+
+            } // end TC_ISC_SCCAS_RSC_REG_05
+
+          } // End of group TP_6_3_4_Trigger_SRVCC_To_MSC
+
+     } // End of group Group_6_3
      
      group Group_6A_4 {
-     }//Group_6A_4
+     } // End of group Group_6A_4
      
      group Group_7_3 {
-     }//Group_7_3
+     } // End of group Group_7_3
      
      group Group_8_3 {
-     }//Group_8_3
+     } // End of group Group_8_3
      
      group Group_9_3 {
-     }//Group_9_3
+     } // End of group Group_9_3
      
      group Group_10_3 {
-     }//Group_10_3
+     } // End of group Group_10_3
      
      group Group_11_3 {
-     }//Group_11_3
+     } // End of group Group_11_3
      
 
-} // end module AtsSccas_Testcases
+} // End of module AtsSccas_Testcases

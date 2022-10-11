@@ -15,6 +15,8 @@ modulepar {
     /** @desc    boolean  for SUT working mode due to 
     */
     boolean PX_SCCAS__ := true;
+
+    charstring PX_SIP_URI := "";
     
 }
 

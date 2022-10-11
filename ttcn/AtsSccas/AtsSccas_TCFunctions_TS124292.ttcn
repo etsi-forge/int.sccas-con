@@ -54,7 +54,7 @@ module AtsSccas_TCFunctions_TS124292 {
                                        v_cSeq_s, 
                                        valueof(m_SipUrl_currDomain(vc_userprofile)),
                                        PX_IMS_SUT_UE1_QOP,
-                                       mw_msc_register(
+                                       mw_sccas_register(
                                                        -, 
                                                        mw_pChargingVector(-, *),  // TODO To be refined during validation - Clause 6.3.2 Initial registration Point 11
                                                        mw_pVisitedNetworkID(?), // TODO To be refined during validation - Clause 6.3.2 Initial registration Point 12
@@ -69,7 +69,7 @@ module AtsSccas_TCFunctions_TS124292 {
                                                                                                   ))
                                                                                ),
                                                        m_expires(600000), // Clause 6.3.2 Initial registration Point 7
-                                                       mw_supported_gruu, // Clause 6.3.2 Initial registration Point 8
+                                                       mw_sccas_supported({"gruu"}), // Clause 6.3.2 Initial registration Point 8
                                                        mw_require_path, // Clause 6.3.2 Initial registration Point 9
                                                        mw_pAccessNetworkInfo // TODO To be refined during validation - Clause 6.3.2 Initial registration Point 13
                                        ));
@@ -103,7 +103,7 @@ module AtsSccas_TCFunctions_TS124292 {
                                        v_cSeq_s, 
                                        valueof(m_SipUrl_currDomain(vc_userprofile)),
                                        PX_IMS_SUT_UE1_QOP,
-                                       mw_msc_register(
+                                       mw_sccas_register(
                                                        -, 
                                                        mw_pChargingVector(-, *),  // TODO To be refined during validation - Clause 6.3.2 Initial registration Point 11
                                                        mw_pVisitedNetworkID(?), // TODO To be refined during validation - Clause 6.3.2 Initial registration Point 12
@@ -118,7 +118,7 @@ module AtsSccas_TCFunctions_TS124292 {
                                                                                                   ))
                                                                                ),
                                                        m_expires(600000), // Clause 6.3.2 Initial registration Point 7
-                                                       mw_supported_gruu, // Clause 6.3.2 Initial registration Point 8
+                                                       mw_sccas_supported({"gruu"}), // Clause 6.3.2 Initial registration Point 8
                                                        mw_require_path, // Clause 6.3.2 Initial registration Point 9
                                                        mw_pAccessNetworkInfo // TODO To be refined during validation - Clause 6.3.2 Initial registration Point 13
                                        ));

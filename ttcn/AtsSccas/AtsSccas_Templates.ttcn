@@ -9,67 +9,172 @@ module AtsSccas_Templates
     
     //LibSip
     import from LibSip_SIPTypesAndValues all;
+    import from LibSip_MessageBodyTypes all;
     import from LibSip_Templates all;
+    import from LibSip_Common all;
+
     //LibIms
+    import from LibIms_SIPTypesAndValues all;
     import from LibIms_Templates all;
   
-    group HeaderTemplates 
-    {                
+    group HeaderTemplates {                
         
-    
-    }//end group HeaderTemplates
+        template (value) Supported m_sccas_supported(
+                                                     in OptionTag_List p_optionsTags
+                                                     ) modifies m_supported := {
+            optionsTags := p_optionsTags
+        } // End of template m_sccas_supported
+
+        template (present) Supported mw_sccas_supported(
+                                                        template (present) OptionTag_List p_optionsTags := ?
+                                                        ) := {
+            fieldName := SUPPORTED_E,
+            optionsTags := p_optionsTags
+        } // End of template mw_sccas_supported
+
+        template (value) FeatureCaps m_sccas_featureCaps(
+                                                         in template (value) FcValue_List p_fcValues
+                                                         ) := {
+            fieldName := FEATURE_CAPS_E,
+            fcValues := p_fcValues
+        } // End of template m_sccas_featureCaps
+
+        template (present) FeatureCaps mw_sccas_featureCaps(
+                                                            template (present) FcValue_List p_fcValues := ?
+                                                            ) := {
+            fieldName := FEATURE_CAPS_E,
+            fcValues := p_fcValues
+        } // End of template mw_sccas_featureCaps
+
+        template (omit) FcValue m_fcValue(
+                                          in charstring p_wildcard,
+                                          in template (omit) SemicolonParam_List p_fcParams := omit
+                                          ) := {
+            wildcard := p_wildcard,
+            fcParams := p_fcParams
+        } // End of template m_fcValue
+
+        template FcValue mw_fcValue(
+                                    template (present) charstring p_wildcard := ?,
+                                    template SemicolonParam_List p_fcParams := *
+                                    ) := {
+            wildcard := p_wildcard,
+            fcParams := p_fcParams
+        } // End of template mw_fcValue
+
+        template (present) LibSip_SIPTypesAndValues.Contact mw_sccas_contact(
+                                                                             template (present) ContactBody p_contact_body := ?
+                                                                             ) := {
+            contactBody := p_contact_body
+        } // End of template mw_sccas_contact
+
+        template (present) PAccessNetworkInfo mw_pAccessNetworkInfo := { // TODO To be refined
+            fieldName := P_ACCESS_NETWORK_INFO_E,
+            accessType := ?,
+            genericParams := ?
+        } // End of template mw_pAccessNetworkInfo
+
+    } // End of group HeaderTemplates
     
     group MessageTemplates {
+
         group modified_templates {
+
             group request_sent {
       
+                template (omit) REGISTER_Request m_sccas_register(
+                                                                  template(value) SipUrl p_requestUri,
+                                                                  template(omit) CallId p_callId := omit,
+                                                                  template(value) CSeq p_cSeq,
+                                                                  template(value) From p_from,
+                                                                  template(value) To p_to,
+                                                                  template(value) Via p_via,
+                                                                  template(omit) LibSip_SIPTypesAndValues.Contact p_contact := omit,
+                                                                  template(omit) Authorization p_authorization := omit,
+                                                                  template(value) charstring p_host,
+                                                                  template(value) integer p_port,
+                                                                  template(value) DeltaSec p_deltaSec,
+                                                                  template(omit) FeatureCaps p_featureCaps := omit,
+                                                                  template(omit) ContentType p_contentType := omit,
+                                                                  template(omit) MessageBody p_mb := omit
+
+                ) modifies m_REGISTER_Request_expires_IMS := {
+                    msgHeader := {
+                        contentLength := m_contentLength(f_MessageBodyLength(p_mb)),
+                        contentType   := p_contentType,
+                        expires       := m_expires(str2int(valueof(p_deltaSec))),
+                        featureCaps   := p_featureCaps
+                    },
+                    messageBody := p_mb
+                }
                
-            }//end group request_sent    
+            } // End of group request_sent    
             
             group request_receive { 
 
+                template (present) REGISTER_Request mw_sccas_register(
+                                                                      template (present) Path p_Path := ?,
+                                                                      template (present) PChargingVector p_pChargingVector := ?,
+                                                                      template (present) PVisitedNetworkID p_pVisitedNetworkID := ?,
+                                                                      template (present) LibSip_SIPTypesAndValues.Contact p_contact := mw_sccas_contact,
+                                                                      template (present) Authorization p_authorization := mw_Authorization_digest,
+                                                                      template (present) Expires p_expires := ?,
+                                                                      template (present) Supported p_supported := ?,
+                                                                      template (present) Require p_require := ?,
+                                                                      template (present) PAccessNetworkInfo p_pPAccessNetworkInfo := ?,
+                                                                      template ContentType p_contentType := *,
+                                                                      template MessageBody p_mb := *
+                                                                      ) modifies mw_REGISTER_Request_IMS := {
+                    msgHeader := {
+                        contact            := p_contact,
+                        contentType        := p_contentType,
+                        authorization      := p_authorization,
+                        expires            := p_expires,
+                        supported          := p_supported,
+                        pAccessNetworkInfo := p_pPAccessNetworkInfo
+                    },
+                    messageBody := p_mb 
+                } // End of template mw_sccas_register
 
-                group msc {
+                template (present) MESSAGE_Request mw_sccas_MESSAGE_Request(
+                                                                            template (present) SipUrl p_requestUri := ?,
+                                                                            template (present) CallId p_callId := ?,
+                                                                            template (present) PChargingVector p_pChargingVector := ?,
+                                                                            template (present) PAssertedID p_pAssertedID := ?,
+                                                                            template ContentType p_contentType := *,
+                                                                            template MessageBody p_mb := *
+                                                                            ) modifies mw_MESSAGE_Request_Base := {
+                    requestLine := {
+                        requestUri := p_requestUri
+                    },
+                    msgHeader := {
+                        callId          := p_callId,
+                        contentType     := p_contentType,
+                        pChargingVector := p_pChargingVector,
+                        pAssertedID     := p_pAssertedID                        
+                    },
+                    messageBody := p_mb 
+                } // End of template mw_sccas_MESSAGE_Request
 
-                    template (present) LibSip_SIPTypesAndValues.Contact mw_sccas_contact(
-                                                                                         template (present) ContactBody p_contact_body := ?
-                                                                                         ) := {
-                        contactBody := p_contact_body
-                    } // End of template mw_sccas_contact
+                template (present) Response mw_sccas_Response_2xxonREGISTER(
+                                                                        template (present) CallId p_callId := ?,
+                                                                        template (present) CSeq p_cSeq := ?,
+                                                                        template (present) From p_from := ?,
+                                                                        template (present) To p_to := ?,
+                                                                        template (present) Via p_via := ?,
+                                                                        template (present) Contact p_contact := ?,
+                                                                        template (present) PChargingVector p_pChargingVector := ?
+                                                                        ) modifies mw_Response_2xx_Base := {
+                    msgHeader := {
+                        pChargingVector := p_pChargingVector,
+                        contact         := p_contact
+                    }
+                } // End of template mw_sccas_Response_2xxonREGISTER
 
-                    template(value) Supported mw_supported_gruu 
-                    modifies m_supported := {
-                        optionsTags := {"gruu"}
-                    } // End of template mw_supported_gruu
+            } // End of group request_receive
 
-                    template (present) PAccessNetworkInfo mw_pAccessNetworkInfo := { // TODO To be refined
-                        fieldName := P_ACCESS_NETWORK_INFO_E,
-                        accessType := ?,
-                        genericParams := ?
-                    } // End of template mw_pAccessNetworkInfo
+        } // End of group modified_templates
 
-                    template (present) REGISTER_Request mw_msc_register(
-                                                                        template (present) Path p_Path := ?,
-                                                                        template (present) PChargingVector p_pChargingVector := ?,
-                                                                        template (present) PVisitedNetworkID p_pVisitedNetworkID := ?,
-                                                                        template (present) LibSip_SIPTypesAndValues.Contact p_contact := mw_sccas_contact,
-                                                                        template (present) Authorization p_authorization := mw_Authorization_digest,
-                                                                        template (present) Expires p_expires := ?,
-                                                                        template (present) Supported p_supported := ?,
-                                                                        template (present) Require p_require := ?,
-                                                                        template (present) PAccessNetworkInfo p_pPAccessNetworkInfo := ?
-                                                                        ) modifies mw_REGISTER_Request_IMS := {
-                        msgHeader := {
-                            contact            := p_contact,
-                            authorization      := p_authorization,
-                            expires            := p_expires,
-                            supported          := p_supported,
-                            pAccessNetworkInfo := p_pPAccessNetworkInfo
-                        }
-                    } // End of template mw_msc_register
-                }
-            }//end group request_receive
-        }//end group modified_templates
-    }//end group MessageTemplates
+    } // End ofend group MessageTemplates
     
-} // end module AtsSccas_Templates
+} // End of module AtsSccas_Templates
