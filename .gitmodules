@@ -10,3 +10,7 @@
 	path = ttcn/LibIms
 	url = https://forge.etsi.org/rep/LIBS/LibIms.git
 	branch = STF574
+[submodule "titan-test-system-framework"]
+	path = titan-test-system-framework
+	url = https://labs.etsi.org/rep/cti-tools/titan-test-system-framework.git
+	branch = devel
