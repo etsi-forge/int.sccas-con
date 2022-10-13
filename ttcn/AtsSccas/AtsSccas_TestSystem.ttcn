@@ -25,17 +25,17 @@ module AtsSccas_TestSystem
         type charstring CM_Message;
         } // end group CMTypes
 
-     group Signatures {
+    /*group Signatures {
         signature s_SIP_conversation (in charstring text, out boolean answer);
         signature s_SIP_ringing (in charstring text, out boolean answer);
-        } // end group Signatures
+    }*/ // end group Signatures
 
     group SystemConfiguration {
     group Ports {
 
-        type port operatorPort_SIP procedure {
+        /*type port operatorPort_SIP procedure {
             inout s_SIP_conversation; 
-            inout s_SIP_ringing};
+            inout s_SIP_ringing};*/
 
         type port Coordination message { 
             inout CM_Message} with {extension "internal"};
@@ -48,7 +48,8 @@ module AtsSccas_TestSystem
         */
         type component TestAdapter {
             port SipPort UEIMS, SCCAS, ATCF, MSC, UE1;
-            port operatorPort_SIP opPortS;
+            //port operatorPort_SIP opPortS;
+            port OperatorPort opPortS;
         }
     } // end Group TestSystemInterfaces
 

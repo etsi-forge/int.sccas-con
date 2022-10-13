@@ -4,21 +4,28 @@
  *    @desc       This module provides the PIXIT used for the SIP-IMS tests.
  */
 
-module AtsSccas_PIXITS
-{    
+module AtsSccas_PIXITS {    
 
+    //LibSip
+    import from LibSip_SIPTypesAndValues all;
 
-// SUT specific implementation variants
+    // SUT specific implementation variants
 
-modulepar {
+    modulepar {
 
-    /** @desc    boolean  for SUT working mode due to 
-    */
-    boolean PX_SCCAS__ := true;
+        /** @desc    boolean  for SUT working mode due to 
+        */
+        boolean PX_SCCAS__ := true;
 
-    charstring PX_SIP_URI := "";
-    
-}
+        charstring PX_ACTF_MGMT_URI := "";
+
+        charstring PX_ACTF_URI := "";
+
+        charstring PX_ICSI_URI := "";
+
+        SipUrl PX_SCCAS_URI := {scheme := "c_sipScheme", components := {sip := {userInfo := omit, hostPort := {host := "",portField := c_defaultSipPort}}}};
+        
+    }
 
     group SUT {
 

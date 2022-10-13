@@ -56,7 +56,7 @@ module AtsSccas_TCFunctions_TS124292 {
                                        PX_IMS_SUT_UE1_QOP,
                                        mw_sccas_register(
                                                        -, 
-                                                       mw_pChargingVector(-, *),  // TODO To be refined during validation - Clause 6.3.2 Initial registration Point 11
+                                                       mw_pChargingVector(-, *), // TODO To be refined during validation - Clause 6.3.2 Initial registration Point 11
                                                        mw_pVisitedNetworkID(?), // TODO To be refined during validation - Clause 6.3.2 Initial registration Point 12
                                                        -, // See helper f_check_contact_msc
                                                        mw_Authorization_digest( // Clause 6.3.2 Initial registration Point 4

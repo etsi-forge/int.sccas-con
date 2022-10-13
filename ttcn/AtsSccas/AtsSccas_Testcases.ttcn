@@ -26,7 +26,7 @@ module AtsSccas_Testcases
         group TP_6_3_1_General {
 
             /*
-            * @desc TC_IMST2_GM_GEN_01
+            * @desc Verify that the SCCAS successfully obtain/processes 3pty registration information
             * @param p_cSeq_s Transaction Id
             */
             testcase TC_ISC_SCCAS_RSC_REG_01(inout CSeq p_cSeq_s) 
@@ -44,10 +44,10 @@ module AtsSccas_Testcases
 
                 f_cf_1IscDown(v_imsComponent_ueims);
 
-            } // end TC_ISC_SCCAS_RSC_REG_01
+            } // End of TC_ISC_SCCAS_RSC_REG_01
 
             /*
-            * @desc TC_IMST2_GM_GEN_02
+            * @desc Verify that the SCCAS successfully obtain/processes de-registration information (Expires=0)
             * @param p_cSeq_s Transaction Id
             */
             testcase TC_ISC_SCCAS_RSC_REG_02(inout CSeq p_cSeq_s) 
@@ -65,14 +65,14 @@ module AtsSccas_Testcases
 
                 f_cf_1IscDown(v_imsComponent_ueims);
 
-            } // end TC_ISC_SCCAS_RSC_REG_02
+            } // End of TC_ISC_SCCAS_RSC_REG_02
 
           } // End of group TP_6_3_1_General
 
         group TP_6_3_2_Triggers_To_ATCF {
 
             /*
-            * @desc TC_IMST2_GM_GEN_03
+            * @desc Verify that the SCCAS successfully obtain/processes SRVCC information
             * @param p_cSeq_s Transaction Id
             */
             testcase TC_ISC_SCCAS_RSC_REG_03(inout CSeq p_cSeq_s) 
@@ -90,14 +90,14 @@ module AtsSccas_Testcases
 
                 f_cf_1IscDown(v_imsComponent_ueims);
 
-            } // end TC_ISC_SCCAS_RSC_REG_03
+            } // End of TC_ISC_SCCAS_RSC_REG_03
 
           } // End of group TP_6_3_2_Triggers_To_ATCF
 
         group TP_6_3_3_SRVCC_Information_To_ATCF {
 
             /*
-            * @desc TC_IMST2_GM_GEN_04
+            * @desc Verify that the SCCAS successfully sends MESSAGE providing PS to CS SRVCC information
             * @param p_cSeq_s Transaction Id
             */
             testcase TC_ISC_SCCAS_RSC_REG_04(inout CSeq p_cSeq_s) 
@@ -117,14 +117,14 @@ module AtsSccas_Testcases
 
                 f_cf_1Isc1AtcfDown(v_imsComponent_ueims, v_imsComponent_atcf);
 
-            } // end TC_ISC_SCCAS_RSC_REG_04
+            } // End of TC_ISC_SCCAS_RSC_REG_04
 
           } // End of group TP_6_3_3_SRVCC_Information_To_ATCF
 
         group TP_6_3_4_Trigger_SRVCC_To_MSC {
 
             /*
-            * @desc TC_IMST2_GM_GEN_05
+            * @desc Verify that the SCCAS successfully get CS to PS SRVCC information
             * @param p_cSeq_s Transaction Id
             */
             testcase TC_ISC_SCCAS_RSC_REG_05(inout CSeq p_cSeq_s) 
@@ -137,16 +137,43 @@ module AtsSccas_Testcases
 
                 //Start
                 f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_RSC_REG_05_ueims(p_cSeq_s));
-                                     v_imsComponent_msc.start(f_TC_ISC_SCCAS_RSC_REG_05_msc(p_cSeq_s));
+                f_IncCSeq(p_cSeq_s); v_imsComponent_msc.start(f_TC_ISC_SCCAS_RSC_REG_05_msc(p_cSeq_s)); // TODO Not considered in TP?
 
                 // synchronize both PTCs on 3 sychronization points
                 f_serverSync2Clients({c_prDone, c_tbDone, c_poDone});
 
                 f_cf_1Isc1AtcfDown(v_imsComponent_ueims, v_imsComponent_msc);
 
-            } // end TC_ISC_SCCAS_RSC_REG_05
+            } // End of TC_ISC_SCCAS_RSC_REG_05
 
           } // End of group TP_6_3_4_Trigger_SRVCC_To_MSC
+
+        group TP_6_3_5_Providing_SRVCC_To_MSC {
+
+            /*
+            * @desc Verify that the SCCAS successfully provide CS to PS SRVCC information
+            * @param p_cSeq_s Transaction Id
+            */
+            testcase TC_ISC_SCCAS_RSC_REG_06(inout CSeq p_cSeq_s) 
+            runs on ServerSyncComp
+            system TestAdapter {
+                //Variables
+                var ImsComponent v_imsComponent_ueims;
+                var ImsComponent v_imsComponent_msc;
+                f_cf_1Isc1AtcfUp(v_imsComponent_ueims, v_imsComponent_msc);
+
+                //Start
+                f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_RSC_REG_06_ueims(p_cSeq_s));
+                f_IncCSeq(p_cSeq_s); v_imsComponent_msc.start(f_TC_ISC_SCCAS_RSC_REG_06_msc(p_cSeq_s)); // TODO Not considered in TP?
+
+                // synchronize both PTCs on 3 sychronization points
+                f_serverSync2Clients({c_prDone, c_tbDone, c_poDone});
+
+                f_cf_1Isc1AtcfDown(v_imsComponent_ueims, v_imsComponent_msc);
+
+            } // End of TC_ISC_SCCAS_RSC_REG_06
+
+          } // End of group TP_6_3_5_Providing_SRVCC_To_MSC
 
      } // End of group Group_6_3
      

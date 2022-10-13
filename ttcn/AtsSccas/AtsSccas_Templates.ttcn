@@ -62,8 +62,22 @@ module AtsSccas_Templates
             fcParams := p_fcParams
         } // End of template mw_fcValue
 
+        template(value) Contact m_sccas_contact(
+                                                in template (value) SipUrl p_sipUrl,
+                                                in template (value) SemicolonParam_List p_contactParams
+                                                ) modifies m_Contact := {
+            contactBody := {
+                contactAddresses := {
+                    {
+                        contactParams := p_contactParams
+                    }
+                }
+            }
+        } // End of template m_sccas_contact
+
         template (present) LibSip_SIPTypesAndValues.Contact mw_sccas_contact(
-                                                                             template (present) ContactBody p_contact_body := ?
+                                                                             template (present) ContactBody p_contact_body := ?,
+                                                                             template SemicolonParam_List p_contactParams := *
                                                                              ) := {
             contactBody := p_contact_body
         } // End of template mw_sccas_contact
@@ -163,11 +177,14 @@ module AtsSccas_Templates
                                                                         template (present) To p_to := ?,
                                                                         template (present) Via p_via := ?,
                                                                         template (present) Contact p_contact := ?,
-                                                                        template (present) PChargingVector p_pChargingVector := ?
+                                                                        template (present) PChargingVector p_pChargingVector := ?,
+                                                                        template (present) PAssertedID p_pAssertedID := ?,
+                                                                        template AcceptContact p_acceptContact := *
                                                                         ) modifies mw_Response_2xx_Base := {
                     msgHeader := {
                         pChargingVector := p_pChargingVector,
-                        contact         := p_contact
+                        contact         := p_contact,
+                        acceptContact   := p_acceptContact
                     }
                 } // End of template mw_sccas_Response_2xxonREGISTER
 

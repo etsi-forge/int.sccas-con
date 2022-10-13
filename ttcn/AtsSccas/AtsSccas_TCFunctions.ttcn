@@ -124,7 +124,7 @@ module AtsSccas_TCFunctions {
                                                 omit, 
                                                 PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
                                                 PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
-                                                "0"
+                                                "0" // Expired
                                 ));
                 tc_ack.start;
                 alt {
@@ -245,7 +245,7 @@ module AtsSccas_TCFunctions {
                                                                         m_fcValue(
                                                                                   "g-3gpp-atcf-mgmt-uri-in-path",
                                                                                   {
-                                                                                    {"sip-uri", { tokenOrHost := PX_SIP_URI }}
+                                                                                    {"sip-uri", { tokenOrHost := PX_ACTF_MGMT_URI }}
                                                                                   })
                                                                     }),
                                                 m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -253,7 +253,18 @@ module AtsSccas_TCFunctions {
                                 ));
                 tc_ack.start;
                 alt {
-                    [] SIPP.receive(mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)) {
+                    [] SIPP.receive(mw_sccas_Response_2xxonREGISTER(
+                                                                    vc_callId, 
+                                                                    vc_cSeq, 
+                                                                    vc_from, 
+                                                                    vc_to, 
+                                                                    vc_via_REG, 
+                                                                    vc_contact, 
+                                                                    mw_pChargingVector(-, { tokenOrHost := "orig-ioi" }), // TODO To be refined during validation
+                                                                    mw_PAssertedID(
+                                                                                   mw_PAssertedIDValue(PX_SCCAS_URI)
+                                                                                   )
+                                                                    )) {
                         tc_ack.stop;
                         log("*** " & __SCOPE__ & ": PASS: 200 OK message was received ***");
                         f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
@@ -283,7 +294,9 @@ module AtsSccas_TCFunctions {
                 LibIms_Steps.f_setHeadersMESSAGE(v_cSeq_s, vc_from.addressField.addrSpecUnion, vc_to.addressField.addrSpecUnion);
                 f_awaitingMESSAGE(
                                   mw_sccas_MESSAGE_Request(
-                                                           -, -, -, -,  // TODO To be refined during validation
+                                                           -, -, 
+                                                           mw_pChargingVector(-, { tokenOrHost := "orig-ioi" }), // TODO To be refined during validation
+                                                           -,
                                                            m_contentType("application/vnd.3gpp.SRVCC-info+xml"),  // TODO To be refined during validation
                                                            ? // TODO To be refined during validation
                                   )
@@ -307,6 +320,7 @@ module AtsSccas_TCFunctions {
             runs on ImsComponent {
                 // Local variables
                 var CSeq v_cSeq_s := p_cSeq_s;
+                var Contact v_contact;
 
                 // Preambule
                 f_init_userprofile(c_userProfile_UE1atSUThome);
@@ -317,6 +331,17 @@ module AtsSccas_TCFunctions {
 
                 // Registration
                 f_setHeaders_REGISTER(v_cSeq_s);
+                v_contact := valueof(vc_contact);
+                v_contact.contactBody.contactAddresses[0].contactParams := { // TODO To be refined during validation
+                                                                             {
+                                                                               "g.3gpp.atcf-mgmt-uri",
+                                                                               {tokenOrHost := PX_ACTF_MGMT_URI}
+                                                                             },
+                                                                             {
+                                                                               "g.3gpp.path",
+                                                                               {tokenOrHost := PX_ACTF_URI}
+                                                                             }
+                                                                            };
                 f_SendREGISTER(
                                m_sccas_register(
                                                 vc_requestUri, 
@@ -325,22 +350,22 @@ module AtsSccas_TCFunctions {
                                                 vc_from, 
                                                 vc_to, 
                                                 vc_via_REG, 
-                                                vc_contact, 
+                                                v_contact, 
                                                 m_add_Authorization_digest(
-                                                                            vc_authorization, 
-                                                                            {c_Integrity_protected_no}
-                                                                            ), 
+                                                                           vc_authorization, 
+                                                                           {c_Integrity_protected_no}
+                                                                           ), 
                                                 PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
                                                 PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
                                                 "600000",
-                                                m_sccas_featureCaps( // TS 124 237 Clause C.6 Definition of feature-capability indicator g.3gpp.atcfmgmt-uri
+                                                -/*m_sccas_featureCaps( // TS 124 237 Clause C.6 Definition of feature-capability indicator g.3gpp.atcfmgmt-uri
                                                                     {
                                                                         m_fcValue(
-                                                                                  "g-3gpp-atcf-mgmt-uri-in-path",
+                                                                                  "g-3gpp-atcf-mgmt-uri\",
                                                                                   {
-                                                                                    {"sip-uri", { tokenOrHost := PX_SIP_URI }}
+                                                                                    {"sip-uri", { tokenOrHost := PX_ACTF_MGMT_URI }}
                                                                                   })
-                                                                    }),
+                                                                    })*/, // TODO To be refined during validation
                                                 m_contentType(c_sdpApplication), // TODO To be refined during validation
                                                 m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
                                 ));
@@ -377,6 +402,128 @@ module AtsSccas_TCFunctions {
             } // end function f_TC_ISC_SCCAS_RSC_REG_05_msc
 
         } // End of group TP_6_3_4_Trigger_SRVCC_To_MSC
+
+        group TP_6_3_5_Providing_SRVCC_To_MSC {
+
+            /**
+             *  @desc    Verify that the SCCAS successfully provide CS to PS SRVCC information
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_RSC_REG_06_ueims(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                // Local variables
+                var CSeq v_cSeq_s := p_cSeq_s;
+                var Contact v_contact;
+
+                // Preambule
+                f_init_userprofile(c_userProfile_UE1atSUThome);
+                f_initSipUrl(c_serviceProfile_EMERGENCY);
+                f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+                action("Please register UE")
+                f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+
+                // Registration
+                f_setHeaders_REGISTER(v_cSeq_s);
+                v_contact := valueof(vc_contact);
+                v_contact.contactBody.contactAddresses[0].contactParams := { // TODO To be refined during validation
+                                                                             {
+                                                                               "g.3gpp.icsi-ref",
+                                                                               {tokenOrHost := PX_ICSI_URI}
+                                                                             }
+                                                                            };
+                f_SendREGISTER(
+                               m_sccas_register(
+                                                vc_requestUri, 
+                                                vc_callId, 
+                                                vc_cSeq, 
+                                                vc_from, 
+                                                vc_to, 
+                                                vc_via_REG, 
+                                                v_contact, 
+                                                m_add_Authorization_digest(
+                                                                            vc_authorization, 
+                                                                            {c_Integrity_protected_no}
+                                                                            ), 
+                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
+                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                "600000",
+                                                -/*m_sccas_featureCaps( // TS 124 237 Clause C.6 Definition of feature-capability indicator g.3gpp.atcfmgmt-uri
+                                                                    {
+                                                                        m_fcValue(
+                                                                                  "g-3gpp-atcf-mgmt-uri-in-path",
+                                                                                  {
+                                                                                    {"sip-uri", { tokenOrHost := PX_ACTF_MGMT_URI }}
+                                                                                  })
+                                                                    })*/, // TODO To be refined during validation
+                                                m_contentType(c_sdpApplication), // TODO To be refined during validation
+                                                m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
+                                ));
+                tc_ack.start;
+                alt {
+                    [] SIPP.receive(mw_sccas_Response_2xxonREGISTER(
+                                                                    vc_callId, 
+                                                                    vc_cSeq, 
+                                                                    vc_from, 
+                                                                    vc_to, 
+                                                                    vc_via_REG, 
+                                                                    vc_contact, 
+                                                                    mw_pChargingVector(-, { tokenOrHost := "orig-ioi" }), // TODO To be refined during validation
+                                                                    mw_PAssertedID(
+                                                                                   mw_PAssertedIDValue(PX_SCCAS_URI)
+                                                                                   ), // TODO To be refined during validation
+                                                                    mw_acceptContact(
+                                                                                     { // TODO To be refined during validation
+                                                                                        {
+                                                                                        "g.3gpp.path-media",
+                                                                                        {tokenOrHost := PX_ICSI_URI}
+                                                                                        }
+                                                                                     }
+                                                                                     )
+                                                                    )) {
+                        tc_ack.stop;
+                        log("*** " & __SCOPE__ & ": PASS: 200 OK message was received ***");
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+                    }
+                    [] tc_ack.timeout {
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+                    }
+                }
+
+                // TODO Deregistration?
+                f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+
+            } // End of function f_TC_ISC_SCCAS_RSC_REG_06_ueims
+
+            function f_TC_ISC_SCCAS_RSC_REG_06_msc(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                // Local variables
+                var CSeq v_cSeq_s := p_cSeq_s;
+
+                // Preambule
+                f_init_userprofile(c_userProfile_UE1atSUThome);
+                f_initSipUrl(c_serviceProfile_EMERGENCY);
+                f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+                f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+
+                // Message
+                LibIms_Steps.f_setHeadersMESSAGE(v_cSeq_s, vc_from.addressField.addrSpecUnion, vc_to.addressField.addrSpecUnion);
+                f_awaitingMESSAGE(
+                                  mw_sccas_MESSAGE_Request(
+                                                           -, -, 
+                                                           mw_pChargingVector(-, { tokenOrHost := "orig-ioi" }), // TODO To be refined during validation
+                                                           -,
+                                                           m_contentType("application/vnd.3gpp.SRVCC-info+xml"),  // TODO To be refined during validation
+                                                           ? // TODO To be refined during validation
+                                  )
+                                  );
+                f_selfOrClientSyncAndVerdict(c_tbDone, f_getVerdict()); // sync
+
+                // Answer to the MESSAGE
+                f_send200OK();
+                f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+            } // end function f_TC_ISC_SCCAS_RSC_REG_06_msc
+
+        } // End of group TP_6_3_5_Providing_SRVCC_To_MSC
 
     } // End of group Group_6_3
      
