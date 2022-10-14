@@ -15,7 +15,7 @@ PICS used for test case selection
     /** @desc   boolean PICS ref: A-3/5
                 True, if SUT/SCSCF requires ...
     */
-    boolean PC_SCCAS_TODO := false;
+    boolean PICS_SCCAS_GM := false;
     
     boolean PICS_MSC_GM := false;
 }

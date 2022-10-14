@@ -34,6 +34,14 @@ module AtsSccas_Testcases
             system TestAdapter {
                 //Variables
                 var ImsComponent v_imsComponent_ueims;
+
+                // Test control
+                if (not PICS_SCCAS_GM) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+                    stop;
+                }
+
+                // Test component configuration
                 f_cf_1IscUp(v_imsComponent_ueims);
 
                 //Start
@@ -55,6 +63,13 @@ module AtsSccas_Testcases
             system TestAdapter {
                 //Variables
                 var ImsComponent v_imsComponent_ueims;
+
+                // Test control
+                if (not PICS_SCCAS_GM) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+                    stop;
+                }
+
                 f_cf_1IscUp(v_imsComponent_ueims);
 
                 //Start
@@ -80,6 +95,13 @@ module AtsSccas_Testcases
             system TestAdapter {
                 //Variables
                 var ImsComponent v_imsComponent_ueims;
+
+                // Test control
+                if (not PICS_SCCAS_GM) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+                    stop;
+                }
+
                 f_cf_1IscUp(v_imsComponent_ueims);
 
                 //Start
@@ -106,6 +128,13 @@ module AtsSccas_Testcases
                 //Variables
                 var ImsComponent v_imsComponent_ueims;
                 var ImsComponent v_imsComponent_atcf;
+
+                // Test control
+                if (not PICS_SCCAS_GM) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+                    stop;
+                }
+
                 f_cf_1Isc1AtcfUp(v_imsComponent_ueims, v_imsComponent_atcf);
 
                 //Start
@@ -133,6 +162,13 @@ module AtsSccas_Testcases
                 //Variables
                 var ImsComponent v_imsComponent_ueims;
                 var ImsComponent v_imsComponent_msc;
+
+                // Test control
+                if (not PICS_SCCAS_GM) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+                    stop;
+                }
+
                 f_cf_1Isc1AtcfUp(v_imsComponent_ueims, v_imsComponent_msc);
 
                 //Start
@@ -160,6 +196,13 @@ module AtsSccas_Testcases
                 //Variables
                 var ImsComponent v_imsComponent_ueims;
                 var ImsComponent v_imsComponent_msc;
+
+                // Test control
+                if (not PICS_SCCAS_GM) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+                    stop;
+                }
+
                 f_cf_1Isc1AtcfUp(v_imsComponent_ueims, v_imsComponent_msc);
 
                 //Start
