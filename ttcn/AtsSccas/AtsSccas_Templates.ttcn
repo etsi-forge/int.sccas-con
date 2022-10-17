@@ -79,6 +79,7 @@ module AtsSccas_Templates
                                                                              template (present) ContactBody p_contact_body := ?,
                                                                              template SemicolonParam_List p_contactParams := *
                                                                              ) := {
+            fieldName   := CONTACT_E,
             contactBody := p_contact_body
         } // End of template mw_sccas_contact
 

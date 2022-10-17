@@ -52,7 +52,7 @@ module AtsSccas_TCFunctions {
                 f_init_userprofile(c_userProfile_UE1atSUThome);
                 f_initSipUrl(c_serviceProfile_EMERGENCY);
                 f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-                action("Please register UE")
+                action("Please register UE");
                 f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
                 // Registration
@@ -107,7 +107,7 @@ module AtsSccas_TCFunctions {
                 f_init_userprofile(c_userProfile_UE1atSUThome);
                 f_initSipUrl(c_serviceProfile_EMERGENCY);
                 f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-                action("Please register UE")
+                action("Please register UE");
                 f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
                 // Registration
@@ -160,7 +160,7 @@ module AtsSccas_TCFunctions {
                 f_init_userprofile(c_userProfile_UE1atSUThome);
                 f_initSipUrl(c_serviceProfile_EMERGENCY);
                 f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-                action("Please register UE")
+                action("Please register UE");
                 f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
                 // Registration
@@ -219,7 +219,7 @@ module AtsSccas_TCFunctions {
                 f_init_userprofile(c_userProfile_UE1atSUThome);
                 f_initSipUrl(c_serviceProfile_EMERGENCY);
                 f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-                action("Please register UE")
+                action("Please register UE");
                 f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
                 // Registration
@@ -326,7 +326,7 @@ module AtsSccas_TCFunctions {
                 f_init_userprofile(c_userProfile_UE1atSUThome);
                 f_initSipUrl(c_serviceProfile_EMERGENCY);
                 f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-                action("Please register UE")
+                action("Please register UE");
                 f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
                 // Registration
@@ -419,7 +419,7 @@ module AtsSccas_TCFunctions {
                 f_init_userprofile(c_userProfile_UE1atSUThome);
                 f_initSipUrl(c_serviceProfile_EMERGENCY);
                 f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-                action("Please register UE")
+                action("Please register UE");
                 f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
                 // Registration
