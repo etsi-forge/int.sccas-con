@@ -46,7 +46,7 @@ module AtsSccas_TCFunctions_TS124292 {
             f_init_userprofile(c_userProfile_UE1atSUThome);
             f_initSipUrl(c_serviceProfile_EMERGENCY);
             f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-            action("Please register UE")
+            action("Please register UE");
             f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
             // Registration
@@ -95,7 +95,7 @@ module AtsSccas_TCFunctions_TS124292 {
             f_init_userprofile(c_userProfile_UE1atSUThome);
             f_initSipUrl(c_serviceProfile_EMERGENCY);
             f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-            action("Please register UE")
+            action("Please register UE");
             f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
             // Registration
@@ -324,8 +324,8 @@ module AtsSccas_TCFunctions_TS124292 {
         // Check vc_request.msgHeader.contact for 3GPP requirement
         function f_check_contact_msc(in Contact p_contact) runs on ImsComponent {
 
-            if (ispresent(p_contact.contactBody.wildcard) == false) {
-                log("f_check_contact_msc: FAIL: Invalid contact content")
+            if (ischosen(p_contact.contactBody.wildcard) == false) {
+                log("f_check_contact_msc: FAIL: Invalid contact content");
                 f_setVerdict(e_error);
                 return;
             }
@@ -333,7 +333,7 @@ module AtsSccas_TCFunctions_TS124292 {
             // Looking for g.3gpp.icsi-ref
             var template charstring m_found_pattern := pattern "*g.3gpp.icsi-ref*";
             if (regexp(p_contact.contactBody.wildcard, m_found_pattern, 0) == "") {
-                log("f_check_contact_msc: FAIL: g.3gpp.icsi-ref is not present")
+                log("f_check_contact_msc: FAIL: g.3gpp.icsi-ref is not present");
                 f_setVerdict(e_error); // g.3gpp.icsi-ref is not present
                 return;
             }
@@ -341,7 +341,7 @@ module AtsSccas_TCFunctions_TS124292 {
             // Looking for g.3gpp.icsi-ref media
             m_found_pattern := pattern "*g.3gpp.icsi-ref media*";
             if (regexp(p_contact.contactBody.wildcard, m_found_pattern, 0) == "") {
-                log("f_check_contact_msc: FAIL: g.3gpp.icsi-ref media is not present")
+                log("f_check_contact_msc: FAIL: g.3gpp.icsi-ref media is not present");
                 f_setVerdict(e_error); // g.3gpp.icsi-ref media is not present
                 return;
             }
@@ -349,7 +349,7 @@ module AtsSccas_TCFunctions_TS124292 {
             // not containing "reg-id"
             m_found_pattern := pattern "*reg-id*";
             if (regexp(p_contact.contactBody.wildcard, m_found_pattern, 0) != "") {
-                log("f_check_contact_msc: FAIL: reg-id should not be present")
+                log("f_check_contact_msc: FAIL: reg-id should not be present");
                 f_setVerdict(e_error); // reg-id should not be present
                 return;
             }
