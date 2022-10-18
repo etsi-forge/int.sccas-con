@@ -535,6 +535,35 @@ module AtsSccas_Testcases
 				f_cf_1IscDown(v_imsComponent_ueims);
 
 			} // End of TC_ISC_SCCAS_CPT_INV_08 
+
+		   /*
+			* @desc Verify that the SCC AS handles correctly the transfer of originating session in alerting phase.
+			* @param p_cSeq_s Transaction Id
+			*/
+			testcase TC_ISC_SCCAS_CPT_INV_09(inout CSeq p_cSeq_s) 
+			runs on ServerSyncComp
+			system TestAdapter {
+				//Variables
+				var ImsComponent v_imsComponent_ueims;
+
+				// Test control
+				if (not PICS_SCCAS_GM) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+					stop;
+				}
+
+				// Test component configuration
+				f_cf_1IscUp(v_imsComponent_ueims);
+
+				//Start
+				f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_CPT_INV_08(p_cSeq_s));
+
+				// synchronize both PTCs on 3 sychronization points
+				f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+				f_cf_1IscDown(v_imsComponent_ueims);
+
+			} // End of TC_ISC_SCCAS_CPT_INV_09 
     	
     } // End of group Group_12_3
      
