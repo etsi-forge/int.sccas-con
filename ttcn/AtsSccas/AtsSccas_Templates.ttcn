@@ -89,6 +89,21 @@ module AtsSccas_Templates
             genericParams := ?
         } // End of template mw_pAccessNetworkInfo
 
+        group HeaderTemplatesAxel {
+        }
+        
+        group HeaderTemplatesSteffen {
+        }
+        
+        group HeaderTemplatesBostjan {
+        }
+        
+        group HeaderTemplatesIztok {
+        }
+        
+        group HeaderTemplatesYann {
+        }
+
     } // End of group HeaderTemplates
     
     group MessageTemplates {
@@ -121,6 +136,20 @@ module AtsSccas_Templates
                         featureCaps   := p_featureCaps
                     },
                     messageBody := p_mb
+                }
+                group request_sent_Axel {
+                }
+            
+                group request_sent_Steffen {
+                }
+                
+                group request_sent_Bostjan {
+                }
+                
+                group request_sent_Iztok {
+                }
+                
+                group request_sent_Yann {
                 }
                
             } // End of group request_sent    
@@ -188,6 +217,22 @@ module AtsSccas_Templates
                         acceptContact   := p_acceptContact
                     }
                 } // End of template mw_sccas_Response_2xxonREGISTER
+                
+
+                group request_receive_Axel {
+                }
+            
+                group request_receive_Steffen {
+                }
+                
+                group request_receive_Bostjan {
+                }
+                
+                group request_receive_Iztok {
+                }
+                
+                group request_receive_Yann {
+                }
 
             } // End of group request_receive
 
