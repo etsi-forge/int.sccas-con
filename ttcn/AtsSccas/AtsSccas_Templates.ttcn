@@ -152,6 +152,26 @@ module AtsSccas_Templates
                 group request_sent_Yann {
                 }
                
+                template (omit) INVITE_Request m_sccas_invite(
+                                                              in template(value) SipUrl p_requestUri,
+                                                              in template(value) CallId p_callId,
+                                                              in template(value) CSeq p_cSeq,
+                                                              in template(value) From p_from,
+                                                              in template(value) To p_to,
+                                                              in template(value) LibSip_SIPTypesAndValues.Via p_via,
+                                                              in template(value) LibSip_SIPTypesAndValues.Contact p_contact,
+                                                              in template(omit) Require p_require := omit,
+                                                              in template(omit) Route p_route := omit,
+                                                              in template(omit) Supported p_supported := omit,
+                                                              in template(value) MessageBody p_mb
+                ) modifies m_INVITE_Request_UE := {
+                    msgHeader := {
+                        contentLength := m_contentLength(f_MessageBodyLength(p_mb)),
+                        contentType := m_contentType(c_sdpApplication)
+                    },
+                    messageBody := p_mb
+                }
+
             } // End of group request_sent    
             
             group request_receive { 
@@ -201,16 +221,16 @@ module AtsSccas_Templates
                 } // End of template mw_sccas_MESSAGE_Request
 
                 template (present) Response mw_sccas_Response_2xxonREGISTER(
-                                                                        template (present) CallId p_callId := ?,
-                                                                        template (present) CSeq p_cSeq := ?,
-                                                                        template (present) From p_from := ?,
-                                                                        template (present) To p_to := ?,
-                                                                        template (present) Via p_via := ?,
-                                                                        template (present) Contact p_contact := ?,
-                                                                        template (present) PChargingVector p_pChargingVector := ?,
-                                                                        template (present) PAssertedID p_pAssertedID := ?,
-                                                                        template AcceptContact p_acceptContact := *
-                                                                        ) modifies mw_Response_2xx_Base := {
+                                                                            template (present) CallId p_callId := ?,
+                                                                            template (present) CSeq p_cSeq := ?,
+                                                                            template (present) From p_from := ?,
+                                                                            template (present) To p_to := ?,
+                                                                            template (present) Via p_via := ?,
+                                                                            template (present) Contact p_contact := ?,
+                                                                            template (present) PChargingVector p_pChargingVector := ?,
+                                                                            template (present) PAssertedID p_pAssertedID := ?,
+                                                                            template AcceptContact p_acceptContact := *
+                                                                            ) modifies mw_Response_2xx_Base := {
                     msgHeader := {
                         pChargingVector := p_pChargingVector,
                         contact         := p_contact,
@@ -233,6 +253,24 @@ module AtsSccas_Templates
                 
                 group request_receive_Yann {
                 }
+
+                template (present) Response mw_sccas_Response_2xxonINVITE(
+                                                                          template (present) CallId p_callId := ?,
+                                                                          template (present) CSeq p_cSeq := ?,
+                                                                          template (present) From p_from := ?,
+                                                                          template (present) To p_to := ?,
+                                                                          template (present) Via p_via := ?,
+                                                                          template (present) Contact p_contact := ?,
+                                                                          template (present) PChargingVector p_pChargingVector := ?,
+                                                                          template (present) PAssertedID p_pAssertedID := ?,
+                                                                          template AcceptContact p_acceptContact := *
+                                                                          ) modifies mw_Response_2xx_Base := {
+                    msgHeader := {
+                        pChargingVector := p_pChargingVector,
+                        contact         := p_contact,
+                        acceptContact   := p_acceptContact
+                    }
+                } // End of template mw_sccas_Response_2xxonINVITE
 
             } // End of group request_receive
 

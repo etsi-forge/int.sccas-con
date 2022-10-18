@@ -26,11 +26,10 @@ group auxSipFunction {
     ** @desc f_IncCSeq returns an input parameter incremented by 1000
     ** reason is to run the next testcase with a higher CSeq value
     */
-    function f_IncCSeq(inout CSeq loc_CSeq) 
-        runs on ServerSyncComp 
-        {    loc_CSeq.seqNumber := loc_CSeq.seqNumber + 1000;
-            return
-        }; 
+    function f_IncCSeq(inout CSeq loc_CSeq) {
+        loc_CSeq.seqNumber := loc_CSeq.seqNumber + 1000;
+        return
+    }; 
     // end f_IncCSeq
         
 }//end group auxSipFunction
