@@ -141,6 +141,48 @@ module AtsSccas_Templates
                 }
             
                 group request_sent_Steffen {
+                	
+					template  Supported m_supported_replaces := 
+                	{
+ 						fieldName := REPLACES_E,
+						optionsTags := omit 
+					}
+					
+// 				template(value) Response m_Response_Dummy := {
+//					statusLine := c_statusLine100,
+//					msgHeader := m_msgHeader_dummy,
+//					messageBody := omit,
+//					payload := omit
+//				}
+                	
+                	// TODO:change name
+                	template (omit) INVITE_Request m_sccas_invite_stl(
+						template(value) SipUrl p_requestUri,
+						template(value) CallId p_callId,
+						template(value) CSeq p_cSeq,
+						template(value) From p_from,
+						template(value) To p_to,
+						template(value) Via p_via,
+						template(value) Contact p_contact,
+						template(omit) Require p_require := omit,
+						template(omit) Route p_route := omit,
+						template(omit) Supported p_supported := omit,
+						template(value) MessageBody p_mb
+                	) modifies m_INVITE_Request_UE := {
+						
+						msgHeader := {
+							callId := p_callId,
+							contact := p_contact,
+							cSeq := p_cSeq,
+							fromField := p_from,
+							toField := p_to,
+							via := p_via
+							},
+						messageBody := omit,
+						payload := omit
+					}
+                	
+                	
                 }
                 
                 group request_sent_Bostjan {
@@ -243,6 +285,43 @@ module AtsSccas_Templates
                 }
             
                 group request_receive_Steffen {
+                	
+					template (present) Response mw_sccas_Response_200mediaOnly(
+						template (present) StatusLine.statusCode p_statusCode := 200,
+						template (present) CallId p_callId := ?,
+						template (present) CSeq p_cSeq := ?,
+						template (present) From p_from := ?,
+						template (present) To p_to := ?,
+						template (present) Via p_via := ?,
+						template (present) Contact p_contact := ?,
+						template (present) PChargingVector p_pChargingVector := ?,
+						template (present) PAssertedID p_pAssertedID := ?,
+						template AcceptContact p_acceptContact := *
+					) modifies mw_Response_StatusCode_Base := {
+
+						statusLine := mw_statusLine(p_statusCode, ?),
+						messageBody :=
+						{
+							sdpMessageBody :=
+							{
+								protocol_version := ?,
+								origin := ?,
+								session_name := ?,
+								information := *,
+								uri := *,
+								emails := *,
+								phone_numbers := *,
+								connection := *,
+								bandwidth := *,
+								times := ?,
+								timezone_adjustments := *,
+								key := *,
+								attributes := *,
+								media_list := ? // TODO: media only && Version 0
+							}
+						}
+                	
+					}
                 }
                 
                 group request_receive_Bostjan {

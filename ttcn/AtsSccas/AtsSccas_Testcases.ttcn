@@ -264,6 +264,39 @@ module AtsSccas_Testcases
     } // End of group Group_8_3
      
     group Group_9_3 {
+    	
+		/*
+		 * @desc Verify that the P-CSCF successfully processes an initial INVITE (Originating Leg) with dynamic STI.
+		 * @param p_cSeq_s Transaction Id
+		 */
+		testcase TP_ISC_SCCAS_CPT_INV_01(inout CSeq p_cSeq_s)
+		runs on ServerSyncComp
+		system TestAdapter {
+				
+			var ImsComponent v_imsComponent_ueims;
+				   
+			// Test control
+			if (not PICS_SCCAS_GM) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***");
+				stop;
+			}
+			
+			// TODO: setUo "the UE entity isRegisteredTo the IMS"
+			
+			// f_Registration_IMS
+			
+			f_cf_1IscUp(v_imsComponent_ueims);
+			
+			
+				
+			f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_IISC_SCCAS_CPT_INV_01_ueims(p_cSeq_s));
+			
+			
+			
+			f_cf_1IscDown(v_imsComponent_ueims);
+				
+		} // End of TP_ISC_SCCAS_CPT_INV_01
+    	
     } // End of group Group_9_3
      
     group Group_10_3 {
