@@ -618,6 +618,9 @@ module AtsSccas_TCFunctions {
      
     group Group_11_3 {
     } // End of group Group_11_3
+     
+    group Group_12_3 {
+    } // End of group Group_12_3
 
     group helpers {
 
