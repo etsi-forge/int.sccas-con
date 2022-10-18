@@ -271,5 +271,8 @@ module AtsSccas_Testcases
      
     group Group_11_3 {
     } // End of group Group_11_3
+
+	group Group_12_3 {
+	} // End of group Group_12_3
      
 } // End of module AtsSccas_Testcases
