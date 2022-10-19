@@ -773,6 +773,76 @@ module AtsSccas_TCFunctions {
     } // End of group Group_9_3
      
     group Group_10_3 {
+
+            /**
+             *  @desc    Verify that the SCC AS successfully processes an INVITE on a previously established dialog if the SIP INVITE request contains a Replaces header field.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_PPT_RIN_01(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                // Local variables
+                var CSeq v_cSeq_s := p_cSeq_s;
+
+                // Preambule
+                f_init_userprofile(c_userProfile_UE1atSUThome);
+                f_initSipUrl(c_serviceProfile_EMERGENCY);
+                f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+                // Registration
+                f_sendRegistrationAndAwait200Ok(
+                                                v_cSeq_s,
+                                                m_sccas_register(
+                                                                vc_requestUri, 
+                                                                vc_callId, 
+                                                                vc_cSeq, 
+                                                                vc_from, 
+                                                                vc_to, 
+                                                                vc_via_REG, 
+                                                                vc_contact, 
+                                                                m_add_Authorization_digest(
+                                                                                            vc_authorization, 
+                                                                                            {c_Integrity_protected_no}
+                                                                                            ), 
+                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                "600000",
+                                                                -,
+                                                                m_contentType(c_sdpApplication), // TODO To be refined during validation
+                                                                m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
+                                                ), 
+                                                mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
+                                                );
+                f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+
+                // Registration
+                f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+                f_SendINVITE(
+                             m_sccas_invite(   // TODO request active speech media component using CS bearer
+                                            vc_requestUri,
+                                            vc_callId, 
+                                            p_cSeq_s, 
+                                            vc_from, vc_to, vc_via_REG, 
+                                            vc_contact,
+                                            -, -, -,
+                                            m_MBody_SDP(vc_sdp_local)
+                                            ));
+                tc_ack.start;
+                alt {
+                    [] SIPP.receive(mw_INVITE_Request(?,vc_requestUri)) {
+                        tc_ack.stop;
+                        log("*** " & __SCOPE__ & ": PASS: forwarded INVITE message was received ***");
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+                    }
+                    [] tc_ack.timeout {
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+                    }
+                }
+
+                // TODO Deregistration?
+                f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+
+            } // End of function f_TC_ISC_SCCAS_PPT_RIN_01        
+
+
     } // End of group Group_10_3
      
     group Group_11_3 {
