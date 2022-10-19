@@ -189,6 +189,131 @@ module AtsSccas_Templates
                 }
                 
                 group request_sent_Iztok {
+					  //SIP name application
+					  const charstring c_sipMessage := "message/sip";
+					  const charstring c_mimeMultipart := "multipart/mixed";
+	
+					  const charstring c_boundary := "--m5hnsik49jfkg";	
+	
+					  template(value) GenericParam m_contentTypeBoundary(charstring p_boundary) := {
+								  id := "boundary",
+								  paramValue := { tokenOrHost := p_boundary }
+							  }
+							  
+					  //module LibSip_MessageBodyTypes
+					  // group MIMETypes {
+					  // type union MIME_Encapsulated_Parts {
+					  //	   SDP_Message sdpMessageBody,
+					  //	   XmlBody xmlBody, // if there is XML body
+					  //	   MsdBody msdBody, // RFC 8147: Minimum Set of Data octets
+					  //	   RequestUnion sipReq,   //TODO in libsip sip message
+					  //	   Response sipRsp   //TODO in libsip sip response
+					  // }
+					  template(value) MessageBody m_MBody_MIME_SipReqResp(
+								  charstring p_boundary,
+								  template(value) RequestUnion p_request,
+								  template(value) Response p_response
+							  ) := {
+								  mimeMessageBody := {
+									  boundary := /*"--" & */p_boundary,
+									  mimeEncapsulatedList := {
+										  {
+											  content_type := c_sipMessage,
+											  content_disposition := omit,
+											  content_id := omit,
+											mime_encapsulated_part := {msdBody:= '00'O} //TODO remove
+											  //TODO uncoment mime_encapsulated_part := {sipReq := p_request}
+										  },
+										  {
+											  content_type := c_sipMessage,
+											  content_disposition := omit,
+											  content_id := omit,
+											mime_encapsulated_part := {msdBody:= '00'O} //TODO remove
+											  //TODO uncoment mime_encapsulated_part := {sipRes := p_response}
+										  }
+									  }
+								  }
+							  }
+			
+					  template ServiceRoute m_serviceroute_ims(SipUrl p_serviceroute_sip_url ) := {
+	 
+								 fieldName := SERVICE_ROUTE_E,
+						 routeBody := {
+							 {
+								 nameAddr := {
+									 displayName := omit,
+									 addrSpec := p_serviceroute_sip_url
+								 },
+								 rrParam := omit
+							 }
+						 }			   
+					  }
+					  template (omit) REGISTER_Request m_register_ue_srvcc(
+																		  template(value) SipUrl p_requestUri,
+																		  template(omit) CallId p_callId := omit,
+																		  template(value) CSeq p_cSeq,
+																		  template(value) From p_from,
+																		  template(value) To p_to,
+																		  template(value) Via p_via,
+																		  template(omit) LibSip_SIPTypesAndValues.Contact p_contact := omit,
+																		  template(omit) Authorization p_authorization := omit,
+																		  template(value) charstring p_host,
+																		  template(value) integer p_port,
+																		  template(value) DeltaSec p_deltaSec,
+																		  template(omit) FeatureCaps p_featureCaps := omit,
+																		  template(omit) ContentType p_contentType := omit,
+																		  template(omit) MessageBody p_mb := omit
+
+						) modifies m_REGISTER_Request_expires_IMS := {
+							msgHeader := {
+								contentLength := m_contentLength(f_MessageBodyLength(p_mb)),
+								contentType   := p_contentType,
+								expires       := m_expires(str2int(valueof(p_deltaSec))),
+								featureCaps   := p_featureCaps
+							},
+							messageBody := p_mb
+						}
+                
+		
+				
+						template(value) REGISTER_Request m_REGISTER_Request_AS(
+											template(value) SipUrl p_requestUri,
+											template(omit) CallId p_callId := omit,
+											template(value) CSeq p_cSeq,
+											template(value) From p_from,
+											template(value) To p_to,
+											template(value) Via p_via,
+											template(omit) Contact p_contact := omit,
+											template(omit) Authorization p_authorization := omit,
+											//template(value) charstring p_host,
+											//template(value) integer p_port,
+											template(omit) ContentType p_contentType := omit,
+											template(omit) MessageBody p_mb := omit
+						) modifies m_REGISTER_Request_Base := {
+							requestLine := {
+								method := REGISTER_E,
+								requestUri := p_requestUri
+							},
+							msgHeader := {
+								authorization := p_authorization,
+								callId := p_callId,
+								contact := p_contact,
+								cSeq := p_cSeq,
+								fromField := p_from,
+								//path := m_path_TS(p_host, p_port),
+								pChargingVector := m_pChargingVector_icid_TS,
+								pVisitedNetworkID := m_pVisitedNetworkID_TS,
+								//require := {
+								//	fieldName := REQUIRE_E,
+								//	optionsTags := {"path"}
+								//},
+								toField := p_to,
+								via := p_via,
+								contentLength := m_contentLength(f_MessageBodyLength(p_mb)),
+								contentType   := p_contentType
+							},
+							messageBody := p_mb
+						}
                 }
                 
                 group request_sent_Yann {
@@ -328,6 +453,22 @@ module AtsSccas_Templates
                 }
                 
                 group request_receive_Iztok {
+					template (present) Response mw_Response_2xxonREGISTER_AS(
+																			template (present) CallId p_callId := ?,
+																			template (present) CSeq p_cSeq := ?,
+																			template (present) From p_from := ?,
+																			template (present) To p_to := ?,
+																			template (present) Via p_via := ?,
+																			template (present) Contact p_contact := ?,
+																			template (present) PChargingVector p_pChargingVector := ?,
+																			template (present) PAssertedID p_pAssertedID := ?,
+																			template AcceptContact p_acceptContact := *
+																			) modifies mw_Response_2xx_Base := {
+					msgHeader := {
+						pChargingVector := p_pChargingVector,
+						contact         := p_contact,
+						acceptContact   := p_acceptContact
+					}}
                 }
                 
                 group request_receive_Yann {
