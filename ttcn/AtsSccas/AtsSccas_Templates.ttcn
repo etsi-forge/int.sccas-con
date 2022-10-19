@@ -464,8 +464,28 @@ module AtsSccas_Templates
                         contact         := p_contact,
                         acceptContact   := p_acceptContact
                     }}
-                }
                 
+                
+				    template (present) INVITE_Request mw_INVITE_Request_AS(
+																						   template (present) SipUrl p_requestUri := ?,
+																						   template (present) CallId p_callId := ?,
+																						   template (present) PChargingVector p_pChargingVector := ?,
+																						   template (present) PAssertedID p_pAssertedID := ?,
+																						   template ContentType p_contentType := *,
+																						   template MessageBody p_mb := *
+																						   ) modifies mw_INVITE_Request_Base := {
+								   requestLine := {
+									   requestUri := p_requestUri
+								   },
+								   msgHeader := {
+									   callId          := p_callId,
+									   contentType     := p_contentType,
+									   pChargingVector := p_pChargingVector,
+									   pAssertedID     := p_pAssertedID                        
+								   },
+								   messageBody := p_mb 
+				    } // End of template mw_sccas_MESSAGE_Request
+                }   
                 group request_receive_Yann {
                 }
 
