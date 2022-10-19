@@ -1453,8 +1453,8 @@ module AtsSccas_TCFunctions {
                 // TODO Deregistration?
                 f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-            } // End of function f_TC_ISC_SCCAS_CPT_INV_10
-        
+			} // End of function f_TC_ISC_SCCAS_CPT_INV_10
+
 			/**
 			 *  @desc    Verify that the SCC AS handles correctly additional session transfer initiation.
 			 *  @param   p_cSeq_s Random CSeq REGISTER number
