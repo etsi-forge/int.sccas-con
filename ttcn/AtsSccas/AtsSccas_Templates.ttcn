@@ -773,7 +773,7 @@ module AtsSccas_Templates
 											template CallId p_callId,
 											template CSeq p_cSeq,
 											template(present) PChargingVector p_chargingVector := ?,
-						                    template(omit) FeatureCaps p_featureCaps := omit
+						                    template FeatureCaps p_featureCaps := *
 										) modifies mw_Response_StatusCode_Base := {
 											msgHeader := {
 												pChargingVector := p_chargingVector,

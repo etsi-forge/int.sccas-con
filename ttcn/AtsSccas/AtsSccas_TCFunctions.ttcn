@@ -903,10 +903,10 @@ module AtsSccas_TCFunctions {
 					                   ?,
 					                   ?,
 					//mw_sccas_featureCaps({})
-					                   mw_sccas_featureCaps({(mw_fcValue("g3gppFeatureCapabilityIndicator",{-})),
-										                     (mw_fcValue("g3gppMidcallFeatureCapabilityIndicator",{-})),
-										                     (mw_fcValue("g3gppSrvccAlertingFeatureCapabilityIndicator",{-})),
-										                     (mw_fcValue("g3gppPs2csSrvccOrigPreAlertingMediaIndicator",{-}))
+					                   mw_sccas_featureCaps({(mw_fcValue("g3gppFeatureCapabilityIndicator")),
+										                     (mw_fcValue("g3gppMidcallFeatureCapabilityIndicator")),
+										                     (mw_fcValue("g3gppSrvccAlertingFeatureCapabilityIndicator")),
+										                     (mw_fcValue("g3gppPs2csSrvccOrigPreAlertingMediaIndicator"))
 					                                       })
                                        )) {
 						log("*** " & __SCOPE__ & ": PASS: 183 message was received ***");
@@ -918,11 +918,11 @@ module AtsSccas_TCFunctions {
 										?,
 										?,
 										?,
-										mw_sccas_featureCaps({(mw_fcValue("g3gppFeatureCapabilityIndicator",{-})),
-															 (mw_fcValue("g3gppMidcallFeatureCapabilityIndicator",{-})),
-															 (mw_fcValue("g3gppSrvccAlertingFeatureCapabilityIndicator",{-})),
-															 (mw_fcValue("g3gppPs2csSrvccOrigPreAlertingMediaIndicator",{-})),
-											                 (mw_fcValue("g3gppRemoteLegInfoFeatureCapabilityIndicator",{-}))
+										mw_sccas_featureCaps({(mw_fcValue("g3gppFeatureCapabilityIndicator")),
+															 (mw_fcValue("g3gppMidcallFeatureCapabilityIndicator")),
+															 (mw_fcValue("g3gppSrvccAlertingFeatureCapabilityIndicator")),
+															 (mw_fcValue("g3gppPs2csSrvccOrigPreAlertingMediaIndicator")),
+											                 (mw_fcValue("g3gppRemoteLegInfoFeatureCapabilityIndicator"))
 															})
 					)) {
 						tc_wait.stop;
