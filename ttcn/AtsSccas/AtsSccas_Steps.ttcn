@@ -1,5 +1,8 @@
 module AtsSccas_Steps {
     
+    // LibCommon
+    import from LibCommon_VerdictControl all;
+    
     // LibSip
     import from LibSip_Common all;
     import from LibSip_SIPTypesAndValues all;
@@ -17,6 +20,7 @@ module AtsSccas_Steps {
     
     // AtsSccas
     import from AtsSccas_PIXITS all;
+    import from AtsSccas_Templates all;
 
     group Constants {
     
@@ -455,5 +459,127 @@ module AtsSccas_Steps {
         } // end f_setHeadersINVITE_AS
 
     } // End of group SetHeaders
+    
+    group CommonProcedures {
+    
+        function f_registrationAS(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                var CSeq v_cSeq_s := p_cSeq_s;
+                var template(value) REGISTER_Request m_register3ptyUe;
+                var template(value) RequestUnion m_req;
+                var template(value) Response m_ResponseReg_3ptyUe;
+                
+
+                // Preamble
+                f_init_userprofile(c_userProfile_PCSCFwithHomeUE);
+                f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+                f_initSipUrl(c_userProfile_PCSCFwithHomeUE);
+
+                //Registration
+                f_setHeaders_REGISTER(v_cSeq_s);//UE REGISTER
+                m_register3ptyUe :=  m_register_ue_srvcc(
+                                                    vc_requestUri, 
+                                                    vc_callId, 
+                                                    vc_cSeq, 
+                                                    vc_from, 
+                                                    vc_to, 
+                                                    vc_via_REG, 
+                                                    vc_contact, 
+                                                    m_add_Authorization_digest(
+                                                                                vc_authorization, 
+                                                                                {c_Integrity_protected_no}
+                                                                                ), 
+                                                    PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
+                                                    PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                    "600000",
+                                                    omit,
+                                                    omit,
+                                                    omit
+                                                    );
+                m_req:= {Register:=valueof(m_register3ptyUe)};
+
+                m_ResponseReg_3ptyUe :=  m_Response_2xxonREGISTER_IMS(
+                                                                c_statusLine200,
+                                                                vc_callId,
+                                                                p_cSeq_s,
+                                                                vc_from,
+                                                                vc_to,
+                                                                vc_via_REG,
+                                                                vc_contact,
+                                                                m_SipUrl_currDomain(vc_userprofile),
+                                                                vc_from.addressField.nameAddr.addrSpec
+                                                                );
+
+                f_init_userprofile(c_userProfile_SCSCFwithHomeUE);
+                f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_AS); //AS as SCCAS
+                f_initSipUrl(c_userProfile_SCSCFwithHomeUE);
+
+                f_setHeaders_REGISTER_AS(v_cSeq_s);//AS INTERFACE REGISTER
+                f_SendREGISTER(
+                             m_REGISTER_Request_AS(
+                                              vc_requestUri, 
+                                              vc_callId, 
+                                              vc_cSeq, 
+                                              vc_from, 
+                                              vc_to, 
+                                              vc_via_REG, 
+                                              vc_contact, 
+                                              -,
+                                              "600000",
+                                              m_contentType("multipart/mixed",{m_contentTypeBoundary(c_boundary)}) ,
+                                              m_MBody_MIME_SipReqResp(c_boundary,m_req,m_ResponseReg_3ptyUe)
+                              ));
+                              
+                tc_ack.start;
+                alt {
+                    [] SIPP.receive(mw_Response_2xxonREGISTER_AS(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)) {
+                        tc_ack.stop;
+
+                    }
+                    [] tc_ack.timeout {
+                    	f_setVerdict(e_timeout);
+ 
+                    }
+                }
+        } //end function f_registrationAS
+        
+    
+        function f_deregistrationAS(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+            // Local variables
+            var CSeq v_cSeq_s := p_cSeq_s;
+
+            // Preamble
+            f_init_userprofile(c_userProfile_SCSCFwithHomeUE);
+            f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_AS); //AS as SCCAS
+            f_initSipUrl(c_userProfile_SCSCFwithHomeUE);
+            
+
+            f_setHeaders_REGISTER_AS(v_cSeq_s);//AS INTERFACE REGISTER
+            f_SendREGISTER(
+                           m_REGISTER_Request_AS(
+                                            vc_requestUri, 
+                                            vc_callId, 
+                                            vc_cSeq, 
+                                            vc_from, 
+                                            vc_to, 
+                                            vc_via_REG, 
+                                            vc_contact, 
+                                            -,
+                                            "0",
+                                            - ,
+                                            -)
+                            );
+            tc_ack.start;
+            alt {
+                [] SIPP.receive(mw_Response_2xxonREGISTER_AS(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)) {
+                    tc_ack.stop;
+                }
+                [] tc_ack.timeout {
+                    f_setVerdict(e_timeout);
+                }
+            }
+        } //end function f_deregistrationAS
+    } //end group CommonProcedures
 
 } // End of module AtsSccas_Steps
