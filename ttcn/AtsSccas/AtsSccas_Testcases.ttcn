@@ -354,13 +354,262 @@ module AtsSccas_Testcases
 			
 			
 				
-			f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_IISC_SCCAS_CPT_INV_01_ueims(p_cSeq_s));
+			f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_CPT_INV_01(p_cSeq_s));
 			
 			
 			
 			f_cf_1IscDown(v_imsComponent_ueims);
 				
 		} // End of TP_ISC_SCCAS_CPT_INV_01
+		
+		/*
+		 * @desc Verify that the P-CSCF successfully processes an initial INVITE (Originating Leg) with static STI.
+		 * @param p_cSeq_s Transaction Id
+		 */		
+		testcase TP_ISC_SCCAS_CPT_INV_02(inout CSeq p_cSeq_s)
+		runs on ServerSyncComp
+		system TestAdapter {
+		
+			var ImsComponent v_imsComponent_ueims;
+				   
+			// Test control
+			if (not PICS_SCCAS_GM) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***");
+				stop;
+			}
+			
+			// TODO: setUo "the UE entity isRegisteredTo the IMS"
+			
+			// f_Registration_IMS
+			
+			// Test component configuration
+			f_cf_1IscUp(v_imsComponent_ueims);
+			
+			
+				
+			f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_CPT_INV_02(p_cSeq_s));
+			
+			
+			
+			// synchronize PTC on 3 sychronization points
+			f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+			f_cf_1IscDown(v_imsComponent_ueims);
+			
+		} // End of TP_ISC_SCCAS_CPT_INV_02
+		
+		
+		/*
+		 * @desc Verify that the P-CSCF successfully processes an re-INVITE (Originating Leg)
+		 * @param p_cSeq_s Transaction Id
+		 */		
+		testcase TP_ISC_SCCAS_CPT_RIN_01(inout CSeq p_cSeq_s)
+		runs on ServerSyncComp
+		system TestAdapter {
+			
+			var ImsComponent v_imsComponent_ueims;
+				   
+			// Test control
+			if (not PICS_SCCAS_GM) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***");
+				stop;
+			}
+			
+			// TODO: setUo "the UE entity isRegisteredTo the IMS"
+			
+			// f_Registration_IMS
+			
+			// Test component configuration
+			f_cf_1IscUp(v_imsComponent_ueims);
+			
+			
+				
+			f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_CPT_RIN_01(p_cSeq_s));
+			
+			
+			
+			f_cf_1IscDown(v_imsComponent_ueims);
+				
+		} // End of TP_ISC_SCCAS_CPT_RIN_01
+			
+			
+		/*
+		 * @desc Verify that the P-CSCF successfully processes an ACK and release the source access leg.
+		 * @param p_cSeq_s Transaction Id
+		 */		
+		testcase TP_ISC_SCCAS_CPT_ACK_01(inout CSeq p_cSeq_s)
+		runs on ServerSyncComp
+		system TestAdapter {
+			
+			var ImsComponent v_imsComponent_ueims;
+				   
+			// Test control
+			if (not PICS_SCCAS_GM) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***");
+				stop;
+			}
+			
+			// TODO: setUo "the UE entity isRegisteredTo the IMS"
+			
+			// f_Registration_IMS
+			
+			// Test component configuration
+			f_cf_1IscUp(v_imsComponent_ueims);
+			
+			
+				
+			f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_CPT_ACK_01(p_cSeq_s));
+			
+			
+			
+			// synchronize PTC on 3 sychronization points
+			f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+			f_cf_1IscDown(v_imsComponent_ueims);
+				
+		} // End of TP_ISC_SCCAS_CPT_ACK_01
+		
+
+		/*
+		 * @desc Verify that the SCC AS Conditions for selecting a sessions in an early dialog phase
+		 * @param p_cSeq_s Transaction Id
+		 */		
+		testcase TP_ISC_SCCAS_CPT_INV_03(inout CSeq p_cSeq_s)
+		runs on ServerSyncComp
+		system TestAdapter {
+		
+		var ImsComponent v_imsComponent_ueims;
+				   
+			// Test control
+			if (not PICS_SCCAS_GM) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***");
+				stop;
+			}
+			
+			
+			// Test component configuration
+			f_cf_1IscUp(v_imsComponent_ueims);
+			
+			
+				
+			f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_CPT_INV_03(p_cSeq_s));
+			
+			
+			
+			// synchronize PTC on 3 sychronization points
+			f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+			f_cf_1IscDown(v_imsComponent_ueims);
+			
+		} // End of TP_ISC_SCCAS_CPT_INV_03
+		
+		
+		testcase TP_ISC_SCCAS_CPT_INV_04(inout CSeq p_cSeq_s)
+		runs on ServerSyncComp
+		system TestAdapter {
+		
+		// TODO
+			
+		} // End of TP_ISC_SCCAS_CPT_INV_04
+    	
+    	
+		testcase TP_ISC_SCCAS_PCT_UPD_01(inout CSeq p_cSeq_s)
+		runs on ServerSyncComp
+		system TestAdapter {
+		
+		// TODO
+			
+		} // End of TP_ISC_SCCAS_PCT_UPD_01
+		
+		testcase TP_ISC_PCT_RES_02(inout CSeq p_cSeq_s)
+		runs on ServerSyncComp
+		system TestAdapter {
+		
+		// TODO
+			
+		} // End of TP_ISC_PCT_RES_02
+		
+		testcase TP_ISC_SCCAS_PCT_INV_05(inout CSeq p_cSeq_s)
+		runs on ServerSyncComp
+		system TestAdapter {
+		
+		// TODO
+			
+		} // End of TP_ISC_SCCAS_PCT_INV_05
+		
+		testcase TP_ISC_SCCAS_PCT_REF_01(inout CSeq p_cSeq_s)
+		runs on ServerSyncComp
+		system TestAdapter {
+		
+		// TODO
+			
+		} // End of TP_ISC_SCCAS_PCT_REF_01
+		
+		testcase TP_ISC_SCCAS_PCT_REF_02(inout CSeq p_cSeq_s)
+		runs on ServerSyncComp
+		system TestAdapter {
+		
+		// TODO
+			
+		} // End of TP_ISC_SCCAS_PCT_REF_02
+		
+		testcase TP_ISC_SCCAS_PCT_RES_01(inout CSeq p_cSeq_s)
+		runs on ServerSyncComp
+		system TestAdapter {
+		
+		// TODO
+			
+		} // End of TP_ISC_SCCAS_PCT_RES_01
+		
+		
+		testcase TP_ISC_SCCAS_MED_BYE_01(inout CSeq p_cSeq_s)
+		runs on ServerSyncComp
+		system TestAdapter {
+		
+		// TODO
+			
+		} // End of TP_ISC_SCCAS_MED_BYE_01
+		
+		testcase TP_ISC_SCCAS_MED_RES_01(inout CSeq p_cSeq_s)
+		runs on ServerSyncComp
+		system TestAdapter {
+		
+		// TODO
+			
+		} // End of TP_ISC_SCCAS_MED_RES_01
+		
+		testcase TP_ISC_SCCAS_MED_RIN_01(inout CSeq p_cSeq_s)
+		runs on ServerSyncComp
+		system TestAdapter {
+		
+		// TODO
+			
+		} // End of TP_ISC_SCCAS_MED_RIN_01
+		
+		testcase TP_ISC_SCCAS_CPT_INV_05(inout CSeq p_cSeq_s)
+		runs on ServerSyncComp
+		system TestAdapter {
+		
+		// TODO
+			
+		} // End of TP_ISC_SCCAS_CPT_INV_05
+		
+		testcase TP_ISC_SCCAS_CPT_INV_06(inout CSeq p_cSeq_s)
+		runs on ServerSyncComp
+		system TestAdapter {
+		
+		// TODO
+			
+		} // End of TP_ISC_SCCAS_CPT_INV_06
+		
+		
+		testcase TP_ISC_SCCAS_PCT_INV_04(inout CSeq p_cSeq_s)
+		runs on ServerSyncComp
+		system TestAdapter {
+		
+		// TODO
+			
+		} // End of TP_ISC_SCCAS_PCT_INV_04
     	
     } // End of group Group_9_3
      

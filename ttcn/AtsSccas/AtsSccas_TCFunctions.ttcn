@@ -981,7 +981,7 @@ module AtsSccas_TCFunctions {
      
     group Group_9_3 {
         
-        function f_TC_IISC_SCCAS_CPT_INV_01_ueims(in CSeq p_cSeq_s)
+        function f_TC_ISC_SCCAS_CPT_INV_01(in CSeq p_cSeq_s)
         runs on ImsComponent {
                 
             // TODO: set correct service profiles
@@ -1005,6 +1005,202 @@ module AtsSccas_TCFunctions {
             
             
             }
+            
+		function f_TC_ISC_SCCAS_CPT_INV_02(in CSeq p_cSeq_s)
+		runs on ImsComponent {
+		// Local variables
+		var CSeq v_cSeq_s := p_cSeq_s;
+				
+		// Preambule
+		f_init_userprofile(c_userProfile_UE1atSUThome);
+		f_initSipUrl(c_serviceProfile_EMERGENCY);
+		f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+		
+		// initial condition: the UE entity isRegisteredTo the IMS  
+		f_sendRegistrationAndAwait200Ok(
+												v_cSeq_s,
+												m_sccas_register(
+																vc_requestUri, 
+																vc_callId, 
+																vc_cSeq, 
+																vc_from, 
+																vc_to, 
+																vc_via_REG, 
+																vc_contact, 
+																m_add_Authorization_digest(
+																							vc_authorization, 
+																							{c_Integrity_protected_no}
+																							), 
+																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																"600000",
+																-,
+																m_contentType(c_sdpApplication), // TODO To be refined during validation
+																m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
+												), 
+												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
+												);
+				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+		
+			LibIms_Steps.f_setHeadersINVITE(p_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+			f_SendINVITE(m_sccas_invite(
+					vc_requestUri,
+					vc_callId,
+					vc_cSeq,
+					vc_from,
+					vc_to,
+					vc_via_REG,
+					vc_contact,
+					omit, // template(omit) Require p_require := omit,
+					vc_route,
+					m_supported_replaces, 
+					m_messageBody_SDP_mediaOnly
+					
+				)
+			
+			);
+			f_awaitingResponse(mw_Response_Base(c_statusLine200, vc_callIdReg, p_cSeq_s));
+			
+			
+			f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+		
+		} // End of f_TC_IISC_SCCAS_CPT_INV_02
+		
+		function f_TC_ISC_SCCAS_CPT_RIN_01(in CSeq p_cSeq_s)
+		runs on ImsComponent {
+		// Local variables
+		var CSeq v_cSeq_s := p_cSeq_s;
+		
+		// Preambule
+		f_init_userprofile(c_userProfile_UE1atSUThome);
+		f_initSipUrl(c_serviceProfile_EMERGENCY);
+		f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+				
+		// initial condition: the UE entity isRegisteredTo the IMS  
+		f_sendRegistrationAndAwait200Ok(
+												v_cSeq_s,
+												m_sccas_register(
+																vc_requestUri, 
+																vc_callId, 
+																vc_cSeq, 
+																vc_from, 
+																vc_to, 
+																vc_via_REG, 
+																vc_contact, 
+																m_add_Authorization_digest(
+																							vc_authorization, 
+																							{c_Integrity_protected_no}
+																							), 
+																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																"600000",
+																-,
+																m_contentType(c_sdpApplication), // TODO To be refined during validation
+																m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
+												), 
+												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
+												);
+				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+		
+		} // End of f_TC_IISC_SCCAS_CPT_RIN_01
+		
+		function f_TC_ISC_SCCAS_CPT_ACK_01(in CSeq p_cSeq_s)
+		runs on ImsComponent {
+		// Local variables
+		var CSeq v_cSeq_s := p_cSeq_s;
+			
+		// Preambule
+		f_init_userprofile(c_userProfile_UE1atSUThome);
+		f_initSipUrl(c_serviceProfile_EMERGENCY);
+		f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+				
+		// initial condition: the UE entity isRegisteredTo the IMS  
+		f_sendRegistrationAndAwait200Ok(
+												v_cSeq_s,
+												m_sccas_register(
+																vc_requestUri, 
+																vc_callId, 
+																vc_cSeq, 
+																vc_from, 
+																vc_to, 
+																vc_via_REG, 
+																vc_contact, 
+																m_add_Authorization_digest(
+																							vc_authorization, 
+																							{c_Integrity_protected_no}
+																							), 
+																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																"600000",
+																-,
+																m_contentType(c_sdpApplication), // TODO To be refined during validation
+																m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
+												), 
+												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
+												);
+				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+			
+		} // End of f_TC_IISC_SCCAS_CPT_ACK_01
+		
+		function f_TC_ISC_SCCAS_CPT_INV_03(in CSeq p_cSeq_s)
+		runs on ImsComponent {
+		// Local variables
+		var CSeq v_cSeq_s := p_cSeq_s;
+		
+		// Preambule
+		f_init_userprofile(c_userProfile_UE1atSUThome);
+		f_initSipUrl(c_serviceProfile_EMERGENCY);
+		f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+				
+		// initial condition: the UE entity isRegisteredTo the IMS  
+		f_sendRegistrationAndAwait200Ok(
+												v_cSeq_s,
+												m_sccas_register(
+																vc_requestUri, 
+																vc_callId, 
+																vc_cSeq, 
+																vc_from, 
+																vc_to, 
+																vc_via_REG, 
+																vc_contact, 
+																m_add_Authorization_digest(
+																							vc_authorization, 
+																							{c_Integrity_protected_no}
+																							), 
+																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																"600000",
+																-,
+																m_contentType(c_sdpApplication), // TODO To be refined during validation
+																m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
+												), 
+												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
+												);
+				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+				
+				// TODO: initial condition (PICS?): SCC AS supports the MSC Server assisted mid-call feature according to operator policy 
+			
+			// STEP: send invite	
+			LibIms_Steps.f_setHeadersINVITE(p_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+			f_SendINVITE(m_sccas_invite(
+					vc_requestUri,
+					vc_callId,
+					vc_cSeq,
+					vc_from,
+					vc_to,
+					vc_via_REG,
+					m_contact_g3gppSrvccAlertingFeature, // TODO: correct use auf g3gppSrvccAlertingFeatureCapabilityIndicator
+					omit, // template(omit) Require p_require := omit,
+					vc_route,
+					m_supported_replaces, 
+					omit
+					
+				)
+			
+			);
+			f_awaitingResponse(mw_sccas_Response_2xxmediaOnly(vc_callIdReg, p_cSeq_s, ?, ?, ?, mw_contact_g3gppMidcallFeature));
+		
+		} // End of f_TC_ISC_SCCAS_CPT_INV_03
         
     } // End of group Group_9_3
      

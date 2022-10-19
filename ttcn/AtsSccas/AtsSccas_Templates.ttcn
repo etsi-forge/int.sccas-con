@@ -141,6 +141,70 @@ module AtsSccas_Templates
                 }
             
                 group request_sent_Steffen {
+                	
+					template LibSip_SIPTypesAndValues.Contact m_contact_g3gppSrvccAlertingFeature := {
+						fieldName := CONTACT_E,
+						contactBody := {
+							wildcard :=
+								"g3gppSrvccAlertingFeatureCapabilityIndicator"
+						}
+					}
+                    
+                    template LibSip_MessageBodyTypes.MessageBody m_messageBody_SDP_mediaOnly := {
+						sdpMessageBody := {
+							protocol_version := 1, // TODO
+							origin := {
+								user_name := "username", // TODO 
+								session_id := "sessionID", // TODO
+								session_version := "sessionVersion", // TODO
+								net_type := "netType", // TODO
+								addr_type := "addrType", // TODO
+								addr := "addr" // TODO
+							},
+							session_name := "sessionName", // TODO
+							information := omit,
+							uri := omit,
+							emails := omit,
+							phone_numbers := omit,
+							connection := omit,
+							bandwidth := omit,
+							times := {
+								{
+									time_field := {
+										start_time := "start", // TODO
+										stop_time //* field is numeric strings  // TODO
+												  //* that may not fit into
+												  //* 32-bit signed int
+											:= "stop"
+									},
+									time_repeat := omit
+								}
+							},
+							timezone_adjustments := omit,
+							key := omit,
+							attributes := omit,
+							media_list := {
+								{
+									media_field := {
+										media := "media",
+										ports := {
+											port_number := 1,
+											num_of_ports := omit
+										},
+										transport := "transport",
+										fmts := {"fmts"}
+									},
+									information := omit,
+									connections := omit,
+									bandwidth := omit,
+									key := omit,
+									attributes := omit
+								}
+							}
+						}
+					}
+                    
+                    
                     
                     template  Supported m_supported_replaces := 
                     {
@@ -405,6 +469,45 @@ module AtsSccas_Templates
                 }
             
                 group request_receive_Steffen {
+                    
+					template LibSip_SIPTypesAndValues.Contact mw_contact_g3gppMidcallFeature := {
+						fieldName := ?, contactBody := ? // TODO: correct use of g3gppMidcallFeatureCapabilityIndicator
+					}
+                    
+					template (present) Response mw_sccas_Response_2xxmediaOnly(
+						//template (present) StatusLine.statusCode p_statusCode := 200,
+						template (present) CallId p_callId := ?,
+						template (present) CSeq p_cSeq := ?,
+						template (present) From p_from := ?,
+						template (present) To p_to := ?,
+						template (present) Via p_via := ?,
+						template (present) Contact p_contact := ?,
+						template (present) PChargingVector p_pChargingVector := ?,
+						template (present) PAssertedID p_pAssertedID := ?,
+						template AcceptContact p_acceptContact := *
+					) modifies mw_Response_2xx_Base := {
+				//		statusLine := mw_statusLine(p_statusCode, ?),
+						messageBody :=
+						{
+							sdpMessageBody :=
+							{
+								protocol_version := ?,
+								origin := ?,
+								session_name := ?,
+								information := *,
+								uri := *,
+								emails := *,
+								phone_numbers := *,
+								connection := *,
+								bandwidth := *,
+								times := ?,
+								timezone_adjustments := *,
+								key := *,
+								attributes := *,
+								media_list := ? // TODO: media only && Version 0
+							}
+						}
+					}
                     
                     template (present) Response mw_sccas_Response_200mediaOnly(
                         template (present) StatusLine.statusCode p_statusCode := 200,
