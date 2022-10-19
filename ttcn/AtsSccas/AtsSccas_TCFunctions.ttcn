@@ -856,7 +856,7 @@ module AtsSccas_TCFunctions {
      
     group Group_9_3 {
         
-        function f_TC_IISC_SCCAS_CPT_INV_01_ueims(in CSeq p_cSeq_s)
+        function f_TC_ISC_SCCAS_CPT_INV_01(in CSeq p_cSeq_s)
         runs on ImsComponent {
                 
             // TODO: set correct service profiles

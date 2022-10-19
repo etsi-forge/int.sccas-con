@@ -289,7 +289,7 @@ module AtsSccas_Testcases
 			
 			
 				
-			f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_IISC_SCCAS_CPT_INV_01_ueims(p_cSeq_s));
+			f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_CPT_INV_01(p_cSeq_s));
 			
 			
 			
