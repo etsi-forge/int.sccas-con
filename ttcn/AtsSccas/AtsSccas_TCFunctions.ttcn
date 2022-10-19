@@ -312,18 +312,66 @@ module AtsSccas_TCFunctions {
             runs on ImsComponent {
                 // Local variables
                 var CSeq v_cSeq_s := p_cSeq_s;
+                var template(value) REGISTER_Request m_register3ptyUe;
+                var template(value) RequestUnion m_req;
+                var template(value) Response m_ResponseReg_3ptyUe;
 
-                // Preambule
-                f_init_userprofile(c_userProfile_UE1atSUThome);
-                f_initSipUrl(c_serviceProfile_EMERGENCY);
+                // Preamble
+                f_init_userprofile(c_userProfile_PCSCFwithHomeUE);
                 f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-                action("Please register UE");
-                f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+                f_initSipUrl(c_userProfile_PCSCFwithHomeUE);
+                
+                //Registration
+                f_setHeaders_REGISTER(v_cSeq_s);//UE REGISTER
+                m_register3ptyUe :=  m_register_ue_srvcc(
+                                                    vc_requestUri, 
+                                                    vc_callId, 
+                                                    vc_cSeq, 
+                                                    vc_from, 
+                                                    vc_to, 
+                                                    vc_via_REG, 
+                                                    vc_contact, 
+                                                    m_add_Authorization_digest(
+                                                                                vc_authorization, 
+                                                                                {c_Integrity_protected_no}
+                                                                                ), 
+                                                    PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
+                                                    PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                    "600000",
+                                                    m_sccas_featureCaps( // TS 124 237 Clause C.6 Definition of feature-capability indicator g.3gpp.atcfmgmt-uri
+                                                                        {
+                                                                            m_fcValue(
+                                                                                      "g-3gpp-atcf-mgmt-uri-in-path",
+                                                                                      {
+                                                                                        {"sip-uri", { tokenOrHost := PX_ACTF_MGMT_URI }}
+                                                                                      })
+                                                                        }),
+                                                    omit,
+                                                    omit
+                                                    );
+                m_req:= {Register:=valueof(m_register3ptyUe)};
+                
+                m_ResponseReg_3ptyUe :=  m_Response_2xxonREGISTER_IMS(
+                                                                c_statusLine200,
+                                                                vc_callId,
+                                                                p_cSeq_s,
+                                                                vc_from,
+                                                                vc_to,
+                                                                vc_via_REG,
+                                                                vc_contact,
+                                                                m_SipUrl_currDomain(vc_userprofile),
+                                                                vc_from.addressField.nameAddr.addrSpec
+                                                                );
+                
+                f_init_userprofile(c_userProfile_SCSCFwithHomeUE);
+                f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_AS); //AS as SCCAS
+                f_initSipUrl(c_userProfile_SCSCFwithHomeUE);
+                
+                f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync preambleDone
 
-                // Registration
-                f_setHeaders_REGISTER(v_cSeq_s);
+                f_setHeaders_REGISTER_AS(v_cSeq_s);//AS INTERFACE REGISTER
                 f_SendREGISTER(
-                               m_sccas_register(
+                               m_REGISTER_Request_AS(
                                                 vc_requestUri, 
                                                 vc_callId, 
                                                 vc_cSeq, 
@@ -331,38 +379,26 @@ module AtsSccas_TCFunctions {
                                                 vc_to, 
                                                 vc_via_REG, 
                                                 vc_contact, 
-                                                m_add_Authorization_digest(
-                                                                            vc_authorization, 
-                                                                            {c_Integrity_protected_no}
-                                                                            ), 
-                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                -,
                                                 "600000",
-                                                m_sccas_featureCaps( // TS 124 237 Clause C.6 Definition of feature-capability indicator g.3gpp.atcfmgmt-uri
-                                                                    {
-                                                                        m_fcValue(
-                                                                                  "g-3gpp-atcf-mgmt-uri-in-path",
-                                                                                  {
-                                                                                    {"sip-uri", { tokenOrHost := PX_ACTF_MGMT_URI }}
-                                                                                  })
-                                                                    }),
-                                                m_contentType(c_sdpApplication), // TODO To be refined during validation
-                                                m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
+                                                m_contentType("multipart/mixed",{m_contentTypeBoundary(c_boundary)}) ,
+                                                m_MBody_MIME_SipReqResp(c_boundary,m_req,m_ResponseReg_3ptyUe)
                                 ));
                 tc_ack.start;
                 alt {
-                    [] SIPP.receive(mw_sccas_Response_2xxonREGISTER(
-                                                                    vc_callId, 
-                                                                    vc_cSeq, 
-                                                                    vc_from, 
-                                                                    vc_to, 
-                                                                    vc_via_REG, 
-                                                                    vc_contact, 
-                                                                    mw_pChargingVector(-, { tokenOrHost := "orig-ioi" }), // TODO To be refined during validation
-                                                                    mw_PAssertedID(
-                                                                                   mw_PAssertedIDValue(PX_SCCAS_URI)
-                                                                                   )
-                                                                    )) {
+//					[] SIPP.receive(mw_sccas_Response_2xxonREGISTER(
+//																					   vc_callId, 
+//																					   vc_cSeq, 
+//																					   vc_from, 
+//																					   vc_to, 
+//																					   vc_via_REG, 
+//																					   vc_contact, 
+//																					   mw_pChargingVector(-, { tokenOrHost := "orig-ioi" }), // TODO To be refined during validation
+//																					   mw_PAssertedID(
+//																									  mw_PAssertedIDValue(PX_SCCAS_URI)
+//																									  )
+//																					   )) 
+                    [] SIPP.receive(mw_Response_2xxonREGISTER_AS(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)) {
                         tc_ack.stop;
                         log("*** " & __SCOPE__ & ": PASS: 200 OK message was received ***");
                         f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
