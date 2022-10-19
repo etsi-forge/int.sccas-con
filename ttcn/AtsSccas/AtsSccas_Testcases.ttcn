@@ -418,7 +418,7 @@ module AtsSccas_Testcases
 			} // End of TC_ISC_SCCAS_PPT_RIN_04 
 
 		   /*
-			* @desc Verify that the SCC AS processes an INVITE if number of media lines in the Target Access Leg is less than the number of media lines in the Source Access Leg.
+			* @desc Verify that the SCC AS successfully processes an BYE on a previously established dialog, if does not receive within this time interval an initial SIP INVITE request.
 			* @param p_cSeq_s Transaction Id
 			*/
 			testcase TC_ISC_SCCAS_PPT_BYE_01(inout CSeq p_cSeq_s) 
@@ -445,6 +445,35 @@ module AtsSccas_Testcases
 				f_cf_1IscDown(v_imsComponent_ueims);
 
 			} // End of TC_ISC_SCCAS_PPT_BYE_01 
+
+		   /*
+			* @desc Verify that the SCC AS successfully processes an CANCEL on a early dialog.
+			* @param p_cSeq_s Transaction Id
+			*/
+			testcase TC_ISC_SCCAS_PPT_BYE_02(inout CSeq p_cSeq_s) 
+			runs on ServerSyncComp
+			system TestAdapter {
+				//Variables
+				var ImsComponent v_imsComponent_ueims;
+
+				// Test control
+				if (not PICS_SCCAS_GM) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+					stop;
+				}
+
+				// Test component configuration
+				f_cf_1IscUp(v_imsComponent_ueims);
+
+				//Start
+				f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_PPT_BYE_02(p_cSeq_s));
+
+				// synchronize both PTCs on 4 sychronization points
+				f_serverSync1Client({c_prDone, c_tbDone, c_tbDone, c_poDone});
+
+				f_cf_1IscDown(v_imsComponent_ueims);
+
+			} // End of TC_ISC_SCCAS_PPT_BYE_02 
 
 	} // End of group Group_10_3
      
