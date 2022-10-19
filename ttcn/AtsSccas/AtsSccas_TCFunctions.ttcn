@@ -147,100 +147,121 @@ module AtsSccas_TCFunctions {
         } // End of group TP_6_3_1_General
           
         group TP_6_3_2_Triggers_To_ATCF {
-        	
-			/**
-			 *  @desc    Verify that the SCCAS successfully obtain/processes SRVCC information
-			 *  @param   p_cSeq_s Random CSeq REGISTER number
-			 */
-			function f_TC_ISC_SCCAS_RSC_REG_03(in CSeq p_cSeq_s)
-			runs on ImsComponent {
-				// Local variables
-				var CSeq v_cSeq_s := p_cSeq_s;
-				var template(value) REGISTER_Request m_register3ptyUe;
-				var template(value) RequestUnion m_req;
-				var template(value) Response m_ResponseReg_3ptyUe;
+            
+            /**
+             *  @desc    Verify that the SCCAS successfully obtain/processes SRVCC information
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_RSC_REG_03(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                // Local variables
+                var CSeq v_cSeq_s := p_cSeq_s;
+                var template(value) REGISTER_Request m_register3ptyUe;
+                var template(value) RequestUnion m_req;
+                var template(value) Response m_ResponseReg_3ptyUe;
 
-				// Preamble
-				f_init_userprofile(c_userProfile_PCSCFwithHomeUE);
-				f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-				f_initSipUrl(c_userProfile_PCSCFwithHomeUE);
-				
-				//Registration
-				f_setHeaders_REGISTER(v_cSeq_s);//UE REGISTER
-				m_register3ptyUe :=  m_register_ue_srvcc(
-													vc_requestUri, 
-													vc_callId, 
-													vc_cSeq, 
-													vc_from, 
-													vc_to, 
-													vc_via_REG, 
-													vc_contact, 
-													m_add_Authorization_digest(
-																				vc_authorization, 
-																				{c_Integrity_protected_no}
-																				), 
-													PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-													PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
-													"600000",
-													m_sccas_featureCaps({m_fcValue("g3gppAtcfFeatureCapabilityIndicator")}),
-													omit,//m_contentType(c_sdpApplication), // TODO To be refined during validation
-													omit//m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
-													);
-				m_req:= {Register:=valueof(m_register3ptyUe)};
-				
-				m_ResponseReg_3ptyUe :=  m_Response_2xxonREGISTER_IMS(
-																c_statusLine200,
-																vc_callId,
-																p_cSeq_s,
-																vc_from,
-																vc_to,
-																vc_via_REG,
-																vc_contact,
-																m_SipUrl_currDomain(vc_userprofile),
-																vc_from.addressField.nameAddr.addrSpec
-																);
-				
+                // Preamble
+                f_init_userprofile(c_userProfile_PCSCFwithHomeUE);
+                f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+                f_initSipUrl(c_userProfile_PCSCFwithHomeUE);
                 
+                //Registration
+                f_setHeaders_REGISTER(v_cSeq_s);//UE REGISTER
+                m_register3ptyUe :=  m_register_ue_srvcc(
+                                                    vc_requestUri, 
+                                                    vc_callId, 
+                                                    vc_cSeq, 
+                                                    vc_from, 
+                                                    vc_to, 
+                                                    vc_via_REG, 
+                                                    vc_contact, 
+                                                    m_add_Authorization_digest(
+                                                                                vc_authorization, 
+                                                                                {c_Integrity_protected_no}
+                                                                                ), 
+                                                    PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
+                                                    PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                    "600000",
+                                                    m_sccas_featureCaps({m_fcValue("g3gppAtcfFeatureCapabilityIndicator")}),
+                                                    omit,
+                                                    omit
+                                                    );
+                m_req:= {Register:=valueof(m_register3ptyUe)};
                 
-				f_init_userprofile(c_userProfile_SCSCFwithHomeUE);
-				f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_AS); //AS as SCCAS
-				f_initSipUrl(c_userProfile_SCSCFwithHomeUE);
-				
-				
-				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync preambleDone
+                m_ResponseReg_3ptyUe :=  m_Response_2xxonREGISTER_IMS(
+                                                                c_statusLine200,
+                                                                vc_callId,
+                                                                p_cSeq_s,
+                                                                vc_from,
+                                                                vc_to,
+                                                                vc_via_REG,
+                                                                vc_contact,
+                                                                m_SipUrl_currDomain(vc_userprofile),
+                                                                vc_from.addressField.nameAddr.addrSpec
+                                                                );
+                
+                f_init_userprofile(c_userProfile_SCSCFwithHomeUE);
+                f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_AS); //AS as SCCAS
+                f_initSipUrl(c_userProfile_SCSCFwithHomeUE);
+                
+                f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync preambleDone
 
-				//f_setHeaders_REGISTER_AS(v_cSeq_s);//AS INTERFACE REGISTER
-				f_SendREGISTER(
-							   m_REGISTER_Request_AS(
-												vc_requestUri, 
-												vc_callId, 
-												vc_cSeq, 
-												vc_from, 
-												vc_to, 
-												vc_via_REG, 
-												vc_contact, 
-												-, 
-											   // PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-											   // PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
-												m_contentType("multipart/mixed",{m_contentTypeBoundary(c_boundary)}) ,
-												m_MBody_MIME_SipReqResp(c_boundary,m_req,m_ResponseReg_3ptyUe)
-								));
-				tc_ack.start;
-				alt {
-					[] SIPP.receive(mw_Response_2xxonREGISTER_AS(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)) {
-						tc_ack.stop;
-						log("*** " & __SCOPE__ & ": PASS: 200 OK message was received ***");
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
-					}
-					[] tc_ack.timeout {
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
-					}
-				}
+                f_setHeaders_REGISTER_AS(v_cSeq_s);//AS INTERFACE REGISTER
+                f_SendREGISTER(
+                               m_REGISTER_Request_AS(
+                                                vc_requestUri, 
+                                                vc_callId, 
+                                                vc_cSeq, 
+                                                vc_from, 
+                                                vc_to, 
+                                                vc_via_REG, 
+                                                vc_contact, 
+                                                -,
+                                                "600000",
+                                                m_contentType("multipart/mixed",{m_contentTypeBoundary(c_boundary)}) ,
+                                                m_MBody_MIME_SipReqResp(c_boundary,m_req,m_ResponseReg_3ptyUe)
+                                ));
+                tc_ack.start;
+                alt {
+                    [] SIPP.receive(mw_Response_2xxonREGISTER_AS(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)) {
+                        tc_ack.stop;
+                        log("*** " & __SCOPE__ & ": PASS: 200 OK message was received ***");
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+                    }
+                    [] tc_ack.timeout {
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+                    }
+                }
 
-				// TODO Deregistration?
-				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+                //Deregistration
+                f_SendREGISTER(
+                               m_REGISTER_Request_AS(
+                                                vc_requestUri, 
+                                                vc_callId, 
+                                                vc_cSeq, 
+                                                vc_from, 
+                                                vc_to, 
+                                                vc_via_REG, 
+                                                vc_contact, 
+                                                -,
+                                                "0",
+                                                - ,
+                                                -)
+                                );
+                tc_ack.start;
+                alt {
+                    [] SIPP.receive(mw_Response_2xxonREGISTER_AS(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)) {
+                        tc_ack.stop;
+                        log("*** " & __SCOPE__ & ": PASS: 200 OK message was received ***");
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+                    }
+                    [] tc_ack.timeout {
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+                    }
+                }
+                f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-			} // End of function f_TC_ISC_SCCAS_RSC_REG_03
+            } // End of function f_TC_ISC_SCCAS_RSC_REG_03
 
 
         } // End of group TP_6_3_2_Triggers_To_ATCF
@@ -651,32 +672,32 @@ module AtsSccas_TCFunctions {
     } // End of group Group_8_3
      
     group Group_9_3 {
-    	
-		function f_TC_IISC_SCCAS_CPT_INV_01_ueims(in CSeq p_cSeq_s)
-		runs on ImsComponent {
-				
-			// TODO: set correct service profiles
-			LibIms_Steps.f_setHeadersINVITE(p_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
-			f_SendINVITE(m_sccas_invite(
-					vc_requestUri,
-					vc_callId,
-					vc_cSeq,
-					vc_from,
-					vc_to,
-					vc_via_REG,
-					vc_contact,
-					omit, // template(omit) Require p_require := omit,
-					vc_route,
-					m_supported_replaces, //template(omit) Supported p_supported := omit,
-					omit //template(value) MessageBody p_mb
-				)
-			
-			);
-			f_awaitingResponse(mw_Response_Base(c_statusLine200, vc_callIdReg, p_cSeq_s));
-			
-			
-			}
-    	
+        
+        function f_TC_IISC_SCCAS_CPT_INV_01_ueims(in CSeq p_cSeq_s)
+        runs on ImsComponent {
+                
+            // TODO: set correct service profiles
+            LibIms_Steps.f_setHeadersINVITE(p_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+            f_SendINVITE(m_sccas_invite(
+                    vc_requestUri,
+                    vc_callId,
+                    vc_cSeq,
+                    vc_from,
+                    vc_to,
+                    vc_via_REG,
+                    vc_contact,
+                    omit, // template(omit) Require p_require := omit,
+                    vc_route,
+                    m_supported_replaces, //template(omit) Supported p_supported := omit,
+                    omit //template(value) MessageBody p_mb
+                )
+            
+            );
+            f_awaitingResponse(mw_Response_Base(c_statusLine200, vc_callIdReg, p_cSeq_s));
+            
+            
+            }
+        
     } // End of group Group_9_3
      
     group Group_10_3 {
@@ -684,756 +705,756 @@ module AtsSccas_TCFunctions {
      
     group Group_11_3 {
 
-			/**
-			 *  @desc    Verify that the SCC AS successfully processes an INVITE that includes an active speech media component using CS bearer.
-			 *  @param   p_cSeq_s Random CSeq REGISTER number
-			 */
-			function f_TC_ISC_SCCAS_CON_RIN_01(in CSeq p_cSeq_s)
-			runs on ImsComponent {
-				// Local variables
-				var CSeq v_cSeq_s := p_cSeq_s;
+            /**
+             *  @desc    Verify that the SCC AS successfully processes an INVITE that includes an active speech media component using CS bearer.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_CON_RIN_01(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                // Local variables
+                var CSeq v_cSeq_s := p_cSeq_s;
 
-				// Preambule
-				f_init_userprofile(c_userProfile_UE1atSUThome);
-				f_initSipUrl(c_serviceProfile_EMERGENCY);
-				f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-				// Registration
-				f_sendRegistrationAndAwait200Ok(
-												v_cSeq_s,
-												m_sccas_register(
-																vc_requestUri, 
-																vc_callId, 
-																vc_cSeq, 
-																vc_from, 
-																vc_to, 
-																vc_via_REG, 
-																vc_contact, 
-																m_add_Authorization_digest(
-																							vc_authorization, 
-																							{c_Integrity_protected_no}
-																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
-																"600000",
-																-,
-																m_contentType(c_sdpApplication), // TODO To be refined during validation
-																m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
-												), 
-												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
-												);
-				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+                // Preambule
+                f_init_userprofile(c_userProfile_UE1atSUThome);
+                f_initSipUrl(c_serviceProfile_EMERGENCY);
+                f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+                // Registration
+                f_sendRegistrationAndAwait200Ok(
+                                                v_cSeq_s,
+                                                m_sccas_register(
+                                                                vc_requestUri, 
+                                                                vc_callId, 
+                                                                vc_cSeq, 
+                                                                vc_from, 
+                                                                vc_to, 
+                                                                vc_via_REG, 
+                                                                vc_contact, 
+                                                                m_add_Authorization_digest(
+                                                                                            vc_authorization, 
+                                                                                            {c_Integrity_protected_no}
+                                                                                            ), 
+                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                "600000",
+                                                                -,
+                                                                m_contentType(c_sdpApplication), // TODO To be refined during validation
+                                                                m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
+                                                ), 
+                                                mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
+                                                );
+                f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
-				// Registration
-				f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
-				f_SendINVITE(
-							 m_sccas_invite(   // TODO request active speech media component using CS bearer
-											vc_requestUri,
-											vc_callId, 
-											p_cSeq_s, 
-											vc_from, vc_to, vc_via_REG, 
-											vc_contact,
-											-, -, -,
-											m_MBody_SDP(vc_sdp_local)
-											));
-				tc_ack.start;
-				alt {
-					[] SIPP.receive(mw_INVITE_Request(?,vc_requestUri)) {
-						tc_ack.stop;
-						log("*** " & __SCOPE__ & ": PASS: forwarded INVITE message was received ***");
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
-					}
-					[] tc_ack.timeout {
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
-					}
-				}
+                // Registration
+                f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+                f_SendINVITE(
+                             m_sccas_invite(   // TODO request active speech media component using CS bearer
+                                            vc_requestUri,
+                                            vc_callId, 
+                                            p_cSeq_s, 
+                                            vc_from, vc_to, vc_via_REG, 
+                                            vc_contact,
+                                            -, -, -,
+                                            m_MBody_SDP(vc_sdp_local)
+                                            ));
+                tc_ack.start;
+                alt {
+                    [] SIPP.receive(mw_INVITE_Request(?,vc_requestUri)) {
+                        tc_ack.stop;
+                        log("*** " & __SCOPE__ & ": PASS: forwarded INVITE message was received ***");
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+                    }
+                    [] tc_ack.timeout {
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+                    }
+                }
 
-				// TODO Deregistration?
-				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+                // TODO Deregistration?
+                f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-			} // End of function f_TC_ISC_SCCAS_CON_RIN_01    	
+            } // End of function f_TC_ISC_SCCAS_CON_RIN_01        
 
-			/**
-			 *  @desc    Verify that the SCC AS successfully processes an INVITE due to two STIs on the Target Access Leg.
-			 *  @param   p_cSeq_s Random CSeq REGISTER number
-			 */
-			function f_TC_ISC_SCCAS_CON_RIN_02(in CSeq p_cSeq_s)
-			runs on ImsComponent {
-				// Local variables
-				var CSeq v_cSeq_s := p_cSeq_s;
+            /**
+             *  @desc    Verify that the SCC AS successfully processes an INVITE due to two STIs on the Target Access Leg.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_CON_RIN_02(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                // Local variables
+                var CSeq v_cSeq_s := p_cSeq_s;
 
-				// Preambule
-				f_init_userprofile(c_userProfile_UE1atSUThome);
-				f_initSipUrl(c_serviceProfile_EMERGENCY);
-				f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-				// Registration
-				f_sendRegistrationAndAwait200Ok(
-												v_cSeq_s,
-												m_sccas_register(
-																vc_requestUri, 
-																vc_callId, 
-																vc_cSeq, 
-																vc_from, 
-																vc_to, 
-																vc_via_REG, 
-																vc_contact, 
-																m_add_Authorization_digest(
-																							vc_authorization, 
-																							{c_Integrity_protected_no}
-																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
-																"600000",
-																-,
-																m_contentType(c_sdpApplication), // TODO To be refined during validation
-																m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
-												), 
-												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
-												);
-				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+                // Preambule
+                f_init_userprofile(c_userProfile_UE1atSUThome);
+                f_initSipUrl(c_serviceProfile_EMERGENCY);
+                f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+                // Registration
+                f_sendRegistrationAndAwait200Ok(
+                                                v_cSeq_s,
+                                                m_sccas_register(
+                                                                vc_requestUri, 
+                                                                vc_callId, 
+                                                                vc_cSeq, 
+                                                                vc_from, 
+                                                                vc_to, 
+                                                                vc_via_REG, 
+                                                                vc_contact, 
+                                                                m_add_Authorization_digest(
+                                                                                            vc_authorization, 
+                                                                                            {c_Integrity_protected_no}
+                                                                                            ), 
+                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                "600000",
+                                                                -,
+                                                                m_contentType(c_sdpApplication), // TODO To be refined during validation
+                                                                m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
+                                                ), 
+                                                mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
+                                                );
+                f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
-				// Registration
-				f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
-				f_SendINVITE(
-							 m_sccas_invite(   // TODO  request CS -> PS
-											vc_requestUri,
-											vc_callId, 
-											p_cSeq_s, 
-											vc_from, vc_to, vc_via_REG, 
-											vc_contact,
-											-, -, -,
-											m_MBody_SDP(vc_sdp_local)
-											));
-				tc_ack.start;
-				alt {
-					[] SIPP.receive(mw_INVITE_Request(?,vc_requestUri)) {
-						tc_ack.stop;
-						log("*** " & __SCOPE__ & ": PASS: forwarded INVITE message was received ***");
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
-					}
-					[] tc_ack.timeout {
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
-					}
-				}
+                // Registration
+                f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+                f_SendINVITE(
+                             m_sccas_invite(   // TODO  request CS -> PS
+                                            vc_requestUri,
+                                            vc_callId, 
+                                            p_cSeq_s, 
+                                            vc_from, vc_to, vc_via_REG, 
+                                            vc_contact,
+                                            -, -, -,
+                                            m_MBody_SDP(vc_sdp_local)
+                                            ));
+                tc_ack.start;
+                alt {
+                    [] SIPP.receive(mw_INVITE_Request(?,vc_requestUri)) {
+                        tc_ack.stop;
+                        log("*** " & __SCOPE__ & ": PASS: forwarded INVITE message was received ***");
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+                    }
+                    [] tc_ack.timeout {
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+                    }
+                }
 
-				// TODO Deregistration?
-				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+                // TODO Deregistration?
+                f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-			} // End of function f_TC_ISC_SCCAS_CON_RIN_02  
+            } // End of function f_TC_ISC_SCCAS_CON_RIN_02  
 
-			/**
-			 *  @desc    Verify that the SCC AS rejects an INVITE due missing ability to associate it to an ongoing or different SIP dialog.
-			 *  @param   p_cSeq_s Random CSeq REGISTER number
-			 */
-			function f_TC_ISC_SCCAS_CON_RIN_03(in CSeq p_cSeq_s)
-			runs on ImsComponent {
-				// Local variables
-				var CSeq v_cSeq_s := p_cSeq_s;
+            /**
+             *  @desc    Verify that the SCC AS rejects an INVITE due missing ability to associate it to an ongoing or different SIP dialog.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_CON_RIN_03(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                // Local variables
+                var CSeq v_cSeq_s := p_cSeq_s;
 
-				// Preambule
-				f_init_userprofile(c_userProfile_UE1atSUThome);
-				f_initSipUrl(c_serviceProfile_EMERGENCY);
-				f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-				// Registration
-				f_sendRegistrationAndAwait200Ok(
-												v_cSeq_s,
-												m_sccas_register(
-																vc_requestUri, 
-																vc_callId, 
-																vc_cSeq, 
-																vc_from, 
-																vc_to, 
-																vc_via_REG, 
-																vc_contact, 
-																m_add_Authorization_digest(
-																							vc_authorization, 
-																							{c_Integrity_protected_no}
-																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
-																"600000",
-																-,
-																m_contentType(c_sdpApplication), // TODO To be refined during validation
-																m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
-												), 
-												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
-												);
-				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+                // Preambule
+                f_init_userprofile(c_userProfile_UE1atSUThome);
+                f_initSipUrl(c_serviceProfile_EMERGENCY);
+                f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+                // Registration
+                f_sendRegistrationAndAwait200Ok(
+                                                v_cSeq_s,
+                                                m_sccas_register(
+                                                                vc_requestUri, 
+                                                                vc_callId, 
+                                                                vc_cSeq, 
+                                                                vc_from, 
+                                                                vc_to, 
+                                                                vc_via_REG, 
+                                                                vc_contact, 
+                                                                m_add_Authorization_digest(
+                                                                                            vc_authorization, 
+                                                                                            {c_Integrity_protected_no}
+                                                                                            ), 
+                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                "600000",
+                                                                -,
+                                                                m_contentType(c_sdpApplication), // TODO To be refined during validation
+                                                                m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
+                                                ), 
+                                                mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
+                                                );
+                f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
-				// Registration
-				f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
-				f_SendINVITE(
-							 m_sccas_invite(
-											vc_requestUri,
-											vc_callId, 
-											p_cSeq_s, 
-											vc_from, vc_to, vc_via_REG, 
-											vc_contact,
-											-, -, -,
-											m_MBody_SDP(vc_sdp_local)
-											));
-				tc_ack.start;
-				alt {
-					[] SIPP.receive(mw_Response_Base(c_statusLine480)) {
-						tc_ack.stop;
-						log("*** " & __SCOPE__ & ": PASS: 480 OK message was received ***");
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
-					}
-					[] tc_ack.timeout {
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
-					}
-				}
+                // Registration
+                f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+                f_SendINVITE(
+                             m_sccas_invite(
+                                            vc_requestUri,
+                                            vc_callId, 
+                                            p_cSeq_s, 
+                                            vc_from, vc_to, vc_via_REG, 
+                                            vc_contact,
+                                            -, -, -,
+                                            m_MBody_SDP(vc_sdp_local)
+                                            ));
+                tc_ack.start;
+                alt {
+                    [] SIPP.receive(mw_Response_Base(c_statusLine480)) {
+                        tc_ack.stop;
+                        log("*** " & __SCOPE__ & ": PASS: 480 OK message was received ***");
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+                    }
+                    [] tc_ack.timeout {
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+                    }
+                }
 
-				// TODO Deregistration?
-				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+                // TODO Deregistration?
+                f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-			} // End of function f_TC_ISC_SCCAS_CON_RIN_03
+            } // End of function f_TC_ISC_SCCAS_CON_RIN_03
 
-    	
+        
     } // End of group Group_11_3
      
     group Group_12_3 {
-    	
-    	
-			/**
-			 *  @desc    Verify that SCC AS correctly recognizes and initiated for PS to CS access transfer for terminating call in pre-alerting phase using PS to CS SRVCC procedure.
-			 *  @param   p_cSeq_s Random CSeq REGISTER number
-			 */
-			function f_TC_ISC_SCCAS_PCT_INV_06(in CSeq p_cSeq_s)
-			runs on ImsComponent {
-				// Local variables
-				var CSeq v_cSeq_s := p_cSeq_s;
+        
+        
+            /**
+             *  @desc    Verify that SCC AS correctly recognizes and initiated for PS to CS access transfer for terminating call in pre-alerting phase using PS to CS SRVCC procedure.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_PCT_INV_06(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                // Local variables
+                var CSeq v_cSeq_s := p_cSeq_s;
 
-				// Preambule
-				f_init_userprofile(c_userProfile_UE1atSUThome);
-				f_initSipUrl(c_serviceProfile_EMERGENCY);
-				f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-				// Registration
-				f_sendRegistrationAndAwait200Ok(
-												v_cSeq_s,
-												m_sccas_register(
-																vc_requestUri, 
-																vc_callId, 
-																vc_cSeq, 
-																vc_from, 
-																vc_to, 
-																vc_via_REG, 
-																vc_contact, 
-																m_add_Authorization_digest(
-																							vc_authorization, 
-																							{c_Integrity_protected_no}
-																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
-																"600000",
-																-,
-																m_contentType(c_sdpApplication), // TODO To be refined during validation
-																m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
-												), 
-												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
-												);
-				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+                // Preambule
+                f_init_userprofile(c_userProfile_UE1atSUThome);
+                f_initSipUrl(c_serviceProfile_EMERGENCY);
+                f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+                // Registration
+                f_sendRegistrationAndAwait200Ok(
+                                                v_cSeq_s,
+                                                m_sccas_register(
+                                                                vc_requestUri, 
+                                                                vc_callId, 
+                                                                vc_cSeq, 
+                                                                vc_from, 
+                                                                vc_to, 
+                                                                vc_via_REG, 
+                                                                vc_contact, 
+                                                                m_add_Authorization_digest(
+                                                                                            vc_authorization, 
+                                                                                            {c_Integrity_protected_no}
+                                                                                            ), 
+                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                "600000",
+                                                                -,
+                                                                m_contentType(c_sdpApplication), // TODO To be refined during validation
+                                                                m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
+                                                ), 
+                                                mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
+                                                );
+                f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
-				// Registration
-				f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
-				f_SendINVITE(
-							 m_sccas_invite(
-											vc_requestUri,
-											vc_callId, 
-											p_cSeq_s, 
-											vc_from, vc_to, vc_via_REG, 
-											vc_contact, // TODO g3gppps2csSrvccTermPreAlerting
-											-, -, -,
-											m_MBody_SDP(vc_sdp_local)
-											));
-				tc_ack.start;
-				alt {
-					[] SIPP.receive(mw_Response_Base(c_statusLine183)) {
-						tc_ack.stop;
-						log("*** " & __SCOPE__ & ": PASS: 183 OK message was received ***");
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
-					}
-					[] tc_ack.timeout {
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
-					}
-				}
+                // Registration
+                f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+                f_SendINVITE(
+                             m_sccas_invite(
+                                            vc_requestUri,
+                                            vc_callId, 
+                                            p_cSeq_s, 
+                                            vc_from, vc_to, vc_via_REG, 
+                                            vc_contact, // TODO g3gppps2csSrvccTermPreAlerting
+                                            -, -, -,
+                                            m_MBody_SDP(vc_sdp_local)
+                                            ));
+                tc_ack.start;
+                alt {
+                    [] SIPP.receive(mw_Response_Base(c_statusLine183)) {
+                        tc_ack.stop;
+                        log("*** " & __SCOPE__ & ": PASS: 183 OK message was received ***");
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+                    }
+                    [] tc_ack.timeout {
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+                    }
+                }
 
-				// TODO Deregistration?
-				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+                // TODO Deregistration?
+                f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-			} // End of function f_TC_ISC_SCCAS_PCT_INV_06    	
+            } // End of function f_TC_ISC_SCCAS_PCT_INV_06        
 
-			/**
-			 *  @desc    Verify that SCC AS correctly recognizes and initiated for PS to CS access transfer for originating call in pre-alerting phase using PS to CS SRVCC procedure.
-			 *  @param   p_cSeq_s Random CSeq REGISTER number
-			 */
-			function f_TC_ISC_SCCAS_PCT_INV_02(in CSeq p_cSeq_s)
-			runs on ImsComponent {
-				// Local variables
-				var CSeq v_cSeq_s := p_cSeq_s;
+            /**
+             *  @desc    Verify that SCC AS correctly recognizes and initiated for PS to CS access transfer for originating call in pre-alerting phase using PS to CS SRVCC procedure.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_PCT_INV_02(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                // Local variables
+                var CSeq v_cSeq_s := p_cSeq_s;
 
-				// Preambule
-				f_init_userprofile(c_userProfile_UE1atSUThome);
-				f_initSipUrl(c_serviceProfile_EMERGENCY);
-				f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-				// Registration
-				f_sendRegistrationAndAwait200Ok(
-												v_cSeq_s,
-												m_sccas_register(
-																vc_requestUri, 
-																vc_callId, 
-																vc_cSeq, 
-																vc_from, 
-																vc_to, 
-																vc_via_REG, 
-																vc_contact, 
-																m_add_Authorization_digest(
-																							vc_authorization, 
-																							{c_Integrity_protected_no}
-																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
-																"600000",
-																-,
-																m_contentType(c_sdpApplication), // TODO To be refined during validation
-																m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
-												), 
-												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
-												);
-				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+                // Preambule
+                f_init_userprofile(c_userProfile_UE1atSUThome);
+                f_initSipUrl(c_serviceProfile_EMERGENCY);
+                f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+                // Registration
+                f_sendRegistrationAndAwait200Ok(
+                                                v_cSeq_s,
+                                                m_sccas_register(
+                                                                vc_requestUri, 
+                                                                vc_callId, 
+                                                                vc_cSeq, 
+                                                                vc_from, 
+                                                                vc_to, 
+                                                                vc_via_REG, 
+                                                                vc_contact, 
+                                                                m_add_Authorization_digest(
+                                                                                            vc_authorization, 
+                                                                                            {c_Integrity_protected_no}
+                                                                                            ), 
+                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                "600000",
+                                                                -,
+                                                                m_contentType(c_sdpApplication), // TODO To be refined during validation
+                                                                m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
+                                                ), 
+                                                mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
+                                                );
+                f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
-				// Registration
-				f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
-				f_SendINVITE(
-							 m_sccas_invite(
-											vc_requestUri,
-											vc_callId, 
-											p_cSeq_s, 
-											vc_from, vc_to, vc_via_REG, 
-											vc_contact, // TODO g3gppPs2csSrvccOrigPreAlerting
-											-, -, -,
-											m_MBody_SDP(vc_sdp_local)
-											));
-				tc_ack.start;
-				alt {
-					[] SIPP.receive(mw_Response_Base(c_statusLine183)) {
-						tc_ack.stop;
-						log("*** " & __SCOPE__ & ": PASS: 183 OK message was received ***");
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
-					}
-					[] tc_ack.timeout {
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
-					}
-				}
+                // Registration
+                f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+                f_SendINVITE(
+                             m_sccas_invite(
+                                            vc_requestUri,
+                                            vc_callId, 
+                                            p_cSeq_s, 
+                                            vc_from, vc_to, vc_via_REG, 
+                                            vc_contact, // TODO g3gppPs2csSrvccOrigPreAlerting
+                                            -, -, -,
+                                            m_MBody_SDP(vc_sdp_local)
+                                            ));
+                tc_ack.start;
+                alt {
+                    [] SIPP.receive(mw_Response_Base(c_statusLine183)) {
+                        tc_ack.stop;
+                        log("*** " & __SCOPE__ & ": PASS: 183 OK message was received ***");
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+                    }
+                    [] tc_ack.timeout {
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+                    }
+                }
 
-				// TODO Deregistration?
-				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+                // TODO Deregistration?
+                f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-			} // End of function f_TC_ISC_SCCAS_PCT_INV_02
+            } // End of function f_TC_ISC_SCCAS_PCT_INV_02
 
-			/**
-			 *  @desc    Verify that the SCC AS handles correctly the procedures for handling of SIP OPTIONS request.
-			 *  @param   p_cSeq_s Random CSeq REGISTER number
-			 */
-			function f_TC_ISC_SCCAS_PCT_INV_03(in CSeq p_cSeq_s)
-			runs on ImsComponent {
-				// Local variables
-				var CSeq v_cSeq_s := p_cSeq_s;
+            /**
+             *  @desc    Verify that the SCC AS handles correctly the procedures for handling of SIP OPTIONS request.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_PCT_INV_03(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                // Local variables
+                var CSeq v_cSeq_s := p_cSeq_s;
 
-				// Preambule
-				f_init_userprofile(c_userProfile_UE1atSUThome);
-				f_initSipUrl(c_serviceProfile_EMERGENCY);
-				f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-				// Registration
-				f_sendRegistrationAndAwait200Ok(
-												v_cSeq_s,
-												m_sccas_register(
-																vc_requestUri, 
-																vc_callId, 
-																vc_cSeq, 
-																vc_from, 
-																vc_to, 
-																vc_via_REG, 
-																vc_contact, 
-																m_add_Authorization_digest(
-																							vc_authorization, 
-																							{c_Integrity_protected_no}
-																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
-																"600000",
-																-,
-																m_contentType(c_sdpApplication), // TODO To be refined during validation
-																m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
-												), 
-												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
-												);
-				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+                // Preambule
+                f_init_userprofile(c_userProfile_UE1atSUThome);
+                f_initSipUrl(c_serviceProfile_EMERGENCY);
+                f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+                // Registration
+                f_sendRegistrationAndAwait200Ok(
+                                                v_cSeq_s,
+                                                m_sccas_register(
+                                                                vc_requestUri, 
+                                                                vc_callId, 
+                                                                vc_cSeq, 
+                                                                vc_from, 
+                                                                vc_to, 
+                                                                vc_via_REG, 
+                                                                vc_contact, 
+                                                                m_add_Authorization_digest(
+                                                                                            vc_authorization, 
+                                                                                            {c_Integrity_protected_no}
+                                                                                            ), 
+                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                "600000",
+                                                                -,
+                                                                m_contentType(c_sdpApplication), // TODO To be refined during validation
+                                                                m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
+                                                ), 
+                                                mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
+                                                );
+                f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
-				// Registration
-				f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
-				f_sendResponse(
-							 m_Response_18x_Base(
-											c_statusLine183,
-											vc_callId, 
-											p_cSeq_s, 
-											vc_from, 
-											vc_to, 
-											vc_via_REG
-											));
-				tc_ack.start;
-				alt {
-					[] SIPP.receive(mw_Response_Base(c_statusLine200)) {
-						tc_ack.stop;
-						log("*** " & __SCOPE__ & ": PASS: response 200 was received ***");
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
-					}
-					[] tc_ack.timeout {
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
-					}
-				}
+                // Registration
+                f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+                f_sendResponse(
+                             m_Response_18x_Base(
+                                            c_statusLine183,
+                                            vc_callId, 
+                                            p_cSeq_s, 
+                                            vc_from, 
+                                            vc_to, 
+                                            vc_via_REG
+                                            ));
+                tc_ack.start;
+                alt {
+                    [] SIPP.receive(mw_Response_Base(c_statusLine200)) {
+                        tc_ack.stop;
+                        log("*** " & __SCOPE__ & ": PASS: response 200 was received ***");
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+                    }
+                    [] tc_ack.timeout {
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+                    }
+                }
 
-				// TODO Deregistration?
-				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+                // TODO Deregistration?
+                f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-			} // End of function f_TC_ISC_SCCAS_PCT_INV_03
+            } // End of function f_TC_ISC_SCCAS_PCT_INV_03
 
-			/**
-			 *  @desc    Verify that the SCC AS handles correctly the procedures for handling of SIP OPTIONS request.
-			 *  @param   p_cSeq_s Random CSeq REGISTER number
-			 */
-			function f_TC_ISC_SCCAS_MED_OPT_01(in CSeq p_cSeq_s)
-			runs on ImsComponent {
-				// Local variables
-				var CSeq v_cSeq_s := p_cSeq_s;
+            /**
+             *  @desc    Verify that the SCC AS handles correctly the procedures for handling of SIP OPTIONS request.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_MED_OPT_01(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                // Local variables
+                var CSeq v_cSeq_s := p_cSeq_s;
 
-				// Preambule
-				f_init_userprofile(c_userProfile_UE1atSUThome);
-				f_initSipUrl(c_serviceProfile_EMERGENCY);
-				f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-				// Registration
-				f_sendRegistrationAndAwait200Ok(
-												v_cSeq_s,
-												m_sccas_register(
-																vc_requestUri, 
-																vc_callId, 
-																vc_cSeq, 
-																vc_from, 
-																vc_to, 
-																vc_via_REG, 
-																vc_contact, 
-																m_add_Authorization_digest(
-																							vc_authorization, 
-																							{c_Integrity_protected_no}
-																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
-																"600000",
-																-,
-																m_contentType(c_sdpApplication), // TODO To be refined during validation
-																m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
-												), 
-												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
-												);
-				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+                // Preambule
+                f_init_userprofile(c_userProfile_UE1atSUThome);
+                f_initSipUrl(c_serviceProfile_EMERGENCY);
+                f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+                // Registration
+                f_sendRegistrationAndAwait200Ok(
+                                                v_cSeq_s,
+                                                m_sccas_register(
+                                                                vc_requestUri, 
+                                                                vc_callId, 
+                                                                vc_cSeq, 
+                                                                vc_from, 
+                                                                vc_to, 
+                                                                vc_via_REG, 
+                                                                vc_contact, 
+                                                                m_add_Authorization_digest(
+                                                                                            vc_authorization, 
+                                                                                            {c_Integrity_protected_no}
+                                                                                            ), 
+                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                "600000",
+                                                                -,
+                                                                m_contentType(c_sdpApplication), // TODO To be refined during validation
+                                                                m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
+                                                ), 
+                                                mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
+                                                );
+                f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
-				// Registration
-				f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
-				f_SendOPTIONS(
-							 m_OPTIONS_Request_Base(
-											vc_requestUri,
-											vc_callId, 
-											p_cSeq_s, 
-											vc_from, 
-											vc_to, 
-											vc_via_REG
-											));
-				tc_ack.start;
-				alt {
-					[] SIPP.receive(mw_Response_Base(c_statusLine200)) {
-						tc_ack.stop;
-						log("*** " & __SCOPE__ & ": PASS: 200 response was received ***");
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
-					}
-					[] tc_ack.timeout {
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
-					}
-				}
+                // Registration
+                f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+                f_SendOPTIONS(
+                             m_OPTIONS_Request_Base(
+                                            vc_requestUri,
+                                            vc_callId, 
+                                            p_cSeq_s, 
+                                            vc_from, 
+                                            vc_to, 
+                                            vc_via_REG
+                                            ));
+                tc_ack.start;
+                alt {
+                    [] SIPP.receive(mw_Response_Base(c_statusLine200)) {
+                        tc_ack.stop;
+                        log("*** " & __SCOPE__ & ": PASS: 200 response was received ***");
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+                    }
+                    [] tc_ack.timeout {
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+                    }
+                }
 
-				// TODO Deregistration?
-				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+                // TODO Deregistration?
+                f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-			} // End of function f_TC_ISC_SCCAS_MED_OPT_01
+            } // End of function f_TC_ISC_SCCAS_MED_OPT_01
 
-			/**
-			 *  @desc    Verify that the SCC AS handles correctly the transfer of session with active speech media component.
-			 *  @param   p_cSeq_s Random CSeq REGISTER number
-			 */
-			function f_TC_ISC_SCCAS_CPT_INV_07(in CSeq p_cSeq_s)
-			runs on ImsComponent {
-				// Local variables
-				var CSeq v_cSeq_s := p_cSeq_s;
+            /**
+             *  @desc    Verify that the SCC AS handles correctly the transfer of session with active speech media component.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_CPT_INV_07(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                // Local variables
+                var CSeq v_cSeq_s := p_cSeq_s;
 
-				// Preambule
-				f_init_userprofile(c_userProfile_UE1atSUThome);
-				f_initSipUrl(c_serviceProfile_EMERGENCY);
-				f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-				// Registration
-				f_sendRegistrationAndAwait200Ok(
-												v_cSeq_s,
-												m_sccas_register(
-																vc_requestUri, 
-																vc_callId, 
-																vc_cSeq, 
-																vc_from, 
-																vc_to, 
-																vc_via_REG, 
-																vc_contact, 
-																m_add_Authorization_digest(
-																							vc_authorization, 
-																							{c_Integrity_protected_no}
-																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
-																"600000",
-																-,
-																m_contentType(c_sdpApplication), // TODO To be refined during validation
-																m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
-												), 
-												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
-												);
-				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+                // Preambule
+                f_init_userprofile(c_userProfile_UE1atSUThome);
+                f_initSipUrl(c_serviceProfile_EMERGENCY);
+                f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+                // Registration
+                f_sendRegistrationAndAwait200Ok(
+                                                v_cSeq_s,
+                                                m_sccas_register(
+                                                                vc_requestUri, 
+                                                                vc_callId, 
+                                                                vc_cSeq, 
+                                                                vc_from, 
+                                                                vc_to, 
+                                                                vc_via_REG, 
+                                                                vc_contact, 
+                                                                m_add_Authorization_digest(
+                                                                                            vc_authorization, 
+                                                                                            {c_Integrity_protected_no}
+                                                                                            ), 
+                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                "600000",
+                                                                -,
+                                                                m_contentType(c_sdpApplication), // TODO To be refined during validation
+                                                                m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
+                                                ), 
+                                                mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
+                                                );
+                f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
-				// Registration
-				f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
-				f_SendINVITE(
-							 m_sccas_invite(
-											vc_requestUri,
-											vc_callId, 
-											p_cSeq_s, 
-											vc_from, vc_to, vc_via_REG, 
-											vc_contact,
-											-, -, -,
-											m_MBody_SDP(vc_sdp_local)
-											));
-				tc_ack.start;
-				alt {
-					[] SIPP.receive(mw_Response_Base(c_statusLine200)) {
-						tc_ack.stop;
-						log("*** " & __SCOPE__ & ": PASS: 200 OK message was received ***");
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
-					}
-					[] tc_ack.timeout {
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
-					}
-				}
+                // Registration
+                f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+                f_SendINVITE(
+                             m_sccas_invite(
+                                            vc_requestUri,
+                                            vc_callId, 
+                                            p_cSeq_s, 
+                                            vc_from, vc_to, vc_via_REG, 
+                                            vc_contact,
+                                            -, -, -,
+                                            m_MBody_SDP(vc_sdp_local)
+                                            ));
+                tc_ack.start;
+                alt {
+                    [] SIPP.receive(mw_Response_Base(c_statusLine200)) {
+                        tc_ack.stop;
+                        log("*** " & __SCOPE__ & ": PASS: 200 OK message was received ***");
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+                    }
+                    [] tc_ack.timeout {
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+                    }
+                }
 
-				// TODO Deregistration?
-				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+                // TODO Deregistration?
+                f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-			} // End of function f_TC_ISC_SCCAS_CPT_INV_07
+            } // End of function f_TC_ISC_SCCAS_CPT_INV_07
 
-			/**
-			 *  @desc    Verify that the SCC AS handles correctly the transfer of session with inactive speech media component.
-			 *  @param   p_cSeq_s Random CSeq REGISTER number
-			 */
-			function f_TC_ISC_SCCAS_CPT_INV_08(in CSeq p_cSeq_s)
-			runs on ImsComponent {
-				// Local variables
-				var CSeq v_cSeq_s := p_cSeq_s;
+            /**
+             *  @desc    Verify that the SCC AS handles correctly the transfer of session with inactive speech media component.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_CPT_INV_08(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                // Local variables
+                var CSeq v_cSeq_s := p_cSeq_s;
 
-				// Preambule
-				f_init_userprofile(c_userProfile_UE1atSUThome);
-				f_initSipUrl(c_serviceProfile_EMERGENCY);
-				f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-				// Registration
-				f_sendRegistrationAndAwait200Ok(
-												v_cSeq_s,
-												m_sccas_register(
-																vc_requestUri, 
-																vc_callId, 
-																vc_cSeq, 
-																vc_from, 
-																vc_to, 
-																vc_via_REG, 
-																vc_contact, 
-																m_add_Authorization_digest(
-																							vc_authorization, 
-																							{c_Integrity_protected_no}
-																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
-																"600000",
-																-,
-																m_contentType(c_sdpApplication), // TODO To be refined during validation
-																m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
-												), 
-												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
-												);
-				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+                // Preambule
+                f_init_userprofile(c_userProfile_UE1atSUThome);
+                f_initSipUrl(c_serviceProfile_EMERGENCY);
+                f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+                // Registration
+                f_sendRegistrationAndAwait200Ok(
+                                                v_cSeq_s,
+                                                m_sccas_register(
+                                                                vc_requestUri, 
+                                                                vc_callId, 
+                                                                vc_cSeq, 
+                                                                vc_from, 
+                                                                vc_to, 
+                                                                vc_via_REG, 
+                                                                vc_contact, 
+                                                                m_add_Authorization_digest(
+                                                                                            vc_authorization, 
+                                                                                            {c_Integrity_protected_no}
+                                                                                            ), 
+                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                "600000",
+                                                                -,
+                                                                m_contentType(c_sdpApplication), // TODO To be refined during validation
+                                                                m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
+                                                ), 
+                                                mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
+                                                );
+                f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
-				// Registration
-				f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
-				f_SendINVITE(
-							 m_sccas_invite(   // TODO request active speech media component using CS bearer
-											vc_requestUri,
-											vc_callId, 
-											p_cSeq_s, 
-											vc_from, vc_to, vc_via_REG, 
-											vc_contact,
-											-, -, -,
-											m_MBody_SDP(vc_sdp_local)
-											));
-				tc_ack.start;
-				alt {
-					[] SIPP.receive(mw_INVITE_Request(?,vc_requestUri)) {
-						tc_ack.stop;
-						log("*** " & __SCOPE__ & ": PASS: forwarded INVITE message was received ***");
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
-					}
-					[] tc_ack.timeout {
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
-					}
-				}
+                // Registration
+                f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+                f_SendINVITE(
+                             m_sccas_invite(   // TODO request active speech media component using CS bearer
+                                            vc_requestUri,
+                                            vc_callId, 
+                                            p_cSeq_s, 
+                                            vc_from, vc_to, vc_via_REG, 
+                                            vc_contact,
+                                            -, -, -,
+                                            m_MBody_SDP(vc_sdp_local)
+                                            ));
+                tc_ack.start;
+                alt {
+                    [] SIPP.receive(mw_INVITE_Request(?,vc_requestUri)) {
+                        tc_ack.stop;
+                        log("*** " & __SCOPE__ & ": PASS: forwarded INVITE message was received ***");
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+                    }
+                    [] tc_ack.timeout {
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+                    }
+                }
 
-				// TODO Deregistration?
-				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+                // TODO Deregistration?
+                f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-			} // End of function f_TC_ISC_SCCAS_CPT_INV_08   
+            } // End of function f_TC_ISC_SCCAS_CPT_INV_08   
 
-			/**
-			 *  @desc    Verify that the SCC AS handles correctly the transfer of originating session in alerting phase.
-			 *  @param   p_cSeq_s Random CSeq REGISTER number
-			 */
-			function f_TC_ISC_SCCAS_CPT_INV_09(in CSeq p_cSeq_s)
-			runs on ImsComponent {
-				// Local variables
-				var CSeq v_cSeq_s := p_cSeq_s;
+            /**
+             *  @desc    Verify that the SCC AS handles correctly the transfer of originating session in alerting phase.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_CPT_INV_09(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                // Local variables
+                var CSeq v_cSeq_s := p_cSeq_s;
 
-				// Preambule
-				f_init_userprofile(c_userProfile_UE1atSUThome);
-				f_initSipUrl(c_serviceProfile_EMERGENCY);
-				f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-				// Registration
-				f_sendRegistrationAndAwait200Ok(
-												v_cSeq_s,
-												m_sccas_register(
-																vc_requestUri, 
-																vc_callId, 
-																vc_cSeq, 
-																vc_from, 
-																vc_to, 
-																vc_via_REG, 
-																vc_contact, 
-																m_add_Authorization_digest(
-																							vc_authorization, 
-																							{c_Integrity_protected_no}
-																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
-																"600000",
-																-,
-																m_contentType(c_sdpApplication), // TODO To be refined during validation
-																m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
-												), 
-												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
-												);
-				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+                // Preambule
+                f_init_userprofile(c_userProfile_UE1atSUThome);
+                f_initSipUrl(c_serviceProfile_EMERGENCY);
+                f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+                // Registration
+                f_sendRegistrationAndAwait200Ok(
+                                                v_cSeq_s,
+                                                m_sccas_register(
+                                                                vc_requestUri, 
+                                                                vc_callId, 
+                                                                vc_cSeq, 
+                                                                vc_from, 
+                                                                vc_to, 
+                                                                vc_via_REG, 
+                                                                vc_contact, 
+                                                                m_add_Authorization_digest(
+                                                                                            vc_authorization, 
+                                                                                            {c_Integrity_protected_no}
+                                                                                            ), 
+                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                "600000",
+                                                                -,
+                                                                m_contentType(c_sdpApplication), // TODO To be refined during validation
+                                                                m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
+                                                ), 
+                                                mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
+                                                );
+                f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
-				// Registration
-				f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
-				f_sendResponse(
-							 m_Response_2xx_Base(
-											c_statusLine200,
-											vc_callId, 
-											p_cSeq_s, 
-											vc_from, 
-											vc_to, 
-											vc_via_REG
-											));
-				tc_ack.start;
-				alt {
-					[] SIPP.receive(mw_Response_Base(c_statusLine180)) {
-						tc_ack.stop;
-						log("*** " & __SCOPE__ & ": PASS: Respoonse 180 was received ***");
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
-					}
-					[] tc_ack.timeout {
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
-					}
-				}
+                // Registration
+                f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+                f_sendResponse(
+                             m_Response_2xx_Base(
+                                            c_statusLine200,
+                                            vc_callId, 
+                                            p_cSeq_s, 
+                                            vc_from, 
+                                            vc_to, 
+                                            vc_via_REG
+                                            ));
+                tc_ack.start;
+                alt {
+                    [] SIPP.receive(mw_Response_Base(c_statusLine180)) {
+                        tc_ack.stop;
+                        log("*** " & __SCOPE__ & ": PASS: Respoonse 180 was received ***");
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+                    }
+                    [] tc_ack.timeout {
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+                    }
+                }
 
-				// TODO Deregistration?
-				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+                // TODO Deregistration?
+                f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-			} // End of function f_TC_ISC_SCCAS_CPT_INV_09
+            } // End of function f_TC_ISC_SCCAS_CPT_INV_09
 
-			/**
-			 *  @desc    Verify that the SCC AS handles correctly the transfer of terminating session in alerting phase.
-			 *  @param   p_cSeq_s Random CSeq REGISTER number
-			 */
-			function f_TC_ISC_SCCAS_CPT_INV_10(in CSeq p_cSeq_s)
-			runs on ImsComponent {
-				// Local variables
-				var CSeq v_cSeq_s := p_cSeq_s;
+            /**
+             *  @desc    Verify that the SCC AS handles correctly the transfer of terminating session in alerting phase.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_CPT_INV_10(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                // Local variables
+                var CSeq v_cSeq_s := p_cSeq_s;
 
-				// Preambule
-				f_init_userprofile(c_userProfile_UE1atSUThome);
-				f_initSipUrl(c_serviceProfile_EMERGENCY);
-				f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-				// Registration
-				f_sendRegistrationAndAwait200Ok(
-												v_cSeq_s,
-												m_sccas_register(
-																vc_requestUri, 
-																vc_callId, 
-																vc_cSeq, 
-																vc_from, 
-																vc_to, 
-																vc_via_REG, 
-																vc_contact, 
-																m_add_Authorization_digest(
-																							vc_authorization, 
-																							{c_Integrity_protected_no}
-																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
-																"600000",
-																-,
-																m_contentType(c_sdpApplication), // TODO To be refined during validation
-																m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
-												), 
-												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
-												);
-				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+                // Preambule
+                f_init_userprofile(c_userProfile_UE1atSUThome);
+                f_initSipUrl(c_serviceProfile_EMERGENCY);
+                f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+                // Registration
+                f_sendRegistrationAndAwait200Ok(
+                                                v_cSeq_s,
+                                                m_sccas_register(
+                                                                vc_requestUri, 
+                                                                vc_callId, 
+                                                                vc_cSeq, 
+                                                                vc_from, 
+                                                                vc_to, 
+                                                                vc_via_REG, 
+                                                                vc_contact, 
+                                                                m_add_Authorization_digest(
+                                                                                            vc_authorization, 
+                                                                                            {c_Integrity_protected_no}
+                                                                                            ), 
+                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                "600000",
+                                                                -,
+                                                                m_contentType(c_sdpApplication), // TODO To be refined during validation
+                                                                m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
+                                                ), 
+                                                mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
+                                                );
+                f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
-				// Registration
-				f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
-				f_sendResponse(
-							 m_Response_2xx_Base(
-											c_statusLine200,
-											vc_callId, 
-											p_cSeq_s, 
-											vc_from, 
-											vc_to, 
-											vc_via_REG
-											));
-				tc_ack.start;
-				alt {
-					[] SIPP.receive(mw_Response_Base(c_statusLine183)) {
-						tc_ack.stop;
-						log("*** " & __SCOPE__ & ": PASS: Respoonse 183 was received ***");
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
-					}
-					[] tc_ack.timeout {
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
-					}
-				}
+                // Registration
+                f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+                f_sendResponse(
+                             m_Response_2xx_Base(
+                                            c_statusLine200,
+                                            vc_callId, 
+                                            p_cSeq_s, 
+                                            vc_from, 
+                                            vc_to, 
+                                            vc_via_REG
+                                            ));
+                tc_ack.start;
+                alt {
+                    [] SIPP.receive(mw_Response_Base(c_statusLine183)) {
+                        tc_ack.stop;
+                        log("*** " & __SCOPE__ & ": PASS: Respoonse 183 was received ***");
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+                    }
+                    [] tc_ack.timeout {
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+                    }
+                }
 
-				// TODO Deregistration?
-				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+                // TODO Deregistration?
+                f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
-			} // End of function f_TC_ISC_SCCAS_CPT_INV_10
-    	
+            } // End of function f_TC_ISC_SCCAS_CPT_INV_10
+        
     } // End of group Group_12_3
 
     group helpers {
@@ -1457,15 +1478,15 @@ module AtsSccas_TCFunctions {
 
         } // End of function f_sendRegistrationAndAwait200Ok
 
-		/**
-		 * @desc function send OPTIONS message
-		 * @param p_request template of the message to be sent
-		 */
-		function f_SendOPTIONS(
-			template(value) OPTIONS_Request p_request
-		) runs on SipComponent  {
-			SIPP.send(p_request) to vc_sent_label;
-		}
+        /**
+         * @desc function send OPTIONS message
+         * @param p_request template of the message to be sent
+         */
+        function f_SendOPTIONS(
+            template(value) OPTIONS_Request p_request
+        ) runs on SipComponent  {
+            SIPP.send(p_request) to vc_sent_label;
+        }
 
     } // End of group helpers
 

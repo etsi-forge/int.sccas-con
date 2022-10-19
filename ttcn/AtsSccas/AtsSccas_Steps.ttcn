@@ -1,5 +1,7 @@
 module AtsSccas_Steps {
+    
     // LibSip
+    import from LibSip_Common all;
     import from LibSip_SIPTypesAndValues all;
     import from LibSip_SDPTypes all;
     import from LibSip_Steps all;
@@ -30,45 +32,45 @@ module AtsSccas_Steps {
             const integer c_userProfile_UE2atSUThome := 12;               // location is SUT domain
             const integer c_userProfile_UE3atSUThome := 13;               // location is SUT domain
             const integer c_userProfile_UE4atSUThome := 14;               // location is SUT domain
-            const integer c_userProfile_UE1atSUTvisiting := 21; 			// location is SUT domain
-            //const integer c_userProfile_UE2atSUTvisiting := 22;			// location is SUT domain
-            const integer c_userProfile_IBCFwithUnknownUE := 28; 			// location is IMS1 domain
-            const integer c_userProfile_IBCFwithHomeUE := 29; 			// location is IMS1 domain
-            const integer c_userProfile_IBCFwithVisitingUE := 31; 		// location is IMS1 domain
-            const integer c_userProfile_PCSCFwithHomeUE := 41;	    	// location is IMS1 domain
-            const integer c_userProfile_PCSCFwithVisitingUE := 42;	    // location is IMS1 domain
-            const integer c_userProfile_PCSCFwithVisitingUE2 := 43;		// location is IMS1 domain
-            const integer c_userProfile_PCSCFwithUnknownVisitingUE := 44;	// location is IMS1 domain
-            const integer c_userProfile_ICSCFwithHomeUE := 45; 			// location is IMS1 domain
-            const integer c_userProfile_SCSCFwithHomeUE := 46; 			// location is IMS1 domain
+            const integer c_userProfile_UE1atSUTvisiting := 21;             // location is SUT domain
+            //const integer c_userProfile_UE2atSUTvisiting := 22;            // location is SUT domain
+            const integer c_userProfile_IBCFwithUnknownUE := 28;             // location is IMS1 domain
+            const integer c_userProfile_IBCFwithHomeUE := 29;             // location is IMS1 domain
+            const integer c_userProfile_IBCFwithVisitingUE := 31;         // location is IMS1 domain
+            const integer c_userProfile_PCSCFwithHomeUE := 41;            // location is IMS1 domain
+            const integer c_userProfile_PCSCFwithVisitingUE := 42;        // location is IMS1 domain
+            const integer c_userProfile_PCSCFwithVisitingUE2 := 43;        // location is IMS1 domain
+            const integer c_userProfile_PCSCFwithUnknownVisitingUE := 44;    // location is IMS1 domain
+            const integer c_userProfile_ICSCFwithHomeUE := 45;             // location is IMS1 domain
+            const integer c_userProfile_SCSCFwithHomeUE := 46;             // location is IMS1 domain
             const integer c_userProfile_SCSCFwithHomeUE_domain :=55;
-            const integer c_userProfile_ECSCFwithHomeUE := 47; 			// location is IMS1 domain
-            const integer c_userProfile_ISUP := 49;               		//
-            const integer c_userProfile_AS1 := 51;                      	// Isc userProfile at AS1
-            const integer c_userProfile_AS2 := 52;               		// Isc userProfile at AS2
+            const integer c_userProfile_ECSCFwithHomeUE := 47;             // location is IMS1 domain
+            const integer c_userProfile_ISUP := 49;                       //
+            const integer c_userProfile_AS1 := 51;                          // Isc userProfile at AS1
+            const integer c_userProfile_AS2 := 52;                       // Isc userProfile at AS2
 
             const integer c_userProfile_ESINetSubscriber := 53;
             const integer c_userProfile_ESINetPSAP        := 54;
             const integer c_userProfile_ESINetUpstreamElement := 55;
 
             // number of interface profile
-            const integer c_interfaceProfile_IMS_SUT_IBCF1  := 100;		// Ic interface at IBCF1 located in SUT
-            const integer c_interfaceProfile_IMS_SUT_IBCF2  := 101;		// Ic interface at IBCF2 located in SUT
-            const integer c_interfaceProfile_IMS_SUT_PCSCF1 := 110; 		// Gm interface towards UE1 located in SUT
-            const integer c_interfaceProfile_IMS_SUT_PCSCF2 := 111; 		// Gm interface towards UE2 located in SUT
-            const integer c_interfaceProfile_IMS_SUT_PCSCF  := 112; 		// Mw interface at P-CSCF located in SUT
-            const integer c_interfaceProfile_IMS_SUT_SCSCF  := 113; 		// Mw interface at S-CSCF located in SUT
-            const integer c_interfaceProfile_IMS_SUT_ICSCF  := 114; 		// Mw interface at I-CSCF located in SUT
-            const integer c_interfaceProfile_IMS_SUT_MGCF   := 115; 		// Mw interface at MGCF located in SUT
-            const integer c_interfaceProfile_IMS_SUT_AS     := 116; 			// Isc interface at AS located in SUT
-            const integer c_interfaceProfile_IMS_SUT_ECSCF  := 117; 		// Mw interface at E-CSCF located in SUT
+            const integer c_interfaceProfile_IMS_SUT_IBCF1  := 100;        // Ic interface at IBCF1 located in SUT
+            const integer c_interfaceProfile_IMS_SUT_IBCF2  := 101;        // Ic interface at IBCF2 located in SUT
+            const integer c_interfaceProfile_IMS_SUT_PCSCF1 := 110;         // Gm interface towards UE1 located in SUT
+            const integer c_interfaceProfile_IMS_SUT_PCSCF2 := 111;         // Gm interface towards UE2 located in SUT
+            const integer c_interfaceProfile_IMS_SUT_PCSCF  := 112;         // Mw interface at P-CSCF located in SUT
+            const integer c_interfaceProfile_IMS_SUT_SCSCF  := 113;         // Mw interface at S-CSCF located in SUT
+            const integer c_interfaceProfile_IMS_SUT_ICSCF  := 114;         // Mw interface at I-CSCF located in SUT
+            const integer c_interfaceProfile_IMS_SUT_MGCF   := 115;         // Mw interface at MGCF located in SUT
+            const integer c_interfaceProfile_IMS_SUT_AS     := 116;             // Isc interface at AS located in SUT
+            const integer c_interfaceProfile_IMS_SUT_ECSCF  := 117;         // Mw interface at E-CSCF located in SUT
             const integer c_interfaceProfile_IMS_SUT_BCF    := 118;          // SIP interface at BCF located in SUT
             const integer c_interfaceProfile_SUT_LIS        := 119;
             const integer c_interfaceProfile_SUT_ECRF       := 120;
             const integer c_interfaceProfile_SUT_ESRP       := 121;
 
             // number of conference profile
-            const integer c_conferenceProfile_factoryURI := 800;			// conference factory URI
+            const integer c_conferenceProfile_factoryURI := 800;            // conference factory URI
 
             // number of service profile
             const integer c_serviceProfile_EMERGENCY := 112;
@@ -78,7 +80,7 @@ module AtsSccas_Steps {
 
             // number of SIPURL identifiers
             const integer c_interfaceSIPURL_IMS_SUT_PCSCF1_domain := 1101; // c_interfaceProfile_IMS_SUT_PCSCF1
-            const integer c_interfaceSIPURL_IMS_SUT_PCSCF1_ip := 1102;	 // c_interfaceProfile_IMS_SUT_PCSCF1
+            const integer c_interfaceSIPURL_IMS_SUT_PCSCF1_ip := 1102;     // c_interfaceProfile_IMS_SUT_PCSCF1
 
         } // End of group UserProfileConstants
 
@@ -347,5 +349,87 @@ module AtsSccas_Steps {
         } // End of function f_init_interfaceprofile
 
     } // End of group globalSteps
+    group SetHeaders{
+        /**
+         * @desc function sets header field for the next outgoing REGISTER message
+         * @param p_cSeq_s CSeq parameter to be applied
+         * @param p_emergency Set to true in case of emergency
+         */
+        function f_setHeaders_REGISTER_AS( //TODO review and repair params due to isc interface
+            inout CSeq p_cSeq_s,
+            boolean p_emergency := false
+        ) runs on SipComponent  {
+            var SemicolonParam_List v_params := {};
+
+            f_setHeadersGeneral(p_cSeq_s, "REGISTER"); // cseq, contact, branch, via
+            vc_requestUri := {
+                scheme := c_sipScheme,
+                components := {
+                    sip := {
+                        userInfo := omit,
+                        hostPort := {
+                            host := vc_userprofile.registrarDomain,
+                            portField := omit
+                        }
+                    }
+                },
+                urlParameters := omit,
+                headers := omit
+            };
+
+            vc_reqHostPort := vc_requestUri.components.sip.hostPort;
+
+            vc_callId := {
+                fieldName := CALL_ID_E,
+                callid := f_getRndCallId() & c_AT & vc_userprofile.currIpaddr
+            };
+            vc_callIdReg := vc_callId; // remember callId for de-registration
+            vc_to := valueof(m_To(m_SipUrl_currDomain(vc_userprofile)));
+            vc_cancel_To := vc_to;
+            v_params := f_addParameter(v_params,
+                {
+                    id := c_tagId,
+                    paramValue := { 
+                        tokenOrHost := f_getRndTag()
+                    }
+                });
+            vc_from := {
+                fieldName := FROM_E,
+                addressField := vc_to.addressField,
+                fromParams := v_params
+            };
+
+            if (not vc_firstREGISTER_sent) {
+                if (p_emergency) {
+                    v_params := {
+                        {
+                            "sos",
+                            omit
+                        }
+                    };
+                    vc_contact.contactBody.contactAddresses[0].addressField.addrSpecUnion.urlParameters := v_params;
+                }
+                else {
+                    v_params := {
+                        {
+                            id := c_expiresId,
+                            paramValue := { 
+                                tokenOrHost := c_shortRegistration
+                            }
+                        }
+                    };
+                    vc_contact.contactBody.contactAddresses[0].contactParams := v_params;
+                }
+            }
+
+            vc_firstREGISTER_sent := true; // f_setHeaders_Register is called in deREGISTER function
+            vc_authorization := {
+                fieldName := AUTHORIZATION_E,
+                body := {f_calculatecCredentials_empty(vc_userprofile)}
+            };
+
+            vc_via_REG := vc_via;
+        } // end function setHeaders_REGISTER_AS
+    } // End of group SetHeaders
 
 } // End of module AtsSccas_Steps
