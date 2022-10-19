@@ -28,7 +28,27 @@ module AtsSccas_TestControl
         execute(TC_ISC_SCCAS_RSC_REG_04(v_cSeq));
         execute(TC_ISC_SCCAS_RSC_REG_05(v_cSeq));
         execute(TC_ISC_SCCAS_RSC_REG_06(v_cSeq));
-      }
+
+        execute(TC_ISC_SCCAS_GEN_INV_01(v_cSeq));
+
+        execute(TC_ISC_SCCAS_CON_RIN_01(v_cSeq));
+        execute(TC_ISC_SCCAS_CON_RIN_02(v_cSeq));
+        execute(TC_ISC_SCCAS_CON_RIN_03(v_cSeq));
+
+        execute(TC_ISC_SCCAS_PCT_INV_06(v_cSeq));
+        execute(TC_ISC_SCCAS_PCT_INV_02(v_cSeq));
+
+        execute(TC_ISC_SCCAS_CPT_INV_07(v_cSeq));
+        execute(TC_ISC_SCCAS_CPT_INV_08(v_cSeq));
+        execute(TC_ISC_SCCAS_CPT_INV_09(v_cSeq));
+        execute(TC_ISC_SCCAS_CPT_INV_10(v_cSeq));
+        execute(TC_ISC_SCCAS_CPT_INV_11(v_cSeq));
+        execute(TC_ISC_SCCAS_CPT_INV_12(v_cSeq));
+        execute(TC_ISC_SCCAS_CPT_INV_13(v_cSeq));
+        execute(TC_ISC_SCCAS_CPT_INV_14(v_cSeq));
+
+        execute(TC_ISC_SCCAS_TER_BYE_01(v_cSeq));
+    	}
 
       if (PICS_MSC_IUT == true) {
         execute(TC_ISC_SCCAS_MSC_REG_01(v_cSeq));
