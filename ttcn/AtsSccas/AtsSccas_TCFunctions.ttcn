@@ -1436,14 +1436,15 @@ module AtsSccas_TCFunctions {
                 // Registration
                 f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
                 f_SendINVITE(
-                             m_sccas_invite(   // TODO request active speech media component using CS bearer
+							 m_sccas_invite_replaces(   // TODO request active speech media component using CS bearer
                                             vc_requestUri,
                                             vc_callId, 
                                             p_cSeq_s, 
                                             vc_from, vc_to, vc_via_REG, 
                                             vc_contact,
                                             -, -, -,
-                                            m_MBody_SDP(vc_sdp_local)
+                                            m_MBody_SDP(vc_sdp_local),
+                                            - // indicating access transfer procedure
                                             ));
                 tc_ack.start;
                 alt {
