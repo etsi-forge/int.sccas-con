@@ -92,6 +92,15 @@ module AtsSccas_Templates
         } // End of template mw_pAccessNetworkInfo
 
         group HeaderTemplatesAxel {
+        
+		template LibSip_SIPTypesAndValues.Contact m_contact_wildcard (charstring p_wildcard):= {
+						fieldName := CONTACT_E,
+						contactBody := {
+							wildcard :=
+								p_wildcard
+						}
+					}        
+        
         }
         
         group HeaderTemplatesSteffen {
