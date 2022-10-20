@@ -311,15 +311,15 @@ module AtsSccas_Testcases
 
                 // Test component configuration
                 f_cf_1IscUp(v_imsComponent_ueims);
-
+				
                 //Start
-                f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_ORI_INV_02(p_cSeq_s));
-
+                f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_ORI_INV_02_UE(p_cSeq_s));
+				
                 // synchronize both PTCs on 3 sychronization points
                 f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
 
                 f_cf_1IscDown(v_imsComponent_ueims);
-
+				
             } // End of TP_ISC_SCCAS_ORI_INV_02
 			
 		} // End of group TP_7_3_2_Call_origination_procedures_at_the_SCCAS
