@@ -2470,7 +2470,7 @@ module AtsSccas_TCFunctions {
                 f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
                 // Registration
-                f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+                f_IncCSeq(v_cSeq_s); f_setHeadersOPTIONS(v_cSeq_s);
                 f_SendOPTIONS(
                              m_OPTIONS_Request_Base(
                                             vc_requestUri,
@@ -3134,6 +3134,38 @@ module AtsSccas_TCFunctions {
         ) runs on SipComponent  {
             SIPP.send(p_request) to vc_sent_label;
         }
+
+			/**
+			 * @desc setting of general and basic OPTIONS header fields in additon to the addresses (To, From, ReqUri)
+			 * @param p_cSeq_s
+			 */
+			function f_setHeadersOPTIONS(
+				inout CSeq p_cSeq_s
+			) runs on SipComponent  {
+				f_setHeadersGeneral(p_cSeq_s, "OPTIONS"); // cseq, contact, branch, via
+				vc_callId := {
+					fieldName := CALL_ID_E,
+					callid := f_getRndCallId() & c_AT & vc_userprofile.currIpaddr
+				};
+
+				vc_cancel_To := vc_to;
+				vc_caller_To := vc_to;
+
+				vc_caller_From := vc_from;
+
+				if (ischosen(vc_requestUri.components.sip)) {
+					// sip/sips call
+					vc_reqHostPort := vc_requestUri.components.sip.hostPort;
+				}
+				else if (ischosen(vc_requestUri.components.urn)) {
+					// Emergency call
+					vc_reqUrnUri := vc_requestUri.components.urn;
+				}
+				else {
+					log("*** " & __SCOPE__ &": INFO:f_setHeadersOPTIONS: unsupported field: ", vc_requestUri," ***");
+					setverdict(fail);
+				}
+			}
 
     } // End of group helpers
 
