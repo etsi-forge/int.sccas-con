@@ -579,12 +579,7 @@ module AtsSccas_Templates
 					}
 				}
 				
-				template LibSip_SIPTypesAndValues.Require test := {
-					fieldName := REQUIRE_E, optionsTags := {"tdilog"}
-				}
-
-				
-                
+			    
                 
 			     template LibSip_SIPTypesAndValues.ContentType mw_contentType_appclication_sdp := {
 					 fieldName := CONTENT_TYPE_E, 

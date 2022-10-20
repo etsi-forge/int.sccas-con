@@ -1391,6 +1391,59 @@ module AtsSccas_TCFunctions {
 				}
 			
 		} // End of f_TC_ISC_SCCAS_PCT_REF_02
+		
+		function f_TC_ISC_SCCAS_PCT_INV_05(in CSeq p_cSeq_s)
+		runs on ImsComponent {
+			
+			// Preambule
+			f_init_userprofile(c_userProfile_UE1atSUThome);
+			f_initSipUrl(c_serviceProfile_EMERGENCY);
+			f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+					
+			// initial condition: the UE entity isRegisteredTo the IMS  
+			f_registrationAS(p_cSeq_s);
+			
+			// TODO:
+			// one dialog is early dialog 
+			// and
+			// a SIP 180 (Ringing) response to the SIP INVITE request has not been received yet in any of the existing dialogs
+			// and
+			// the SCC AS included a g.3gpp.ps2cs-drvcc-orig-pre-alerting feature-capability indicator as in a Feature-Caps header field of SIP 18x responses
+			// and
+			// the Contact header field in the initial SIP INVITE request sent by the SC UE towards the SCC AS included a g.3gpp.ps2cs-drvcc-orig-pre-alerting media feature tag as
+			// and
+			// the remote leg is not a precondition enabled dialog
+			
+			
+			// STEp: send invite
+			LibIms_Steps.f_setHeadersINVITE(p_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+			f_SendINVITE(m_sccas_invite(
+					vc_requestUri,
+					vc_callId,
+					vc_cSeq,
+					vc_from,
+					vc_to,
+					vc_via_REG,
+					vc_contact,
+					omit, 
+					vc_route,
+					m_supported_replaces, 
+					m_messageBody_SDP_mediaOnly
+					
+				));
+			
+			// TDOD  PEarlyMedia indicating value "the last received P-Early-Media header field",
+			
+			// TODO: Contact indicating value "set to the Contact header field provided by the served UE at the creation of the dialog",
+			// TDOD: SDP containing Media indicating value "the media characteristics as received in the SIP INVITE request due to PS to CS STN (including any precondition mechanism specific SDP attributes)";                       		
+			f_awaitingUPDATE(mw_UPDATE_Request_ContactChange(vc_callId, vc_contact, mw_contentType_appclication_sdp, ?));
+			
+			
+			
+			
+		} // End of f_TC_ISC_SCCAS_PCT_INV_05
+		
+		
         
     } // End of group Group_9_3
      
