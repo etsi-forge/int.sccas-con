@@ -16,6 +16,8 @@ module AtsSccas_Templates
     //LibIms
     import from LibIms_SIPTypesAndValues all;
     import from LibIms_Templates all;
+    
+    import from LibSip_SDPTypes all;
   
     group HeaderTemplates {                
         
@@ -138,9 +140,40 @@ module AtsSccas_Templates
                     messageBody := p_mb
                 }
                 group request_sent_Axel {
+
+				template (omit) INVITE_Request m_sccas_invite_replaces(
+															  in template(value) SipUrl p_requestUri,
+															  in template(value) CallId p_callId,
+															  in template(value) CSeq p_cSeq,
+															  in template(value) From p_from,
+															  in template(value) To p_to,
+															  in template(value) LibSip_SIPTypesAndValues.Via p_via,
+															  in template(value) LibSip_SIPTypesAndValues.Contact p_contact,
+															  in template(omit) Require p_require := omit,
+															  in template(omit) Route p_route := omit,
+															  in template(omit) Supported p_supported := omit,
+															  in template(value) MessageBody p_mb,
+															  in template(omit) Replaces p_replaces := omit
+				) modifies m_INVITE_Request_UE := {
+					msgHeader := {
+						contentLength := m_contentLength(f_MessageBodyLength(p_mb)),
+						contentType := m_contentType(c_sdpApplication)
+					},
+					messageBody := p_mb
+				}
+				
                 }
             
                 group request_sent_Steffen {
+                	
+					
+					template LibSip_SIPTypesAndValues.Contact m_contact_g3gppDrvccOrigPreAlertingFeature := {
+						fieldName := CONTACT_E,
+						contactBody := {
+							wildcard :=
+								"g3gppDrvccOrigPreAlertingFeature"
+						}
+					}
                 	
 					template LibSip_SIPTypesAndValues.Contact m_contact_g3gppSrvccAlertingFeature := {
 						fieldName := CONTACT_E,
@@ -149,6 +182,15 @@ module AtsSccas_Templates
 								"g3gppSrvccAlertingFeatureCapabilityIndicator"
 						}
 					}
+					
+					template LibSip_SIPTypesAndValues.Contact m_contact_g3gppDrvccAlertingFeature := {
+						fieldName := CONTACT_E,
+						contactBody := {
+							wildcard :=
+								"g3gppDrvccAlertingFeature"
+						}
+					}
+					
                     
                     template LibSip_MessageBodyTypes.MessageBody m_messageBody_SDP_mediaOnly := {
 						sdpMessageBody := {
@@ -219,8 +261,8 @@ module AtsSccas_Templates
 //                    payload := omit
 //                }
                     
-                    // TODO:change name
-                    template (omit) INVITE_Request m_sccas_invite_stl(
+        
+                    template (omit) INVITE_Request m_sccas_invite_contact(
                         template(value) SipUrl p_requestUri,
                         template(value) CallId p_callId,
                         template(value) CSeq p_cSeq,
@@ -242,7 +284,7 @@ module AtsSccas_Templates
                             toField := p_to,
                             via := p_via
                             },
-                        messageBody := omit,
+                        messageBody := p_mb,
                         payload := omit
                     }
                     
@@ -488,10 +530,72 @@ module AtsSccas_Templates
                 }
             
                 group request_receive_Steffen {
+                
+			     template LibSip_SIPTypesAndValues.ContentType mw_contentType_appclication_sdp := {
+					 fieldName := CONTENT_TYPE_E, 
+					 mTypeSubtype := "appclication/sdp", 
+					 mParams := *
+				 }
+
+                
+                template LibSip_SDPTypes.SDP_Message mw_sdpmessageBody := {
+					protocol_version := ?,
+					origin := ?,
+					session_name := ?,
+					information := *,
+					uri := *,
+					emails := *,
+					phone_numbers := *,
+					connection := *,
+					bandwidth := *,
+					times := ?,
+					timezone_adjustments := ?,
+					key := ?,
+					attributes := ?,
+					media_list := {
+						{
+							media_field := ?,
+							information := *,
+							connections := *,
+							bandwidth := *,
+							key := *,
+							attributes := *
+						}
+					}
+				}
+
+                
+                	
+				template(present) UPDATE_Request mw_UPDATE_Request_ContactChange(
+					template CallId p_callId,
+					template(present) Contact p_contact := ?,
+					template(present) ContentType p_contenType := ?,
+					template(present) SDP_Message p_sdpMessageBody := ?
+				) modifies mw_UPDATE_Request_Base := {
+					msgHeader := {
+						callId := p_callId,
+						contact := p_contact,
+						contentType := p_contenType
+					},
+					messageBody := {
+						sdpMessageBody := p_sdpMessageBody
+					}
+				}
+                	
                     
-					template LibSip_SIPTypesAndValues.Contact mw_contact_g3gppMidcallFeature := {
+				template LibSip_SIPTypesAndValues.Contact mw_contact_g3gppMidcallFeature := {
 						fieldName := ?, contactBody := ? // TODO: correct use of g3gppMidcallFeatureCapabilityIndicator
 					}
+                    
+					template LibSip_SIPTypesAndValues.Contact mw_contact_sourceLegAtCreation := {
+						fieldName := ?, contactBody := ? // TODO: "set to the Contact header field provided on the source leg at the creation of the dialog",
+					}
+					
+					template LibSip_SIPTypesAndValues.Contact mw_contact_g3gppDrvccAlertingFeature := {
+						fieldName := ?, contactBody := ? // TODO: correct use of g3gppDrvccAlertingFeature
+					}
+					
+					
                     
 					template (present) Response mw_sccas_Response_2xxmediaOnly(
 						//template (present) StatusLine.statusCode p_statusCode := 200,
