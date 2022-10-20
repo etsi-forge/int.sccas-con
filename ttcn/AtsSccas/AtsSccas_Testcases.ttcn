@@ -36,8 +36,8 @@ module AtsSccas_Testcases
                 var ImsComponent v_imsComponent_ueims;
 
                 // Test control
-                if (not PICS_SCCAS_GM) {
-                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+                if (not PICS_SCCAS_IUT) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
                     stop;
                 }
 
@@ -65,8 +65,8 @@ module AtsSccas_Testcases
                 var ImsComponent v_imsComponent_ueims;
 
                 // Test control
-                if (not PICS_SCCAS_GM) {
-                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+                if (not PICS_SCCAS_IUT) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
                     stop;
                 }
 
@@ -97,8 +97,8 @@ module AtsSccas_Testcases
                 var ImsComponent v_imsComponent_ueims;
 
                 // Test control
-                if (not PICS_SCCAS_GM) {
-                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+                if (not PICS_SCCAS_IUT) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
                     stop;
                 }
 
@@ -130,8 +130,8 @@ module AtsSccas_Testcases
                 var ImsComponent v_imsComponent_atcf;
 
                 // Test control
-                if (not PICS_SCCAS_GM) {
-                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+                if (not PICS_SCCAS_IUT or not PICS_SCCAS_PS2CS_SRVCC_ATCF) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_PS2CS_SRVCC_ATCF' shall be set to true for executing the TC. ***"); 
                     stop;
                 }
 
@@ -164,8 +164,8 @@ module AtsSccas_Testcases
                 var ImsComponent v_imsComponent_msc;
 
                 // Test control
-                if (not PICS_SCCAS_GM) {
-                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+                if (not PICS_SCCAS_IUT or not PICS_SCCAS_PS2CS_SRVCC_MSC) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_PS2CS_SRVCC_MSC' shall be set to true for executing the TC. ***"); 
                     stop;
                 }
 
@@ -198,8 +198,8 @@ module AtsSccas_Testcases
                 var ImsComponent v_imsComponent_msc;
 
                 // Test control
-                if (not PICS_SCCAS_GM) {
-                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+                if (not PICS_SCCAS_IUT) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
                     stop;
                 }
 
@@ -235,8 +235,8 @@ module AtsSccas_Testcases
                 var ImsComponent v_imsComponent_ueims;
 
                 // Test control
-                if (not PICS_SCCAS_GM) {
-                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+                if (not PICS_SCCAS_IUT) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
                     stop;
                 }
 
@@ -268,8 +268,8 @@ module AtsSccas_Testcases
 				 var ImsComponent v_imsComponent_ueims;
 
 				 // Test control
-				 if (not PICS_SCCAS_GM) {
-					 log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				 if (not PICS_SCCAS_IUT) {
+					 log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
 					 stop;
 				 }
 
@@ -301,8 +301,8 @@ module AtsSccas_Testcases
 					var ImsComponent v_imsComponent_ueims;
 
 					// Test control
-					if (not PICS_SCCAS_GM) {
-						log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+					if (not PICS_SCCAS_IUT) {
+						log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
 						stop;
 					}
 
@@ -320,6 +320,7 @@ module AtsSccas_Testcases
 				} // End of TC_ISC_SCCAS_GEN_RIN_02
 				
 		} //End of group TP_6A_4_5_Target_refresh_request_for_a_dialog_and_associated_responses {
+
     } // End of group Group_6A_4
      
     group Group_7_3 {
@@ -336,8 +337,8 @@ module AtsSccas_Testcases
                 var ImsComponent v_imsComponent_ueims;
 
                 // Test control
-                if (not PICS_SCCAS_GM) {
-                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+                if (not PICS_SCCAS_IUT) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
                     stop;
                 }
 
@@ -369,8 +370,8 @@ module AtsSccas_Testcases
                 var ImsComponent v_imsComponent_ueims;
 
                 // Test control
-                if (not PICS_SCCAS_GM) {
-                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+                if (not PICS_SCCAS_IUT) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
                     stop;
                 }
 
@@ -405,8 +406,8 @@ module AtsSccas_Testcases
 				 var ImsComponent v_imsComponent_ueims;
 
 				 // Test control
-				 if (not PICS_SCCAS_GM) {
-					 log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				 if (not PICS_SCCAS_IUT) {
+					 log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
 					 stop;
 				 }
 
@@ -440,8 +441,8 @@ module AtsSccas_Testcases
 			var ImsComponent v_imsComponent_ueims;
 				   
 			// Test control
-			if (not PICS_SCCAS_GM) {
-				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***");
+			if (not PICS_SCCAS_IUT) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***");
 				stop;
 			}
 			
@@ -472,8 +473,8 @@ module AtsSccas_Testcases
 			var ImsComponent v_imsComponent_ueims;
 				   
 			// Test control
-			if (not PICS_SCCAS_GM) {
-				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***");
+			if (not PICS_SCCAS_IUT) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***");
 				stop;
 			}
 			
@@ -509,8 +510,8 @@ module AtsSccas_Testcases
 			var ImsComponent v_imsComponent_ueims;
 				   
 			// Test control
-			if (not PICS_SCCAS_GM) {
-				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***");
+			if (not PICS_SCCAS_IUT) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***");
 				stop;
 			}
 			
@@ -543,8 +544,8 @@ module AtsSccas_Testcases
 			var ImsComponent v_imsComponent_ueims;
 				   
 			// Test control
-			if (not PICS_SCCAS_GM) {
-				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***");
+			if (not PICS_SCCAS_IUT) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***");
 				stop;
 			}
 			
@@ -580,8 +581,8 @@ module AtsSccas_Testcases
 		var ImsComponent v_imsComponent_ueims;
 				   
 			// Test control
-			if (not PICS_SCCAS_GM) {
-				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***");
+			if (not PICS_SCCAS_IUT) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***");
 				stop;
 			}
 			
@@ -613,8 +614,8 @@ module AtsSccas_Testcases
 			var ImsComponent v_imsComponent_ueims;
 				   
 			// Test control
-			if (not PICS_SCCAS_GM) {
-				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***");
+			if (not PICS_SCCAS_IUT or not PICS_SCCAS_PS2CS_DUAL_RADIO_ACCES_TRANSFER_OF_CALLS_IN_EARLY_DIALOG) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_PS2CS_DUAL_RADIO_ACCES_TRANSFER_OF_CALLS_IN_EARLY_DIALOG' shall be set to true for executing the TC. ***");
 				stop;
 			}
 			
@@ -639,7 +640,7 @@ module AtsSccas_Testcases
     	
 		testcase TP_ISC_SCCAS_PCT_UPD_01(inout CSeq p_cSeq_s)
 		runs on ServerSyncComp
-		system TestAdapter {
+		system TestAdapter {//TODO add PICS_SCCAS_PS2CS_DUAL_RADIO_ACCES_TRANSFER_OF_CALLS_IN_EARLY_DIALOG
 		
 		// TODO
 			
@@ -681,8 +682,8 @@ module AtsSccas_Testcases
 		var ImsComponent v_imsComponent_ueims;
 				   
 			// Test control
-			if (not PICS_SCCAS_GM) {
-				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***");
+			if (not PICS_SCCAS_IUT) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***");
 				stop;
 			}
 			
@@ -752,8 +753,8 @@ module AtsSccas_Testcases
 		var ImsComponent v_imsComponent_ueims;
 				   
 			// Test control
-			if (not PICS_SCCAS_GM) {
-				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***");
+			if (not PICS_SCCAS_IUT) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***");
 				stop;
 			}
 			
@@ -787,8 +788,8 @@ module AtsSccas_Testcases
 		var ImsComponent v_imsComponent_ueims;
 				   
 			// Test control
-			if (not PICS_SCCAS_GM) {
-				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***");
+			if (not PICS_SCCAS_IUT) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***");
 				stop;
 			}
 			
@@ -818,8 +819,8 @@ module AtsSccas_Testcases
 			var ImsComponent v_imsComponent_ueims;
 				   
 			// Test control
-			if (not PICS_SCCAS_GM) {
-				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***");
+			if (not PICS_SCCAS_IUT) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***");
 				stop;
 			}
 			
@@ -856,8 +857,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT or not PICS_SCCAS_PS2PS_ACCES_TRANSFER) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_PS2PS_ACCES_TRANSFER' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -885,8 +886,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT or not PICS_SCCAS_PS2PS_ACCES_TRANSFER) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_PS2PS_ACCES_TRANSFER' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -914,8 +915,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT or not PICS_SCCAS_PS2PS_ACCES_TRANSFER) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_PS2PS_ACCES_TRANSFER' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -943,8 +944,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT or not PICS_SCCAS_PS2PS_ACCES_TRANSFER) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_PS2PS_ACCES_TRANSFER' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -972,8 +973,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT or not PICS_SCCAS_PS2PS_ACCES_TRANSFER) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_PS2PS_ACCES_TRANSFER' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -1001,8 +1002,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT or not PICS_SCCAS_RELEASING_EARLY_DIALOG_DURING_PS2PS_ACCES_TRANSFER) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_RELEASING_EARLY_DIALOG_DURING_PS2PS_ACCES_TRANSFER' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -1030,8 +1031,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -1059,8 +1060,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -1092,8 +1093,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT or not PICS_SCCAS_PS2PS_ACCES_TRANSFER_IN_CONJUNCTION_PS2CS) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_PS2PS_ACCES_TRANSFER_IN_CONJUNCTION_PS2CS' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -1121,8 +1122,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT or not PICS_SCCAS_PS2PS_ACCES_TRANSFER_IN_CONJUNCTION_PS2CS) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_PS2PS_ACCES_TRANSFER_IN_CONJUNCTION_PS2CS' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -1150,8 +1151,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT or not PICS_SCCAS_PS2PS_ACCES_TRANSFER_IN_CONJUNCTION_PS2CS) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_PS2PS_ACCES_TRANSFER_IN_CONJUNCTION_PS2CS' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -1183,8 +1184,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -1212,8 +1213,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -1241,8 +1242,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -1270,8 +1271,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -1299,8 +1300,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -1328,8 +1329,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -1357,8 +1358,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -1386,8 +1387,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -1415,8 +1416,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -1444,8 +1445,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -1473,8 +1474,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -1502,8 +1503,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 
@@ -1531,8 +1532,8 @@ module AtsSccas_Testcases
 				var ImsComponent v_imsComponent_ueims;
 
 				// Test control
-				if (not PICS_SCCAS_GM) {
-					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+				if (not PICS_SCCAS_IUT) {
+					log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
 					stop;
 				}
 

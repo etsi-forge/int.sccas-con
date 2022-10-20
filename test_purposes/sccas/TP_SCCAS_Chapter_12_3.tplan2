@@ -35,7 +35,7 @@ Package TP_SCCAS_Chapter_12_3 {
         
         Config Id CFG_SCCAS_01
         
-        PICS Selection NONE //SCCAS_PS2CS_SRVCC 
+        PICS Selection NONE //PICS_SCCAS_PS2CS_SRVCC 
                 
         Initial conditions with {
             the UE entity isRegisteredTo the IMS_A and 
@@ -76,7 +76,7 @@ Package TP_SCCAS_Chapter_12_3 {
         
         Config Id CFG_SCCAS_01
         
-        PICS Selection NONE //SCCAS_PS2CS_SRVCC 
+        PICS Selection NONE //PICS_SCCAS_PS2CS_SRVCC 
                 
         Initial conditions with {
             the UE entity isRegisteredTo the IMS_A and 
@@ -125,7 +125,7 @@ Package TP_SCCAS_Chapter_12_3 {
         
         Config Id CFG_SCCAS_01
         
-        PICS Selection NONE //SCCAS_PS2CS_SRVCC 
+        PICS Selection NONE //PICS_SCCAS_PS2CS_SRVCC 
                 
         Initial conditions with {
             the UE entity isRegisteredTo the IMS_A and 
@@ -176,7 +176,7 @@ Package TP_SCCAS_Chapter_12_3 {
 	        
 	        Config Id CFG_SCCAS_01
 	        
-	        PICS Selection NONE //SCCAS_PS2CS_SRVCC 
+	        PICS Selection NONE //PICS_SCCAS_PS2CS_SRVCC 
 	                
 	        Initial conditions with {
 	            the UE entity isRegisteredTo the IMS_A and 
@@ -223,7 +223,7 @@ Package TP_SCCAS_Chapter_12_3 {
 	        
 	        Config Id CFG_SCCAS_01
 	        
-	        PICS Selection NONE //SCCAS_PS2CS_SRVCC 
+	        PICS Selection NONE //PICS_SCCAS_PS2CS_SRVCC 
 	                
 	        Initial conditions with {
 	            the UE entity isRegisteredTo the IMS_A and 
@@ -269,7 +269,7 @@ Package TP_SCCAS_Chapter_12_3 {
 	        
 	        Config Id CFG_SCCAS_01
 	        
-	        PICS Selection NONE //SCCAS_PS2CS_SRVCC 
+	        PICS Selection NONE //PICS_SCCAS_PS2CS_SRVCC 
 	                
 	        Initial conditions with {
 	            the UE entity isRegisteredTo the IMS_A and 
@@ -314,7 +314,7 @@ Package TP_SCCAS_Chapter_12_3 {
 	        
 	        Config Id CFG_SCCAS_01
 	        
-	        PICS Selection NONE //SCCAS_PS2CS_SRVCC 
+	        PICS Selection NONE //PICS_SCCAS_PS2CS_SRVCC 
 	                
 	        Initial conditions with {
 	            the UE entity isRegisteredTo the IMS_A and 
@@ -368,7 +368,7 @@ Package TP_SCCAS_Chapter_12_3 {
 		        
 		        Config Id CFG_SCCAS_01
 		        
-		        PICS Selection NONE //SCCAS_PS2CS_SRVCC 
+		        PICS Selection NONE //PICS_SCCAS_PS2CS_SRVCC 
 		                
 		        Initial conditions with {
 		            the UE entity isRegisteredTo the IMS_A and 
@@ -417,7 +417,7 @@ Package TP_SCCAS_Chapter_12_3 {
 		        
 		        Config Id CFG_SCCAS_01
 		        
-		        PICS Selection NONE //SCCAS_PS2CS_SRVCC 
+		        PICS Selection NONE //PICS_SCCAS_PS2CS_SRVCC 
 		                
 		        Initial conditions with {
 		            the UE entity isRegisteredTo the IMS_A and 
