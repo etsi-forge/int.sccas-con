@@ -1438,17 +1438,17 @@ module AtsSccas_TCFunctions {
                 f_SendINVITE(
 							 m_sccas_invite_replaces(   // TODO request active speech media component using CS bearer
                                             vc_requestUri,
-                                            vc_callId, 
+											vc_callId, 
                                             p_cSeq_s, 
                                             vc_from, vc_to, vc_via_REG, 
                                             vc_contact,
                                             -, -, -,
                                             m_MBody_SDP(vc_sdp_local),
-                                            - // indicating access transfer procedure
+											m_Replaces(vc_callId.callid,{quotedString:=""},{quotedString:=""}) // indicating access transfer procedure
                                             ));
                 tc_ack.start;
                 alt {
-                    [] SIPP.receive(mw_INVITE_Request(?,vc_requestUri)) {
+                    [] SIPP.receive(mw_INVITE_Request_contact(?)) {
                         tc_ack.stop;
                         log("*** " & __SCOPE__ & ": PASS: forwarded INVITE message was received ***");
                         f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
