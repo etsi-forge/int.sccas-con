@@ -92,6 +92,15 @@ module AtsSccas_Templates
         } // End of template mw_pAccessNetworkInfo
 
         group HeaderTemplatesAxel {
+        
+		template LibSip_SIPTypesAndValues.Contact m_contact_wildcard (charstring p_wildcard):= {
+						fieldName := CONTACT_E,
+						contactBody := {
+							wildcard :=
+								p_wildcard
+						}
+					}        
+        
         }
         
         group HeaderTemplatesSteffen {
@@ -588,12 +597,7 @@ module AtsSccas_Templates
 					}
 				}
 				
-				template LibSip_SIPTypesAndValues.Require test := {
-					fieldName := REQUIRE_E, optionsTags := {"tdilog"}
-				}
-
-				
-                
+			    
                 
 			     template LibSip_SIPTypesAndValues.ContentType mw_contentType_appclication_sdp := {
 					 fieldName := CONTENT_TYPE_E, 
