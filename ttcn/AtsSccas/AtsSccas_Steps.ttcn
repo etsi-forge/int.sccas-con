@@ -611,6 +611,12 @@ module AtsSccas_Steps {
                 }
             }
         } //end function f_deregistrationAS
+        
+		function f_EstablishDialogAS(in CSeq p_cSeq_s)
+			runs on ImsComponent {
+			var CSeq v_cSeq_s := p_cSeq_s;
+		} //end function f_EstablishDialogAS
+		
     } //end group CommonProcedures
 
 } // End of module AtsSccas_Steps

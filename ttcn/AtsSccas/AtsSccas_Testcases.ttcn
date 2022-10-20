@@ -228,7 +228,7 @@ module AtsSccas_Testcases
             * @desc Verify that the SCCAS send INVITE for anchored user populated with FeatureCaps header
             * @param p_cSeq_s Transaction Id
             */
-            testcase TC_ISC_SCCAS_GEN_INV_01(inout CSeq p_cSeq_s) 
+            testcase TP_ISC_SCCAS_GEN_INV_01(inout CSeq p_cSeq_s) 
             runs on ServerSyncComp
             system TestAdapter {
                 //Variables
@@ -287,7 +287,39 @@ module AtsSccas_Testcases
 			 } // End of TC_ISC_SCCAS_GEN_INV_02
 
         } // End of group TP_6A_4_3_SIP_INVITE_responses_towards_the_SC_UE
+        
+		group TP_6A_4_5_Target_refresh_request_for_a_dialog_and_associated_responses {
+			
+			/*
+				* @desc Verify that the SCCAS sends the SIP INVITE target refresh request towards the served user 
+				* @param p_cSeq_s Transaction Id
+				*/
+				testcase TC_ISC_SCCAS_GEN_RIN_02(inout CSeq p_cSeq_s) 
+				runs on ServerSyncComp
+				system TestAdapter {
+					//Variables
+					var ImsComponent v_imsComponent_ueims;
 
+					// Test control
+					if (not PICS_SCCAS_GM) {
+						log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+						stop;
+					}
+
+					// Test component configuration
+					f_cf_1IscUp(v_imsComponent_ueims);
+
+					//Start
+					f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_GEN_RIN_02(p_cSeq_s));
+
+					// synchronize both PTCs on 3 sychronization points
+					f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+					f_cf_1IscDown(v_imsComponent_ueims);
+
+				} // End of TC_ISC_SCCAS_GEN_RIN_02
+				
+		} //End of group TP_6A_4_5_Target_refresh_request_for_a_dialog_and_associated_responses {
     } // End of group Group_6A_4
      
     group Group_7_3 {
