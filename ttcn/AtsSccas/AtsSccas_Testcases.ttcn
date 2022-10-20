@@ -258,6 +258,71 @@ module AtsSccas_Testcases
     } // End of group Group_6A_4
      
     group Group_7_3 {
+        group TP_7_3_1_Distinction_of_requests_sent_to_the_SCCAS {
+
+           /*
+            * @desc Verify that the SCCAS first receives SIP INVITE request from UE/SCSCF
+            * @param p_cSeq_s Transaction Id
+            */
+            testcase TP_ISC_SCCAS_ORI_INV_01(inout CSeq p_cSeq_s) 
+            runs on ServerSyncComp
+            system TestAdapter {
+                //Variables
+                var ImsComponent v_imsComponent_ueims;
+
+                // Test control
+                if (not PICS_SCCAS_GM) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+                    stop;
+                }
+
+                // Test component configuration
+                f_cf_1IscUp(v_imsComponent_ueims);
+
+                //Start
+                f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_ORI_INV_01(p_cSeq_s));
+
+                // synchronize both PTCs on 3 sychronization points
+                f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+                f_cf_1IscDown(v_imsComponent_ueims);
+
+            } // End of TP_ISC_SCCAS_ORI_INV_01
+
+        } // End of group TP_7_3_1_Distinction_of_requests_sent_to_the_SCCAS
+        
+		group TP_7_3_2_Call_origination_procedures_at_the_SCCAS{
+
+           /*
+            * @desc Verify that the SCCAS sends 1xx/2xx response to the SIP INVITE request towards the served user
+            * @param p_cSeq_s Transaction Id
+            */
+            testcase TP_ISC_SCCAS_ORI_INV_02(inout CSeq p_cSeq_s) 
+            runs on ServerSyncComp
+            system TestAdapter {
+                //Variables
+                var ImsComponent v_imsComponent_ueims;
+
+                // Test control
+                if (not PICS_SCCAS_GM) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+                    stop;
+                }
+
+                // Test component configuration
+                f_cf_1IscUp(v_imsComponent_ueims);
+
+                //Start
+                f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_ORI_INV_02(p_cSeq_s));
+
+                // synchronize both PTCs on 3 sychronization points
+                f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+                f_cf_1IscDown(v_imsComponent_ueims);
+
+            } // End of TP_ISC_SCCAS_ORI_INV_02
+			
+		} // End of group TP_7_3_2_Call_origination_procedures_at_the_SCCAS
     } // End of group Group_7_3
      
     group Group_8_3 {
