@@ -490,6 +490,54 @@ module AtsSccas_Templates
             
                 group request_receive_Steffen {
                 
+   
+				template(present) REFER_Request mw_REFER_Request_stl(
+					template CallId p_callId := ?,
+					template SipUrl p_requestUri,
+					template SipUrl p_referredBy,
+					template(present) SDP_Message p_sdpMessageBody			
+				) modifies mw_REFER_Request_Base := {
+					requestLine := {requestUri := p_requestUri},
+					msgHeader := {
+						referredBy := {
+							fieldName := REFERRED_BY_E,
+							nameAddr := mw_NameAddr(*, p_referredBy),  // STF471
+																	   // {displayName
+																	   // :=
+																	   // *,
+																	   // addrSpec
+																	   // :=
+																	   // p_referredBy},
+							referredbyIdParams := *
+						},
+						pAssertedID := ?,
+						referSub := 
+							{
+								referSubValue := false
+							},
+						contentType := 
+							{
+								mTypeSubtype := "application/sdp"
+							},
+						referTo := ?,
+						require := 
+							{
+								fieldName := REQUIRE_E, optionsTags := {"tdilog"}
+								
+							}
+					}, 
+					messageBody := {
+						sdpMessageBody := p_sdpMessageBody
+					}
+				}
+				
+				template LibSip_SIPTypesAndValues.Require test := {
+					fieldName := REQUIRE_E, optionsTags := {"tdilog"}
+				}
+
+				
+                
+                
 			     template LibSip_SIPTypesAndValues.ContentType mw_contentType_appclication_sdp := {
 					 fieldName := CONTENT_TYPE_E, 
 					 mTypeSubtype := "appclication/sdp", 
