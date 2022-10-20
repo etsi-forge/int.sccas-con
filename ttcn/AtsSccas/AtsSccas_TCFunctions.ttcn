@@ -1499,7 +1499,7 @@ module AtsSccas_TCFunctions {
                                             ));
                 tc_ack.start;
                 alt {
-                    [] SIPP.receive(mw_INVITE_Request_contact(?)) {
+                    [] SIPP.receive(mw_INVITE_Request_contact(mw_sccas_contact())) {
                         tc_ack.stop;
                         log("*** " & __SCOPE__ & ": PASS: forwarded INVITE message was received ***");
                         f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
@@ -2066,7 +2066,7 @@ module AtsSccas_TCFunctions {
                                             ));
                 tc_ack.start;
                 alt {
-                    [] SIPP.receive(mw_INVITE_Request(?,vc_requestUri)) {
+                    [] SIPP.receive(mw_INVITE_Request_contact(mw_sccas_contact())) {
                         tc_ack.stop;
                         log("*** " & __SCOPE__ & ": PASS: forwarded INVITE message was received ***");
                         f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
@@ -2134,7 +2134,7 @@ module AtsSccas_TCFunctions {
                                             ));
                 tc_ack.start;
                 alt {
-                    [] SIPP.receive(mw_INVITE_Request(?,vc_requestUri)) {
+                    [] SIPP.receive(mw_INVITE_Request_contact(mw_sccas_contact())) {
                         tc_ack.stop;
                         log("*** " & __SCOPE__ & ": PASS: forwarded INVITE message was received ***");
                         f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
