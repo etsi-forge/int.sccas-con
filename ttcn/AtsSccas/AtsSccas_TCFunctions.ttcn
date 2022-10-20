@@ -904,9 +904,9 @@ module AtsSccas_TCFunctions {
 					                   ?,
 					//mw_sccas_featureCaps({})
 					                   mw_sccas_featureCaps({(mw_fcValue("g3gppFeatureCapabilityIndicator")),
-										                     (mw_fcValue("g3gppMidcallFeatureCapabilityIndicator",{-})),
-										                     (mw_fcValue("g3gppSrvccAlertingFeatureCapabilityIndicator",{-})),
-										                     (mw_fcValue("g3gppPs2csSrvccOrigPreAlertingMediaIndicator",{-}))
+										                     (mw_fcValue("g3gppMidcallFeatureCapabilityIndicator")),
+										                     (mw_fcValue("g3gppSrvccAlertingFeatureCapabilityIndicator")),
+										                     (mw_fcValue("g3gppPs2csSrvccOrigPreAlertingMediaIndicator"))
 					                                       })
                                        )) {
 						log("*** " & __SCOPE__ & ": PASS: 183 message was received ***");
@@ -918,11 +918,11 @@ module AtsSccas_TCFunctions {
 										?,
 										?,
 										?,
-										mw_sccas_featureCaps({(mw_fcValue("g3gppFeatureCapabilityIndicator",{-})),
-															 (mw_fcValue("g3gppMidcallFeatureCapabilityIndicator",{-})),
-															 (mw_fcValue("g3gppSrvccAlertingFeatureCapabilityIndicator",{-})),
-															 (mw_fcValue("g3gppPs2csSrvccOrigPreAlertingMediaIndicator",{-})),
-											                 (mw_fcValue("g3gppRemoteLegInfoFeatureCapabilityIndicator",{-}))
+										mw_sccas_featureCaps({(mw_fcValue("g3gppFeatureCapabilityIndicator")),
+															 (mw_fcValue("g3gppMidcallFeatureCapabilityIndicator")),
+															 (mw_fcValue("g3gppSrvccAlertingFeatureCapabilityIndicator")),
+															 (mw_fcValue("g3gppPs2csSrvccOrigPreAlertingMediaIndicator")),
+											                 (mw_fcValue("g3gppRemoteLegInfoFeatureCapabilityIndicator"))
 															})
 					)) {
 						tc_wait.stop;
@@ -1347,7 +1347,7 @@ module AtsSccas_TCFunctions {
 							mw_contentType_appclication_sdp, 
 							mw_sdpmessageBody)) {
 						tc_ack.stop;
-						log("*** " & __SCOPE__ & ": PASS: response 200 was received ***");
+						log("*** " & __SCOPE__ & ": PASS: UPDATE message received ***");
 						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
 					}
 					[] tc_ack.timeout {
@@ -1363,6 +1363,83 @@ module AtsSccas_TCFunctions {
 		//	f_awaitingResponse(mw_sccas_Response_2xxmediaOnly(vc_callIdReg, p_cSeq_s, ?, ?, ?, mw_contact_g3gppDrvccAlertingFeature));
 		
 		} // End of f_TC_ISC_SCCAS_CPT_INV_05
+		
+		function f_TC_ISC_SCCAS_CPT_INV_06(in CSeq p_cSeq_s)
+		runs on ImsComponent {
+		// Local variables
+		var CSeq v_cSeq_s := p_cSeq_s;
+		
+		// Preambule
+		f_init_userprofile(c_userProfile_UE1atSUThome);
+		f_initSipUrl(c_serviceProfile_EMERGENCY);
+		f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+				
+		// initial condition: the UE entity isRegisteredTo the IMS  
+		f_registrationAS(p_cSeq_s);
+		
+		
+		// TODO: the IUT entity hasAchievedInitialINVITE // TODO: INVITE contains: g3gppDrvccAlerting
+		
+		// STEP: send r_180_ringing
+		f_sendResponse(m_Response_Base(c_statusLine180, vc_callId, vc_cSeq, vc_caller_From, vc_caller_To, vc_via));
+		
+		// Expected Update
+		tc_ack.start;
+				alt {
+					[] SIPP.receive(mw_UPDATE_Request_ContactChange(
+							vc_callId, 
+							mw_contact_sourceLegAtCreation, 
+							mw_contentType_appclication_sdp, 
+							mw_sdpmessageBody)) {
+						tc_ack.stop;
+						log("*** " & __SCOPE__ & ": PASS: UPDATE message was received ***");
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+					}
+					[] tc_ack.timeout {
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+					}
+				}
+		
+		} // End of f_TC_ISC_SCCAS_CPT_INV_06
+		
+		function f_TC_ISC_SCCAS_PCT_REF_02(in CSeq p_cSeq_s)
+		runs on ImsComponent {
+			
+			// Preambule
+			f_init_userprofile(c_userProfile_UE1atSUThome);
+			f_initSipUrl(c_serviceProfile_EMERGENCY);
+			f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+					
+			// initial condition: the UE entity isRegisteredTo the IMS  
+			f_registrationAS(p_cSeq_s);
+			
+			
+			// STEP: send 488 notAcceptableHere
+			f_sendResponse(m_Response_Base(c_statusLine488, vc_callId, vc_cSeq, vc_caller_From, vc_caller_To, vc_via));
+			
+			
+//				template CallId p_callId := ?,
+//					template(value) SipUrl p_requestUri,
+//					template(value) SipUrl p_referredBy,
+//					template(value) MessageBody p_messageBody	
+			// Ecpecation: REFER message
+			tc_ack.start;
+				alt {
+					[] SIPP.receive(mw_REFER_Request_stl(
+							vc_callId, 
+							?, 
+							?, 
+							mw_sdpmessageBody)) {
+						tc_ack.stop;
+						log("*** " & __SCOPE__ & ": PASS: REFER message was received ***");
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+					}
+					[] tc_ack.timeout {
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+					}
+				}
+			
+		} // End of f_TC_ISC_SCCAS_PCT_REF_02
         
     } // End of group Group_9_3
      
@@ -1412,17 +1489,17 @@ module AtsSccas_TCFunctions {
                 f_SendINVITE(
 							 m_sccas_invite_replaces(   // TODO request active speech media component using CS bearer
                                             vc_requestUri,
-                                            vc_callId, 
+											vc_callId, 
                                             p_cSeq_s, 
                                             vc_from, vc_to, vc_via_REG, 
                                             vc_contact,
                                             -, -, -,
                                             m_MBody_SDP(vc_sdp_local),
-                                            - // indicating access transfer procedure
+											m_Replaces(vc_callId.callid,{quotedString:=""},{quotedString:=""}) // indicating access transfer procedure
                                             ));
                 tc_ack.start;
                 alt {
-                    [] SIPP.receive(mw_INVITE_Request(?,vc_requestUri)) {
+                    [] SIPP.receive(mw_INVITE_Request_contact(?)) {
                         tc_ack.stop;
                         log("*** " & __SCOPE__ & ": PASS: forwarded INVITE message was received ***");
                         f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
