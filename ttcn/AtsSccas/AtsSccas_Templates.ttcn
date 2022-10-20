@@ -508,6 +508,13 @@ module AtsSccas_Templates
                 
 
                 group request_receive_Axel {
+                
+				template(present) INVITE_Request mw_INVITE_Request_contact(
+					template Contact p_contact
+				) modifies mw_INVITE_Request_Base := {
+					msgHeader := {contact := p_contact}
+				}
+				
                 }
             
                 group request_receive_Steffen {
