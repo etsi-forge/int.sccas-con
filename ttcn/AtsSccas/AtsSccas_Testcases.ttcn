@@ -438,12 +438,37 @@ module AtsSccas_Testcases
 			
 		} // End of TP_ISC_SCCAS_CPT_INV_03
 		
-		
+		/*
+		 * @desc Verify that the SCC AS accepts conditions in an early dialog phase
+		 * @param p_cSeq_s Transaction Id
+		 */	
 		testcase TP_ISC_SCCAS_CPT_INV_04(inout CSeq p_cSeq_s)
 		runs on ServerSyncComp
 		system TestAdapter {
 		
-		// TODO
+			var ImsComponent v_imsComponent_ueims;
+				   
+			// Test control
+			if (not PICS_SCCAS_GM) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***");
+				stop;
+			}
+			
+			
+			// Test component configuration
+			f_cf_1IscUp(v_imsComponent_ueims);
+			
+			// TODO: SCC AS supports the MSC Server g.3gpp.drvcc-alerting feature 
+			
+				
+			f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_CPT_INV_04(p_cSeq_s));
+			
+			
+			
+			// synchronize PTC on 3 sychronization points
+			f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+			f_cf_1IscDown(v_imsComponent_ueims);
 			
 		} // End of TP_ISC_SCCAS_CPT_INV_04
     	
@@ -521,11 +546,40 @@ module AtsSccas_Testcases
 			
 		} // End of TP_ISC_SCCAS_MED_RIN_01
 		
+		
+		/*
+		 * @desc Verify that the SCC AS performs the procedures correctly for CS to PS dual radio access transfer for originating calls in pre-alerting phase or in alerting phase on the originating side
+		 * @param p_cSeq_s Transaction Id
+		 */	
 		testcase TP_ISC_SCCAS_CPT_INV_05(inout CSeq p_cSeq_s)
 		runs on ServerSyncComp
 		system TestAdapter {
 		
-		// TODO
+		// the SCC AS supports CS to PS dual radio access transfer for originating calls in pre-alerting phase
+		
+		var ImsComponent v_imsComponent_ueims;
+				   
+			// Test control
+			if (not PICS_SCCAS_GM) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***");
+				stop;
+			}
+			
+			
+			// Test component configuration
+			f_cf_1IscUp(v_imsComponent_ueims);
+			
+			// TODO: SCC AS supports the MSC Server g.3gpp.drvcc-alerting feature 
+			
+				
+			f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_CPT_INV_05(p_cSeq_s));
+			
+			
+			
+			// synchronize PTC on 3 sychronization points
+			f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+			f_cf_1IscDown(v_imsComponent_ueims);
 			
 		} // End of TP_ISC_SCCAS_CPT_INV_05
 		
