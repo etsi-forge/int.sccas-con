@@ -734,7 +734,11 @@ module AtsSccas_TCFunctions {
                 f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
             } // End of function f_TC_ISC_SCCAS_GEN_INV_01
-
+            
+		}  // End of group TP_6A_4_2_SIP_INVITE_request
+		
+		group TP_6A_4_3_SIP_INVITE_responses_towards_the_SC_UE {
+			
             /**
              *  @desc    Verify that the SCCAS sends 1xx and/or 2xx response to the SIP INVITE request towards the served user.
              *  @param   p_cSeq_s Random CSeq REGISTER number
@@ -761,17 +765,55 @@ module AtsSccas_TCFunctions {
                                             -, -, -,
                                             m_MBody_SDP(vc_sdp_local)
                                             ));
-                tc_ack.start;
-                alt {
-                    [] SIPP.receive(mw_sccas_Response_2xxonINVITE(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)) {
-                        tc_ack.stop;
-                        log("*** " & __SCOPE__ & ": PASS: 200 OK message was received ***");
-                        f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
-                    }
-                    [] tc_ack.timeout {
-                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
-                    }
-                }
+              
+				tc_ack.start;
+				alt {
+					[] SIPP.receive(mw_Response_1xx_Base(vc_callId, vc_cSeq)) {
+						repeat
+					}
+					[] SIPP.receive(mw_INVITE_Request_AS(?, ?, ?, ?, *, *)) {
+						tc_ack.stop;
+						log("*** " & __SCOPE__ & ": PASS: INVITE message was received ***");
+						//f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+						f_sendResponse(
+						m_Response_18XonINVITE_AS_Featurecaps(
+											c_statusLine183,
+											vc_callId, 
+											p_cSeq_s, 
+											vc_from, 
+											vc_to, 
+											vc_via_REG,
+											-,
+											-
+											));
+					}
+					[] tc_ack.timeout {
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+					}
+				}
+				//var template FcValue fc:= mw_fcValue("g3gppFeatureCapabilityIndicator",-);
+				tc_wait.start;
+				alt {
+					[] SIPP.receive(mw_Response_PCV_FeatureCaps(
+										183,
+										?,
+										?,
+										?,
+										mw_sccas_featureCaps({(mw_fcValue("g3gppFeatureCapabilityIndicator")),
+															 (mw_fcValue("g3gppMidcallFeatureCapabilityIndicator")),
+															 (mw_fcValue("g3gppSrvccAlertingFeatureCapabilityIndicator")),
+															 (mw_fcValue("g3gppPs2csSrvccOrigPreAlertingMediaIndicator")),
+															 (mw_fcValue("g3gppRemoteLegInfoFeatureCapabilityIndicator"))
+															})
+					               )) {
+						tc_wait.stop;
+						log("*** " & __SCOPE__ & ": PASS: response 183 was received ***");
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+					}
+					[] tc_wait.timeout {
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+					}
+				}
 
                 // Postamble
                 f_deregistrationAS(v_cSeq_s);
@@ -780,7 +822,7 @@ module AtsSccas_TCFunctions {
 
             } // End of function f_TC_ISC_SCCAS_GEN_INV_02
 
-        }  // End of group TP_6A_4_2_SIP_INVITE_request
+      	} // End of group TP_6A_4_3_SIP_INVITE_responses_towards_the_SC_UE  
 
     } // End of group Group_6A_4
      

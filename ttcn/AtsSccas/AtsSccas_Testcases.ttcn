@@ -252,8 +252,41 @@ module AtsSccas_Testcases
                 f_cf_1IscDown(v_imsComponent_ueims);
 
             } // End of TC_ISC_SCCAS_GEN_INV_01
+            
+		} // End of group TP_6A_4_2_SIP_INVITE_request
+		
+		group TP_6A_4_3_SIP_INVITE_responses_towards_the_SC_UE {
+			
+			/*
+			 * @desc Verify that the SCCAS sends 1xx and/or 2xx response to the SIP INVITE request towards the served user 
+			 * @param p_cSeq_s Transaction Id
+			 */
+			 testcase TC_ISC_SCCAS_GEN_INV_02(inout CSeq p_cSeq_s) 
+			 runs on ServerSyncComp
+			 system TestAdapter {
+				 //Variables
+				 var ImsComponent v_imsComponent_ueims;
 
-        } // End of group TP_6A_4_2_SIP_INVITE_request
+				 // Test control
+				 if (not PICS_SCCAS_GM) {
+					 log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_GM' shall be set to true for executing the TC. ***"); 
+					 stop;
+				 }
+
+				 // Test component configuration
+				 f_cf_1IscUp(v_imsComponent_ueims);
+
+				 //Start
+				 f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_GEN_INV_02(p_cSeq_s));
+
+				 // synchronize both PTCs on 3 sychronization points
+				 f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+				 f_cf_1IscDown(v_imsComponent_ueims);
+
+			 } // End of TC_ISC_SCCAS_GEN_INV_02
+
+        } // End of group TP_6A_4_3_SIP_INVITE_responses_towards_the_SC_UE
 
     } // End of group Group_6A_4
      
