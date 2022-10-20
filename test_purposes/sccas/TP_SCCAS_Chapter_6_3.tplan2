@@ -180,7 +180,7 @@ Package TP_SCCAS_Chapter_6_3 {
         
         Config Id CFG_SCCAS_02
         
-        PICS Selection NONE //PS2CSSRVCC
+        PICS Selection NONE //PICS_SCCAS_PS2CS_SRVCC_ATCF
         
         Initial conditions with {
             the UE entity isNotRegisteredTo the IMS_A
@@ -247,7 +247,7 @@ Package TP_SCCAS_Chapter_6_3 {
         
         Config Id CFG_SCCAS_03
         
-        PICS Selection NONE //CS2PSSRVCC
+        PICS Selection NONE //PICS_SCCAS_PS2CS_SRVCC_MSC
         
         Initial conditions with {
             the UE entity isNotRegisteredTo the IMS_A

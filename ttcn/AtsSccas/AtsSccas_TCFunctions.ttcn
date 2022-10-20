@@ -734,7 +734,11 @@ module AtsSccas_TCFunctions {
                 f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
             } // End of function f_TC_ISC_SCCAS_GEN_INV_01
-
+            
+		}  // End of group TP_6A_4_2_SIP_INVITE_request
+		
+		group TP_6A_4_3_SIP_INVITE_responses_towards_the_SC_UE {
+			
             /**
              *  @desc    Verify that the SCCAS sends 1xx and/or 2xx response to the SIP INVITE request towards the served user.
              *  @param   p_cSeq_s Random CSeq REGISTER number
@@ -761,17 +765,55 @@ module AtsSccas_TCFunctions {
                                             -, -, -,
                                             m_MBody_SDP(vc_sdp_local)
                                             ));
-                tc_ack.start;
-                alt {
-                    [] SIPP.receive(mw_sccas_Response_2xxonINVITE(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)) {
-                        tc_ack.stop;
-                        log("*** " & __SCOPE__ & ": PASS: 200 OK message was received ***");
-                        f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
-                    }
-                    [] tc_ack.timeout {
-                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
-                    }
-                }
+              
+				tc_ack.start;
+				alt {
+					[] SIPP.receive(mw_Response_1xx_Base(vc_callId, vc_cSeq)) {
+						repeat
+					}
+					[] SIPP.receive(mw_INVITE_Request_AS(?, ?, ?, ?, *, *)) {
+						tc_ack.stop;
+						log("*** " & __SCOPE__ & ": PASS: INVITE message was received ***");
+						//f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+						f_sendResponse(
+						m_Response_18XonINVITE_AS_Featurecaps(
+											c_statusLine183,
+											vc_callId, 
+											p_cSeq_s, 
+											vc_from, 
+											vc_to, 
+											vc_via_REG,
+											-,
+											-
+											));
+					}
+					[] tc_ack.timeout {
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+					}
+				}
+				//var template FcValue fc:= mw_fcValue("g3gppFeatureCapabilityIndicator",-);
+				tc_wait.start;
+				alt {
+					[] SIPP.receive(mw_Response_PCV_FeatureCaps(
+										183,
+										?,
+										?,
+										?,
+										mw_sccas_featureCaps({(mw_fcValue("g3gppFeatureCapabilityIndicator")),
+															 (mw_fcValue("g3gppMidcallFeatureCapabilityIndicator")),
+															 (mw_fcValue("g3gppSrvccAlertingFeatureCapabilityIndicator")),
+															 (mw_fcValue("g3gppPs2csSrvccOrigPreAlertingMediaIndicator")),
+															 (mw_fcValue("g3gppRemoteLegInfoFeatureCapabilityIndicator"))
+															})
+					               )) {
+						tc_wait.stop;
+						log("*** " & __SCOPE__ & ": PASS: response 183 was received ***");
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+					}
+					[] tc_wait.timeout {
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+					}
+				}
 
                 // Postamble
                 f_deregistrationAS(v_cSeq_s);
@@ -780,7 +822,7 @@ module AtsSccas_TCFunctions {
 
             } // End of function f_TC_ISC_SCCAS_GEN_INV_02
 
-        }  // End of group TP_6A_4_2_SIP_INVITE_request
+      	} // End of group TP_6A_4_3_SIP_INVITE_responses_towards_the_SC_UE  
 
     } // End of group Group_6A_4
      
@@ -947,6 +989,55 @@ module AtsSccas_TCFunctions {
     } // End of group Group_7_3
      
     group Group_8_3 {
+    	
+		group TP_8_3_1_Distinction_of_requests_sent_to_the_SCCAS{
+            
+			/**
+			 * @desc VVerify that the SCCAS last receives SIP INVITE request from UE/SCSCF
+			 * @param   p_cSeq_s Random CSeq INVITE number
+			 */
+			function f_TC_ISC_SCCAS_TER_INV_01(in CSeq p_cSeq_s)
+			runs on ImsComponent {
+				// Local variables
+				var CSeq v_cSeq_s := p_cSeq_s;
+                
+				f_registrationAS(v_cSeq_s);
+				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+            
+				f_IncCSeq(v_cSeq_s);
+				f_setHeaders_INVITE_AS(v_cSeq_s, f_initSipUrl(c_userProfile_PCSCFwithHomeUE), f_initSipUrl(c_userProfile_SCSCFwithHomeUE));
+				f_SendINVITE(
+							 m_sccas_invite(
+											vc_requestUri,
+											vc_callId, 
+											p_cSeq_s, 
+											vc_from, vc_to, vc_via_REG, 
+											vc_contact,
+											-, -, -,
+											m_MBody_SDP(vc_sdp_local)
+											));
+				tc_wait.start;
+				alt {
+					[] SIPP.receive(mw_Response_1xx_Base(vc_callId, vc_cSeq)) {
+						repeat
+					}
+					[] SIPP.receive(mw_INVITE_Request_AS(?, ?, ?, ?, *, *)) {
+						tc_wait.stop;
+						log("*** " & __SCOPE__ & ": PASS: INVITE message was received ***");
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+					}
+					[] tc_wait.timeout {
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+					}
+				}           
+                
+                
+				f_deregistrationAS(v_cSeq_s);
+				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+            
+			}  //End of function f_TC_ISC_SCCAS_TER_INV_01
+			
+		} // End of group TP_8_3_1_Distinction_of_requests_sent_to_the_SCCAS
     } // End of group Group_8_3
      
     group Group_9_3 {
@@ -1513,7 +1604,7 @@ module AtsSccas_TCFunctions {
                     }
                 }
 
-                // TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
                 f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
             } // End of function f_TC_ISC_SCCAS_PPT_RIN_01        
@@ -1581,7 +1672,7 @@ module AtsSccas_TCFunctions {
 					}
 				}
 
-				// TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
 				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
 			} // End of function f_TC_ISC_SCCAS_PPT_RIN_02    
@@ -1649,7 +1740,7 @@ module AtsSccas_TCFunctions {
 					}
 				}
 
-				// TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
 				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
 			} // End of function f_TC_ISC_SCCAS_PPT_RIN_03
@@ -1717,7 +1808,7 @@ module AtsSccas_TCFunctions {
 					}
 				}
 
-				// TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
 				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
 			} // End of function f_TC_ISC_SCCAS_PPT_RIN_04
@@ -1795,7 +1886,7 @@ module AtsSccas_TCFunctions {
 					}
 				}
 				
-				// TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
 				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
 			} // End of function f_TC_ISC_SCCAS_PPT_BYE_01
@@ -1873,7 +1964,7 @@ module AtsSccas_TCFunctions {
 					}
 				}
 				
-				// TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
 				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
 			} // End of function f_TC_ISC_SCCAS_PPT_BYE_02
@@ -1940,7 +2031,7 @@ module AtsSccas_TCFunctions {
 					}
 				}
 				
-				// TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
 				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
 			} // End of function f_TC_ISC_SCCAS_PPT_CAN_01
@@ -2008,7 +2099,7 @@ module AtsSccas_TCFunctions {
 					}
 				}
 
-				// TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
 				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
 			} // End of function f_TC_ISC_SCCAS_PPT_RES_01
@@ -2080,7 +2171,7 @@ module AtsSccas_TCFunctions {
                     }
                 }
 
-                // TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
                 f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
             } // End of function f_TC_ISC_SCCAS_CON_RIN_01        
@@ -2148,7 +2239,7 @@ module AtsSccas_TCFunctions {
                     }
                 }
 
-                // TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
                 f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
             } // End of function f_TC_ISC_SCCAS_CON_RIN_02  
@@ -2216,7 +2307,7 @@ module AtsSccas_TCFunctions {
                     }
                 }
 
-                // TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
                 f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
             } // End of function f_TC_ISC_SCCAS_CON_RIN_03
@@ -2290,7 +2381,7 @@ module AtsSccas_TCFunctions {
                     }
                 }
 
-                // TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
                 f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
             } // End of function f_TC_ISC_SCCAS_PCT_INV_06        
@@ -2358,7 +2449,7 @@ module AtsSccas_TCFunctions {
                     }
                 }
 
-                // TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
                 f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
             } // End of function f_TC_ISC_SCCAS_PCT_INV_02
@@ -2425,7 +2516,7 @@ module AtsSccas_TCFunctions {
                     }
                 }
 
-                // TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
                 f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
             } // End of function f_TC_ISC_SCCAS_PCT_INV_03
@@ -2470,7 +2561,7 @@ module AtsSccas_TCFunctions {
                 f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
                 // Registration
-                f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+                f_IncCSeq(v_cSeq_s); f_setHeadersOPTIONS(v_cSeq_s);
                 f_SendOPTIONS(
                              m_OPTIONS_Request_Base(
                                             vc_requestUri,
@@ -2492,7 +2583,7 @@ module AtsSccas_TCFunctions {
                     }
                 }
 
-                // TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
                 f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
             } // End of function f_TC_ISC_SCCAS_MED_OPT_01
@@ -2560,7 +2651,7 @@ module AtsSccas_TCFunctions {
                     }
                 }
 
-                // TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
                 f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
             } // End of function f_TC_ISC_SCCAS_CPT_INV_07
@@ -2628,7 +2719,7 @@ module AtsSccas_TCFunctions {
                     }
                 }
 
-                // TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
                 f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
             } // End of function f_TC_ISC_SCCAS_CPT_INV_08   
@@ -2673,7 +2764,7 @@ module AtsSccas_TCFunctions {
                 f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
                 // Registration
-                f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+        //        f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
                 f_sendResponse(
                              m_Response_2xx_Base(
                                             c_statusLine200,
@@ -2695,7 +2786,7 @@ module AtsSccas_TCFunctions {
                     }
                 }
 
-                // TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
                 f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
             } // End of function f_TC_ISC_SCCAS_CPT_INV_09
@@ -2740,7 +2831,7 @@ module AtsSccas_TCFunctions {
                 f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
                 // Registration
-                f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+        //        f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
                 f_sendResponse(
                              m_Response_2xx_Base(
                                             c_statusLine200,
@@ -2762,7 +2853,7 @@ module AtsSccas_TCFunctions {
                     }
                 }
 
-                // TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
                 f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
 			} // End of function f_TC_ISC_SCCAS_CPT_INV_10
@@ -2830,7 +2921,7 @@ module AtsSccas_TCFunctions {
 					}
 				}
 
-				// TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
 				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
 			} // End of function f_TC_ISC_SCCAS_CPT_INV_11
@@ -2898,7 +2989,7 @@ module AtsSccas_TCFunctions {
 					}
 				}
 
-				// TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
 				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
 			} // End of function f_TC_ISC_SCCAS_CPT_INV_12   
@@ -2943,7 +3034,7 @@ module AtsSccas_TCFunctions {
 				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
 				// Registration
-				f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+		//		f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
 				f_sendResponse(
 							 m_Response_2xx_Base(
 											c_statusLine200,
@@ -2965,7 +3056,7 @@ module AtsSccas_TCFunctions {
 					}
 				}
 
-				// TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
 				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
 			} // End of function f_TC_ISC_SCCAS_CPT_INV_13
@@ -3010,7 +3101,7 @@ module AtsSccas_TCFunctions {
 				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
 				// Registration
-				f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+		//		f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
 				f_sendResponse(
 							 m_Response_2xx_Base(
 											c_statusLine200,
@@ -3032,7 +3123,7 @@ module AtsSccas_TCFunctions {
 					}
 				}
 
-				// TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
 				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
 			} // End of function f_TC_ISC_SCCAS_CPT_INV_14
@@ -3097,7 +3188,7 @@ module AtsSccas_TCFunctions {
 					}
 				}
 
-				// TODO Deregistration?
+				f_deregistrationAS(p_cSeq_s);
 				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 
 			} // End of function f_TC_ISC_SCCAS_TER_BYE_01
@@ -3134,6 +3225,38 @@ module AtsSccas_TCFunctions {
         ) runs on SipComponent  {
             SIPP.send(p_request) to vc_sent_label;
         }
+
+			/**
+			 * @desc setting of general and basic OPTIONS header fields in additon to the addresses (To, From, ReqUri)
+			 * @param p_cSeq_s
+			 */
+			function f_setHeadersOPTIONS(
+				inout CSeq p_cSeq_s
+			) runs on SipComponent  {
+				f_setHeadersGeneral(p_cSeq_s, "OPTIONS"); // cseq, contact, branch, via
+				vc_callId := {
+					fieldName := CALL_ID_E,
+					callid := f_getRndCallId() & c_AT & vc_userprofile.currIpaddr
+				};
+
+				vc_cancel_To := vc_to;
+				vc_caller_To := vc_to;
+
+				vc_caller_From := vc_from;
+
+				if (ischosen(vc_requestUri.components.sip)) {
+					// sip/sips call
+					vc_reqHostPort := vc_requestUri.components.sip.hostPort;
+				}
+				else if (ischosen(vc_requestUri.components.urn)) {
+					// Emergency call
+					vc_reqUrnUri := vc_requestUri.components.urn;
+				}
+				else {
+					log("*** " & __SCOPE__ &": INFO:f_setHeadersOPTIONS: unsupported field: ", vc_requestUri," ***");
+					setverdict(fail);
+				}
+			}
 
     } // End of group helpers
 

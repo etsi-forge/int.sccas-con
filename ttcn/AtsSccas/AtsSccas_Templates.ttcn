@@ -110,7 +110,16 @@ module AtsSccas_Templates
         }
         
         group HeaderTemplatesIztok {
-        }
+			template Accept mw_accept( template AcceptBody_List p_acceptParams := *) := {
+				fieldName  := ACCEPT_E,
+				acceptArgs := p_acceptParams
+			}
+			
+			template RecvInfo mw_recvinfo( template InfoPackage_List p_infoPackage_list ) :={
+				fieldName := RECV_INFO_E,
+				infoPackageList :=p_infoPackage_list
+			}
+}
         
         group HeaderTemplatesYann {
         }
@@ -781,7 +790,9 @@ module AtsSccas_Templates
 										) modifies mw_Response_StatusCode_Base := {
 											msgHeader := {
 												pChargingVector := p_chargingVector,
-												featureCaps   := p_featureCaps
+												featureCaps   := p_featureCaps,
+												accept := mw_accept({{"application/vnd.3gpp.state-and-event-info.xml"}}),
+												recvInfo := mw_recvinfo({{"g3gppStateAndEventPackageName"}})
 											}
 										}
 				    }

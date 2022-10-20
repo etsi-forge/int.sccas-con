@@ -33,7 +33,7 @@ Package TP_SCCAS {
         
         Config Id CFG_SCCAS_01
         
-        PICS Selection NONE
+        PICS Selection NONE //PICS_SCCAS_PS2PS_ACCES_TRANSFER
         
         Initial conditions with {
             the UE entity isRegisteredTo the IMS and // include g.3gpp.pstops-sti
@@ -75,7 +75,7 @@ Package TP_SCCAS {
         
         Config Id CFG_SCCAS_01
         
-        PICS Selection NONE
+        PICS Selection NONE //PICS_SCCAS_PS2PS_ACCES_TRANSFER
         
         Initial conditions with {
             the UE entity isRegisteredTo the IMS and // include g.3gpp.pstops-sti
@@ -117,7 +117,7 @@ Package TP_SCCAS {
         
         Config Id CFG_SCCAS_01
         
-        PICS Selection NONE
+        PICS Selection NONE // PICS_SCCAS_PS2PS_ACCES_TRANSFER
         
         Initial conditions with {
             the UE entity isRegisteredTo the IMS and  // include g.3gpp.pstops-sti
@@ -158,7 +158,7 @@ Package TP_SCCAS {
         
         Config Id CFG_SCCAS_01
         
-        PICS Selection NONE
+        PICS Selection NONE // PICS_SCCAS_PS2PS_ACCES_TRANSFER
         
         Initial conditions with {
             the UE entity isRegisteredTo the IMS and  // include g.3gpp.pstops-sti
@@ -206,7 +206,7 @@ Package TP_SCCAS {
         
         Config Id CFG_SCCAS_01
         
-        PICS Selection NONE
+        PICS Selection NONE // PICS_SCCAS_PS2PS_ACCES_TRANSFER
         
         Initial conditions with {
             the UE entity isRegisteredTo the IMS and  // include g.3gpp.pstops-sti
@@ -269,7 +269,7 @@ Package TP_SCCAS {
         
         Config Id CFG_SCCAS_01
         
-        PICS Selection NONE
+        PICS Selection NONE //PICS_SCCAS_RELEASING_EARLY_DIALOG_DURING_PS2PS_ACCES_TRANSFER
         
         Initial conditions with {
             the UE entity isRegisteredTo the IMS and  // include g.3gpp.pstops-sti

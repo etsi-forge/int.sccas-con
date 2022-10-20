@@ -412,7 +412,7 @@ Package TP_SCCAS_Chapter_9_3 {
 	        
 	        	Config Id CFG_SCCAS_01
 	        
-	       	 	PICS Selection NONE  // TODO
+	       	 	PICS Selection NONE  // PICS_SCCAS_PS2CS_DUAL_RADIO_ACCES_TRANSFER_OF_CALLS_IN_EARLY_DIALOG
 	       	 	
 	       	 	Initial conditions with {
 	       	 		the UE entity isRegisteredTo the IMS
@@ -497,7 +497,7 @@ Package TP_SCCAS_Chapter_9_3 {
 	        
 	        	Config Id CFG_SCCAS_01
 	        
-	       	 	PICS Selection NONE  // TODO
+	       	 	PICS Selection NONE  // PICS_SCCAS_PS2CS_DUAL_RADIO_ACCES_TRANSFER_OF_CALLS_IN_EARLY_DIALOG
 	        
 	        	Initial conditions with {
 	            	the UE entity isRegisteredTo the IMS 
@@ -1326,7 +1326,7 @@ Package TP_SCCAS_Chapter_9_3 {
 	        
 	        	Config Id CFG_SCCAS_01
 	        
-	       	 	PICS Selection NONE // TODO
+	       	 	PICS Selection NONE // PICS_SCCAS_CS2PS_DUAL_RADIO_ACCES_TRANSFER_FOR_CALLS_IN_EARLY_PHASE
 	        
 	        	Initial conditions with {
 	            	the UE entity isRegisteredTo the IMS and

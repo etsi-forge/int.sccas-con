@@ -339,7 +339,7 @@ Package TP_SCCAS_Chapter_6A_4 {
         
         Config Id CFG_SCCAS_01
         
-        PICS Selection NONE //SCCAS_PS2CS_SRVCC, SCCAS_PS2CS_SRVCC_ALERTING
+        PICS Selection NONE //PICS_SCCAS_REJECTION_OF_MALICIOUS_REFER
         
         Initial conditions with {
             the UE entity isRegisteredTo the IMS_A and 
