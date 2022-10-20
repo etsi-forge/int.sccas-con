@@ -56,7 +56,7 @@ module AtsSccas_Templates
             fcParams := p_fcParams
         } // End of template m_fcValue
 
-        template FcValue mw_fcValue(
+        template (present) FcValue mw_fcValue(
                                     template (present) charstring p_wildcard := ?,
                                     template SemicolonParam_List p_fcParams := *
                                     ) := {
@@ -140,6 +140,28 @@ module AtsSccas_Templates
                     messageBody := p_mb
                 }
                 group request_sent_Axel {
+
+				template (omit) INVITE_Request m_sccas_invite_replaces(
+															  in template(value) SipUrl p_requestUri,
+															  in template(value) CallId p_callId,
+															  in template(value) CSeq p_cSeq,
+															  in template(value) From p_from,
+															  in template(value) To p_to,
+															  in template(value) LibSip_SIPTypesAndValues.Via p_via,
+															  in template(value) LibSip_SIPTypesAndValues.Contact p_contact,
+															  in template(omit) Require p_require := omit,
+															  in template(omit) Route p_route := omit,
+															  in template(omit) Supported p_supported := omit,
+															  in template(value) MessageBody p_mb,
+															  in template(omit) Replaces p_replaces := omit
+				) modifies m_INVITE_Request_UE := {
+					msgHeader := {
+						contentLength := m_contentLength(f_MessageBodyLength(p_mb)),
+						contentType := m_contentType(c_sdpApplication)
+					},
+					messageBody := p_mb
+				}
+				
                 }
             
                 group request_sent_Steffen {
@@ -393,6 +415,25 @@ module AtsSccas_Templates
                             },
                             messageBody := p_mb
                         }
+                        group response_sent{
+							template(value) Response m_Response_18XonINVITE_AS_Featurecaps(
+								template(value) StatusLine_18x p_statusLine,
+								template(value) CallId p_callId,
+								template(value) CSeq p_cSeq,
+								template(value) From p_from,
+								template(value) To p_to,
+								template(value) Via p_via,
+								template(omit) Contact p_contact := omit,
+								template(omit) FeatureCaps p_featureCaps := omit
+                                                                          
+							) modifies m_Response_18x_Base := {
+								msgHeader := {
+									contact := p_contact, // mandatory field due to 24 229 rel 7.9
+									featureCaps   := p_featureCaps
+								}
+							}
+                        
+                        } //End of group response
                 }
                 
                 group request_sent_Yann {
@@ -486,6 +527,13 @@ module AtsSccas_Templates
                 
 
                 group request_receive_Axel {
+                
+				template(present) INVITE_Request mw_INVITE_Request_contact(
+					template Contact p_contact
+				) modifies mw_INVITE_Request_Base := {
+					msgHeader := {contact := p_contact}
+				}
+				
                 }
             
                 group request_receive_Steffen {
@@ -718,6 +766,21 @@ module AtsSccas_Templates
 								   },
 								   messageBody := p_mb 
 				    } // End of template mw_sccas_MESSAGE_Request
+				    
+				    group response{
+						template(present) Response mw_Response_PCV_FeatureCaps(
+											template(present) StatusLine.statusCode p_statusCode := ?,
+											template CallId p_callId,
+											template CSeq p_cSeq,
+											template(present) PChargingVector p_chargingVector := ?,
+						                    template(omit) FeatureCaps p_featureCaps := omit
+										) modifies mw_Response_StatusCode_Base := {
+											msgHeader := {
+												pChargingVector := p_chargingVector,
+												featureCaps   := p_featureCaps
+											}
+										}
+				    }
                 }   
                 group request_receive_Yann {
                 }

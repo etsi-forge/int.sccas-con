@@ -795,77 +795,59 @@ module AtsSccas_TCFunctions {
 			runs on ImsComponent {
 				// Local variables
 				var CSeq v_cSeq_s := p_cSeq_s;
-				var template(value) REGISTER_Request m_register3ptyUe;
-				var template(value) RequestUnion m_req;
-				var template(value) Response m_ResponseReg_3ptyUe;
-
-				// Preamble
-				f_init_userprofile(c_userProfile_PCSCFwithHomeUE);
-				f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-				f_initSipUrl(c_userProfile_PCSCFwithHomeUE);
-
-				//Registration
-				f_setHeaders_REGISTER(v_cSeq_s);//UE REGISTER
-				m_register3ptyUe :=  m_register_ue_srvcc(
-													vc_requestUri, 
-													vc_callId, 
-													vc_cSeq, 
-													vc_from, 
-													vc_to, 
-													vc_via_REG, 
-													vc_contact, 
-													m_add_Authorization_digest(
-																				vc_authorization, 
-																				{c_Integrity_protected_no}
-																				), 
-													PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-													PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
-													"600000",
-													omit,
-													omit,
-													omit
-													);
-				m_req:= {Register:=valueof(m_register3ptyUe)};
-
-				m_ResponseReg_3ptyUe :=  m_Response_2xxonREGISTER_IMS(
-																c_statusLine200,
-																vc_callId,
-																p_cSeq_s,
-																vc_from,
-																vc_to,
-																vc_via_REG,
-																vc_contact,
-																m_SipUrl_currDomain(vc_userprofile),
-																vc_from.addressField.nameAddr.addrSpec
-																);
 				
-				f_init_userprofile(c_userProfile_SCSCFwithHomeUE);
-				f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_AS); //AS as SCCAS
-				f_initSipUrl(c_userProfile_SCSCFwithHomeUE);
-
-				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync preambleDone
-
-				f_setHeaders_REGISTER_AS(v_cSeq_s);//AS INTERFACE REGISTER				
-			    f_sendRegistrationAndAwait200Ok(
-										        v_cSeq_s,
-											    m_REGISTER_Request_AS(
-												    vc_requestUri, 
-												    vc_callId, 
-												    vc_cSeq, 
-												        vc_from, 
-												    vc_to, 
-												    vc_via_REG, 
-												    vc_contact, 
-												    -,
-												    "600000",
-												    m_contentType("multipart/mixed",{m_contentTypeBoundary(c_boundary)}) ,
-												    m_MBody_MIME_SipReqResp(c_boundary,m_req,m_ResponseReg_3ptyUe)
-							                     ),
-				                                 mw_Response_2xxonREGISTER_AS(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
-											 );
-			    
+				f_registrationAS(v_cSeq_s);
 			    f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 			
+				f_IncCSeq(v_cSeq_s);
+				f_setHeaders_INVITE_AS(v_cSeq_s, f_initSipUrl(c_userProfile_PCSCFwithHomeUE), f_initSipUrl(c_userProfile_SCSCFwithHomeUE));
+				f_SendINVITE(
+							 m_sccas_invite(
+											vc_requestUri,
+											vc_callId, 
+											p_cSeq_s, 
+											vc_from, vc_to, vc_via_REG, 
+											vc_contact,
+											-, -, -,
+											m_MBody_SDP(vc_sdp_local)
+											));
+				tc_wait.start;
+				alt {
+					[] SIPP.receive(mw_Response_1xx_Base(vc_callId, vc_cSeq)) {
+						repeat
+					}
+					[] SIPP.receive(mw_INVITE_Request_AS(?, ?, ?, ?, *, *)) {
+						tc_wait.stop;
+						log("*** " & __SCOPE__ & ": PASS: INVITE message was received ***");
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+					}
+					[] tc_wait.timeout {
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+					}
+				}			
+				
+				
+				f_deregistrationAS(v_cSeq_s);
+				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+			
+			}  //End of function f_TC_ISC_SCCAS_ORI_INV_01
+			
+    }	//End of group  TP_7_3_1_Distinction_of_requests_sent_to_the_SCCAS
+    	
+    group TP_7_3_2_Call_origination_procedures_at_the_SCCAS{
+    	
+			/**
+			 * @desc Verify that the SCCAS sends 1xx/2xx response to the SIP INVITE request towards the served user
+			 * @param   p_cSeq_s Random CSeq INVITE number
+			 */
+			function f_TC_ISC_SCCAS_ORI_INV_02_UE(in CSeq p_cSeq_s)
+			runs on ImsComponent {
+				// Local variables
+				var CSeq v_cSeq_s := p_cSeq_s;
+
+				f_registrationAS(v_cSeq_s);
+				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+            
 				f_IncCSeq(v_cSeq_s);
 				f_setHeaders_INVITE_AS(v_cSeq_s, f_initSipUrl(c_userProfile_PCSCFwithHomeUE), f_initSipUrl(c_userProfile_SCSCFwithHomeUE));
 				f_SendINVITE(
@@ -886,137 +868,80 @@ module AtsSccas_TCFunctions {
 					[] SIPP.receive(mw_INVITE_Request_AS(?, ?, ?, ?, *, *)) {
 						tc_ack.stop;
 						log("*** " & __SCOPE__ & ": PASS: INVITE message was received ***");
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
-					}
-					[] tc_ack.timeout {
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
-					}
-				}			
-				
-				
-                //TODO Deregistration?
-				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
-			
-			}  //End of function f_TC_ISC_SCCAS_ORI_INV_01
-			
-    }	//End of group  TP_7_3_1_Distinction_of_requests_sent_to_the_SCCAS
-    	
-    group TP_7_3_2_Call_origination_procedures_at_the_SCCAS{
-    	
-			/**
-			 * @desc Verify that the SCCAS sends 1xx/2xx response to the SIP INVITE request towards the served user
-			 * @param   p_cSeq_s Random CSeq INVITE number
-			 */
-			function f_TC_ISC_SCCAS_ORI_INV_02(in CSeq p_cSeq_s)
-			runs on ImsComponent {
-				// Local variables
-				var CSeq v_cSeq_s := p_cSeq_s;
-				var template(value) REGISTER_Request m_register3ptyUe;
-				var template(value) RequestUnion m_req;
-				var template(value) Response m_ResponseReg_3ptyUe;
-
-				// Preamble
-				f_init_userprofile(c_userProfile_PCSCFwithHomeUE);
-				f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
-				f_initSipUrl(c_userProfile_PCSCFwithHomeUE);
-
-				//Registration
-				f_setHeaders_REGISTER(v_cSeq_s);//UE REGISTER
-				m_register3ptyUe :=  m_register_ue_srvcc(
-													vc_requestUri, 
-													vc_callId, 
-													vc_cSeq, 
-													vc_from, 
-													vc_to, 
-													vc_via_REG, 
-													vc_contact, 
-													m_add_Authorization_digest(
-																				vc_authorization, 
-																				{c_Integrity_protected_no}
-																				), 
-													PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-													PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
-													"600000",
-													omit,
-													omit,
-													omit
-													);
-				m_req:= {Register:=valueof(m_register3ptyUe)};
-
-				m_ResponseReg_3ptyUe :=  m_Response_2xxonREGISTER_IMS(
-																c_statusLine200,
-																vc_callId,
-																p_cSeq_s,
-																vc_from,
-																vc_to,
-																vc_via_REG,
-																vc_contact,
-																m_SipUrl_currDomain(vc_userprofile),
-																vc_from.addressField.nameAddr.addrSpec
-																);
-                
-				f_init_userprofile(c_userProfile_SCSCFwithHomeUE);
-				f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_AS); //AS as SCCAS
-				f_initSipUrl(c_userProfile_SCSCFwithHomeUE);
-
-				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync preambleDone
-
-				f_setHeaders_REGISTER_AS(v_cSeq_s);//AS INTERFACE REGISTER              
-				f_sendRegistrationAndAwait200Ok(
-												v_cSeq_s,
-												m_REGISTER_Request_AS(
-													vc_requestUri, 
-													vc_callId, 
-													vc_cSeq, 
-														vc_from, 
-													vc_to, 
-													vc_via_REG, 
-													vc_contact, 
-													-,
-													"600000",
-													m_contentType("multipart/mixed",{m_contentTypeBoundary(c_boundary)}) ,
-													m_MBody_MIME_SipReqResp(c_boundary,m_req,m_ResponseReg_3ptyUe)
-												 ),
-												 mw_Response_2xxonREGISTER_AS(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
-											 );
-                
-				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
-            
-				f_IncCSeq(v_cSeq_s);
-				f_setHeaders_INVITE_AS(v_cSeq_s, f_initSipUrl(c_userProfile_PCSCFwithHomeUE), f_initSipUrl(c_userProfile_SCSCFwithHomeUE));
-				f_SendINVITE(
-							 m_sccas_invite(
-											vc_requestUri,
+						//f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+						f_sendResponse(
+						m_Response_18XonINVITE_AS_Featurecaps(
+											c_statusLine183,
 											vc_callId, 
 											p_cSeq_s, 
-											vc_from, vc_to, vc_via_REG, 
-											vc_contact,
-											-, -, -,
-											m_MBody_SDP(vc_sdp_local)
+											vc_from, 
+											vc_to, 
+											vc_via_REG,
+											-,
+						                    -
+						                    ));
+						f_sendResponse(
+							 m_Response_2xx_Base(
+											c_statusLine200,
+											vc_callId, 
+											p_cSeq_s, 
+											vc_from, 
+											vc_to, 
+											vc_via_REG
 											));
-				tc_ack.start;
-				alt {
-					[] SIPP.receive(mw_Response_1xx_Base(vc_callId, vc_cSeq)) {
-						tc_ack.stop;
-						log("*** " & __SCOPE__ & ": PASS: 1xx message was received ***");
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
-					}
-					[] SIPP.receive(mw_sccas_Response_2xxonINVITE(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)) {
-						tc_ack.stop;
-						log("*** " & __SCOPE__ & ": PASS: 200 OK message was received ***");
-						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
 					}
 					[] tc_ack.timeout {
 						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
 					}
-				}           
+				}
+				//var template FcValue fc:= mw_fcValue("g3gppFeatureCapabilityIndicator",-);
+				tc_wait.start;
+				alt {
+					[] SIPP.receive(mw_Response_PCV_FeatureCaps(
+					                   183,
+					                   ?,
+					                   ?,
+					                   ?,
+					//mw_sccas_featureCaps({})
+					                   mw_sccas_featureCaps({(mw_fcValue("g3gppFeatureCapabilityIndicator",{-})),
+										                     (mw_fcValue("g3gppMidcallFeatureCapabilityIndicator",{-})),
+										                     (mw_fcValue("g3gppSrvccAlertingFeatureCapabilityIndicator",{-})),
+										                     (mw_fcValue("g3gppPs2csSrvccOrigPreAlertingMediaIndicator",{-}))
+					                                       })
+                                       )) {
+						log("*** " & __SCOPE__ & ": PASS: 183 message was received ***");
+						//f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+						repeat
+					}
+					[] SIPP.receive(mw_Response_PCV_FeatureCaps(
+										200,
+										?,
+										?,
+										?,
+										mw_sccas_featureCaps({(mw_fcValue("g3gppFeatureCapabilityIndicator",{-})),
+															 (mw_fcValue("g3gppMidcallFeatureCapabilityIndicator",{-})),
+															 (mw_fcValue("g3gppSrvccAlertingFeatureCapabilityIndicator",{-})),
+															 (mw_fcValue("g3gppPs2csSrvccOrigPreAlertingMediaIndicator",{-})),
+											                 (mw_fcValue("g3gppRemoteLegInfoFeatureCapabilityIndicator",{-}))
+															})
+					)) {
+						tc_wait.stop;
+						log("*** " & __SCOPE__ & ": PASS: response 200 OK was received ***");
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+					}
+					[] tc_wait.timeout {
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+					}
+				}
+				           
                 
                 
-				//TODO Deregistration?
+				f_deregistrationAS(v_cSeq_s);
 				f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
             
 			}  //End of function f_TC_ISC_SCCAS_ORI_INV_02
-			        
+			
+			
         }  //End of group TP_7_3_2_Call_origination_procedures_at_the_SCCAS
         
     } // End of group Group_7_3
@@ -1513,18 +1438,19 @@ module AtsSccas_TCFunctions {
                 // Registration
                 f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
                 f_SendINVITE(
-                             m_sccas_invite(   // TODO request active speech media component using CS bearer
+							 m_sccas_invite_replaces(   // TODO request active speech media component using CS bearer
                                             vc_requestUri,
-                                            vc_callId, 
+											vc_callId, 
                                             p_cSeq_s, 
                                             vc_from, vc_to, vc_via_REG, 
                                             vc_contact,
                                             -, -, -,
-                                            m_MBody_SDP(vc_sdp_local)
+                                            m_MBody_SDP(vc_sdp_local),
+											m_Replaces(vc_callId.callid,{quotedString:=""},{quotedString:=""}) // indicating access transfer procedure
                                             ));
                 tc_ack.start;
                 alt {
-                    [] SIPP.receive(mw_INVITE_Request(?,vc_requestUri)) {
+                    [] SIPP.receive(mw_INVITE_Request_contact(?)) {
                         tc_ack.stop;
                         log("*** " & __SCOPE__ & ": PASS: forwarded INVITE message was received ***");
                         f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
