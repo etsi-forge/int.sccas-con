@@ -2221,7 +2221,7 @@ module AtsSccas_TCFunctions {
                                             vc_callId, 
                                             p_cSeq_s, 
                                             vc_from, vc_to, vc_via_REG, 
-                                            vc_contact, // TODO g3gppps2csSrvccTermPreAlerting
+											m_contact_wildcard("g3gppps2csSrvccTermPreAlerting"),
                                             -, -, -,
                                             m_MBody_SDP(vc_sdp_local)
                                             ));
@@ -2289,7 +2289,7 @@ module AtsSccas_TCFunctions {
                                             vc_callId, 
                                             p_cSeq_s, 
                                             vc_from, vc_to, vc_via_REG, 
-                                            vc_contact, // TODO g3gppPs2csSrvccOrigPreAlerting
+											m_contact_wildcard("g3gppPs2csSrvccOrigPreAlerting"), 
                                             -, -, -,
                                             m_MBody_SDP(vc_sdp_local)
                                             ));
