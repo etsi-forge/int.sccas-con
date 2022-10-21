@@ -1305,6 +1305,9 @@ module AtsSccas_TCFunctions {
             f_awaitingResponse(mw_Response_Base(c_statusLine200, vc_callIdReg, p_cSeq_s));
             
             
+			f_deregistrationAS(p_cSeq_s);
+			f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+            
             }
             
 		function f_TC_ISC_SCCAS_CPT_INV_02(in CSeq p_cSeq_s)
@@ -1363,6 +1366,7 @@ module AtsSccas_TCFunctions {
 			f_awaitingResponse(mw_Response_Base(c_statusLine200, vc_callIdReg, p_cSeq_s));
 			
 			
+			f_deregistrationAS(p_cSeq_s);
 			f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 		
 		} // End of f_TC_IISC_SCCAS_CPT_INV_02
@@ -1401,7 +1405,44 @@ module AtsSccas_TCFunctions {
 												), 
 												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
 												);
-				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+			
+			// TODO: the UE entity previouslyEstablishedCallWith 
+			
+			// STEP: invite
+			LibIms_Steps.f_setHeadersINVITE(p_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+			f_SendINVITE(m_sccas_invite(
+					vc_requestUri,
+					vc_callId,
+					vc_cSeq,
+					vc_from,
+					vc_to,
+					vc_via_REG,
+					vc_contact,
+					omit, 
+					vc_route,
+					m_supported_replaces, 
+					m_messageBody_SDP_mediaOnly
+					
+				));
+			
+			
+			// EXPECTED: 200 ok
+			f_awaitingResponse(mw_sccas_Response_200mediaOnly(200, vc_callIdReg, p_cSeq_s, vc_from, vc_to, vc_via, ?, ?, ?, ?));
+//			template (present) Response (
+//						template (present) StatusLine.statusCode p_statusCode := 200,
+//						template (present) CallId p_callId := ?,
+//						template (present) CSeq p_cSeq := ?,
+//						template (present) From p_from := ?,
+//						template (present) To p_to := ?,
+//						template (present) Via p_via := ?,
+//						template (present) Contact p_contact := ?,
+//						template (present) PChargingVector p_pChargingVector := ?,
+//						template (present) PAssertedID p_pAssertedID := ?,
+//						template AcceptContact p_acceptContact := *
+			
+
+			f_deregistrationAS(p_cSeq_s);
+			f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 		
 		} // End of f_TC_IISC_SCCAS_CPT_RIN_01
 		
@@ -1439,9 +1480,21 @@ module AtsSccas_TCFunctions {
 												), 
 												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
 												);
-				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+												
+			// TODO: the UE entity hasReceived200OkOnInitialRequestForDialogWith
+												
+			// STEP: sen ACK
+			f_SendACK(m_ACK_Request_Base(vc_requestUri, vc_callId, vc_cSeq, vc_from, vc_to, vc_via));
 			
-		} // End of f_TC_IISC_SCCAS_CPT_ACK_01
+			// Expected: BYE
+			f_awaitingBYE(mw_BYE_Request_Base(?));	
+			
+				
+				
+			f_deregistrationAS(p_cSeq_s);
+			f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+			
+		} // End of f_TC_ISC_SCCAS_CPT_ACK_01
 		
 		function f_TC_ISC_SCCAS_CPT_INV_03(in CSeq p_cSeq_s)
 		runs on ImsComponent {
@@ -1500,6 +1553,9 @@ module AtsSccas_TCFunctions {
 			
 			);
 			f_awaitingResponse(mw_sccas_Response_2xxmediaOnly(vc_callIdReg, p_cSeq_s, ?, ?, ?, mw_contact_g3gppMidcallFeature));
+			
+			f_deregistrationAS(p_cSeq_s);
+			f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 		
 		} // End of f_TC_ISC_SCCAS_CPT_INV_03
 		
@@ -1560,6 +1616,9 @@ module AtsSccas_TCFunctions {
 			
 			);
 			f_awaitingResponse(mw_sccas_Response_2xxmediaOnly(vc_callIdReg, p_cSeq_s, ?, ?, ?, mw_contact_g3gppDrvccAlertingFeature));
+		
+			f_deregistrationAS(p_cSeq_s);
+			f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 		
 		} // End of f_TC_ISC_SCCAS_CPT_INV_04
 		
@@ -1637,12 +1696,8 @@ module AtsSccas_TCFunctions {
 					}
 				}
 			
-//			f_awaitingResponse(mw_UPDATE_Request_ContactChange(
-//				vc_callId, 
-//				mw_contact_sourceLegAtCreation, 
-//				mw_contentType_appclication_sdp, 
-//				mw_sdpmessageBody));
-		//	f_awaitingResponse(mw_sccas_Response_2xxmediaOnly(vc_callIdReg, p_cSeq_s, ?, ?, ?, mw_contact_g3gppDrvccAlertingFeature));
+			f_deregistrationAS(p_cSeq_s);
+			f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 		
 		} // End of f_TC_ISC_SCCAS_CPT_INV_05
 		
@@ -1681,6 +1736,9 @@ module AtsSccas_TCFunctions {
 						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
 					}
 				}
+				
+			f_deregistrationAS(p_cSeq_s);
+			f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 		
 		} // End of f_TC_ISC_SCCAS_CPT_INV_06
 		
@@ -1720,6 +1778,9 @@ module AtsSccas_TCFunctions {
 						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
 					}
 				}
+				
+			f_deregistrationAS(p_cSeq_s);
+			f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 			
 		} // End of f_TC_ISC_SCCAS_PCT_REF_02
 		
@@ -1769,7 +1830,8 @@ module AtsSccas_TCFunctions {
 			// TDOD: SDP containing Media indicating value "the media characteristics as received in the SIP INVITE request due to PS to CS STN (including any precondition mechanism specific SDP attributes)";                       		
 			f_awaitingUPDATE(mw_UPDATE_Request_ContactChange(vc_callId, vc_contact, mw_contentType_appclication_sdp, ?));
 			
-			
+			f_deregistrationAS(p_cSeq_s);
+			f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 			
 			
 		} // End of f_TC_ISC_SCCAS_PCT_INV_05
@@ -1808,6 +1870,8 @@ module AtsSccas_TCFunctions {
 					}
 				}
 			
+			f_deregistrationAS(p_cSeq_s);
+			f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 			
 		}
 		
@@ -3492,47 +3556,7 @@ module AtsSccas_TCFunctions {
 
         } // End of function f_sendRegistrationAndAwait200Ok
 
-        /**
-         * @desc function send OPTIONS message
-         * @param p_request template of the message to be sent
-         */
-        function f_SendOPTIONS(
-            template(value) OPTIONS_Request p_request
-        ) runs on SipComponent  {
-            SIPP.send(p_request) to vc_sent_label;
-        }
 
-			/**
-			 * @desc setting of general and basic OPTIONS header fields in additon to the addresses (To, From, ReqUri)
-			 * @param p_cSeq_s
-			 */
-			function f_setHeadersOPTIONS(
-				inout CSeq p_cSeq_s
-			) runs on SipComponent  {
-				f_setHeadersGeneral(p_cSeq_s, "OPTIONS"); // cseq, contact, branch, via
-				vc_callId := {
-					fieldName := CALL_ID_E,
-					callid := f_getRndCallId() & c_AT & vc_userprofile.currIpaddr
-				};
-
-				vc_cancel_To := vc_to;
-				vc_caller_To := vc_to;
-
-				vc_caller_From := vc_from;
-
-				if (ischosen(vc_requestUri.components.sip)) {
-					// sip/sips call
-					vc_reqHostPort := vc_requestUri.components.sip.hostPort;
-				}
-				else if (ischosen(vc_requestUri.components.urn)) {
-					// Emergency call
-					vc_reqUrnUri := vc_requestUri.components.urn;
-				}
-				else {
-					log("*** " & __SCOPE__ &": INFO:f_setHeadersOPTIONS: unsupported field: ", vc_requestUri," ***");
-					setverdict(fail);
-				}
-			}
 
     } // End of group helpers
 
