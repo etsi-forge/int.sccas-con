@@ -463,7 +463,7 @@ module AtsSccas_Testcases
 		 * @desc Verify that the P-CSCF successfully processes an initial INVITE (Originating Leg) with dynamic STI.
 		 * @param p_cSeq_s Transaction Id
 		 */
-		testcase TP_ISC_SCCAS_CPT_INV_01(inout CSeq p_cSeq_s)
+		testcase TC_ISC_SCCAS_CPT_INV_01(inout CSeq p_cSeq_s)
 		runs on ServerSyncComp
 		system TestAdapter {
 				
@@ -475,7 +475,6 @@ module AtsSccas_Testcases
 				stop;
 			}
 			
-			// TODO: setUo "the UE entity isRegisteredTo the IMS"
 			
 			// f_Registration_IMS
 			
@@ -489,13 +488,13 @@ module AtsSccas_Testcases
 			
 			f_cf_1IscDown(v_imsComponent_ueims);
 				
-		} // End of TP_ISC_SCCAS_CPT_INV_01
+		} // End of TC_ISC_SCCAS_CPT_INV_01
 		
 		/*
 		 * @desc Verify that the P-CSCF successfully processes an initial INVITE (Originating Leg) with static STI.
 		 * @param p_cSeq_s Transaction Id
 		 */		
-		testcase TP_ISC_SCCAS_CPT_INV_02(inout CSeq p_cSeq_s)
+		testcase TC_ISC_SCCAS_CPT_INV_02(inout CSeq p_cSeq_s)
 		runs on ServerSyncComp
 		system TestAdapter {
 		
@@ -507,7 +506,6 @@ module AtsSccas_Testcases
 				stop;
 			}
 			
-			// TODO: setUo "the UE entity isRegisteredTo the IMS"
 			
 			// f_Registration_IMS
 			
@@ -525,14 +523,14 @@ module AtsSccas_Testcases
 
 			f_cf_1IscDown(v_imsComponent_ueims);
 			
-		} // End of TP_ISC_SCCAS_CPT_INV_02
+		} // End of TC_ISC_SCCAS_CPT_INV_02
 		
 		
 		/*
 		 * @desc Verify that the P-CSCF successfully processes an re-INVITE (Originating Leg)
 		 * @param p_cSeq_s Transaction Id
 		 */		
-		testcase TP_ISC_SCCAS_CPT_RIN_01(inout CSeq p_cSeq_s)
+		testcase TC_ISC_SCCAS_CPT_RIN_01(inout CSeq p_cSeq_s)
 		runs on ServerSyncComp
 		system TestAdapter {
 			
@@ -559,14 +557,14 @@ module AtsSccas_Testcases
 			
 			f_cf_1IscDown(v_imsComponent_ueims);
 				
-		} // End of TP_ISC_SCCAS_CPT_RIN_01
+		} // End of TC_ISC_SCCAS_CPT_RIN_01
 			
 			
 		/*
 		 * @desc Verify that the P-CSCF successfully processes an ACK and release the source access leg.
 		 * @param p_cSeq_s Transaction Id
 		 */		
-		testcase TP_ISC_SCCAS_CPT_ACK_01(inout CSeq p_cSeq_s)
+		testcase TC_ISC_SCCAS_CPT_ACK_01(inout CSeq p_cSeq_s)
 		runs on ServerSyncComp
 		system TestAdapter {
 			
@@ -578,7 +576,6 @@ module AtsSccas_Testcases
 				stop;
 			}
 			
-			// TODO: setUo "the UE entity isRegisteredTo the IMS"
 			
 			// f_Registration_IMS
 			
@@ -596,14 +593,14 @@ module AtsSccas_Testcases
 
 			f_cf_1IscDown(v_imsComponent_ueims);
 				
-		} // End of TP_ISC_SCCAS_CPT_ACK_01
+		} // End of TC_ISC_SCCAS_CPT_ACK_01
 		
 
 		/*
 		 * @desc Verify that the SCC AS Conditions for selecting a sessions in an early dialog phase
 		 * @param p_cSeq_s Transaction Id
 		 */		
-		testcase TP_ISC_SCCAS_CPT_INV_03(inout CSeq p_cSeq_s)
+		testcase TC_ISC_SCCAS_CPT_INV_03(inout CSeq p_cSeq_s)
 		runs on ServerSyncComp
 		system TestAdapter {
 		
@@ -630,13 +627,13 @@ module AtsSccas_Testcases
 
 			f_cf_1IscDown(v_imsComponent_ueims);
 			
-		} // End of TP_ISC_SCCAS_CPT_INV_03
+		} // End of TC_ISC_SCCAS_CPT_INV_03
 		
 		/*
 		 * @desc Verify that the SCC AS accepts conditions in an early dialog phase
 		 * @param p_cSeq_s Transaction Id
 		 */	
-		testcase TP_ISC_SCCAS_CPT_INV_04(inout CSeq p_cSeq_s)
+		testcase TC_ISC_SCCAS_CPT_INV_04(inout CSeq p_cSeq_s)
 		runs on ServerSyncComp
 		system TestAdapter {
 		
@@ -664,10 +661,10 @@ module AtsSccas_Testcases
 
 			f_cf_1IscDown(v_imsComponent_ueims);
 			
-		} // End of TP_ISC_SCCAS_CPT_INV_04
+		} // End of TC_ISC_SCCAS_CPT_INV_04
     	
     	
-		testcase TP_ISC_SCCAS_PCT_UPD_01(inout CSeq p_cSeq_s)
+		testcase TC_ISC_SCCAS_PCT_UPD_01(inout CSeq p_cSeq_s)
 		runs on ServerSyncComp
 		system TestAdapter {//TODO add PICS_SCCAS_PS2CS_DUAL_RADIO_ACCES_TRANSFER_OF_CALLS_IN_EARLY_DIALOG
 		
@@ -681,14 +678,14 @@ module AtsSccas_Testcases
 		
 		// TODO
 			
-		} // End of TP_ISC_SCCAS_PCT_RES_02
+		} // End of TC_ISC_SCCAS_PCT_UPD_01
 		
 		
 		/*
 		 * @desc Verify that the SCC AS send a SIP UPDATE request towards the remote UE after receiving a SIP INVITE request due to PS to CS STN in early dialog phase supporting a session with active speech media component such
 		 * @param p_cSeq_s Transaction Id
 		 */	
-		testcase TP_ISC_SCCAS_PCT_INV_05(inout CSeq p_cSeq_s)
+		testcase TC_ISC_SCCAS_PCT_INV_05(inout CSeq p_cSeq_s)
 		runs on ServerSyncComp
 		system TestAdapter {
 		
@@ -705,9 +702,7 @@ module AtsSccas_Testcases
 			// Test component configuration
 			f_cf_1IscUp(v_imsComponent_ueims);
 			
-			// TODO: SCC AS supports the MSC Server g.3gpp.drvcc-alerting feature 
-			
-				
+					
 			f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_PCT_INV_05(p_cSeq_s));
 			
 			
@@ -717,9 +712,9 @@ module AtsSccas_Testcases
 
 			f_cf_1IscDown(v_imsComponent_ueims);
 			
-		} // End of TP_ISC_SCCAS_PCT_INV_05
+		} // End of TC_ISC_SCCAS_PCT_INV_05
 		
-		testcase TP_ISC_SCCAS_PCT_REF_01(inout CSeq p_cSeq_s)
+		testcase TC_ISC_SCCAS_PCT_REF_01(inout CSeq p_cSeq_s)
 		runs on ServerSyncComp
 		system TestAdapter {
 		
@@ -728,14 +723,14 @@ module AtsSccas_Testcases
 		
 		
 			
-		} // End of TP_ISC_SCCAS_PCT_REF_01
+		} // End of TC_ISC_SCCAS_PCT_REF_01
 		
 		
 		/*
 		 * @desc Verify that the SCC AS terminates the call over CS after receiving a SIP 488
 		 * @param p_cSeq_s Transaction Id
 		 */	
-		testcase TP_ISC_SCCAS_PCT_REF_02(inout CSeq p_cSeq_s)
+		testcase TC_ISC_SCCAS_PCT_REF_02(inout CSeq p_cSeq_s)
 		runs on ServerSyncComp
 		system TestAdapter {
 		
@@ -764,47 +759,47 @@ module AtsSccas_Testcases
 
 			f_cf_1IscDown(v_imsComponent_ueims);
 			
-		} // End of TP_ISC_SCCAS_PCT_REF_02
+		} // End of TC_ISC_SCCAS_PCT_REF_02
 		
-		testcase TP_ISC_SCCAS_PCT_RES_01(inout CSeq p_cSeq_s)
+		testcase TC_ISC_SCCAS_PCT_RES_01(inout CSeq p_cSeq_s)
 		runs on ServerSyncComp
 		system TestAdapter {
 		
 		// TODO
 			
-		} // End of TP_ISC_SCCAS_PCT_RES_01
+		} // End of TC_ISC_SCCAS_PCT_RES_01
 		
 		
-		testcase TP_ISC_SCCAS_MED_BYE_01(inout CSeq p_cSeq_s)
+		testcase TC_ISC_SCCAS_MED_BYE_01(inout CSeq p_cSeq_s)
 		runs on ServerSyncComp
 		system TestAdapter {
 		
 		// TODO
 			
-		} // End of TP_ISC_SCCAS_MED_BYE_01
+		} // End of TC_ISC_SCCAS_MED_BYE_01
 		
-		testcase TP_ISC_SCCAS_MED_RES_01(inout CSeq p_cSeq_s)
+		testcase TC_ISC_SCCAS_MED_RES_01(inout CSeq p_cSeq_s)
 		runs on ServerSyncComp
 		system TestAdapter {
 		
 		// TODO
 			
-		} // End of TP_ISC_SCCAS_MED_RES_01
+		} // End of TC_ISC_SCCAS_MED_RES_01
 		
-		testcase TP_ISC_SCCAS_MED_RIN_01(inout CSeq p_cSeq_s)
+		testcase TC_ISC_SCCAS_MED_RIN_01(inout CSeq p_cSeq_s)
 		runs on ServerSyncComp
 		system TestAdapter {
 		
 		// TODO
 			
-		} // End of TP_ISC_SCCAS_MED_RIN_01
+		} // End of TC_ISC_SCCAS_MED_RIN_01
 		
 		
 		/*
 		 * @desc Verify that the SCC AS performs the procedures correctly for CS to PS dual radio access transfer for originating calls in pre-alerting phase or in alerting phase on the originating side
 		 * @param p_cSeq_s Transaction Id
 		 */	
-		testcase TP_ISC_SCCAS_CPT_INV_05(inout CSeq p_cSeq_s)
+		testcase TC_ISC_SCCAS_CPT_INV_05(inout CSeq p_cSeq_s)
 		runs on ServerSyncComp
 		system TestAdapter {
 		
@@ -834,14 +829,14 @@ module AtsSccas_Testcases
 
 			f_cf_1IscDown(v_imsComponent_ueims);
 			
-		} // End of TP_ISC_SCCAS_CPT_INV_05
+		} // End of TC_ISC_SCCAS_CPT_INV_05
 		
 	
 		/*
 		 * @desc Verify that SCC AS correctly recognizes and initiated for CS to PS dual radio access transfer for a call in the alerting phase on the terminating side 
 		 * @param p_cSeq_s Transaction Id
 		 */	
-		testcase TP_ISC_SCCAS_CPT_INV_06(inout CSeq p_cSeq_s)
+		testcase TC_ISC_SCCAS_CPT_INV_06(inout CSeq p_cSeq_s)
 		runs on ServerSyncComp
 		system TestAdapter {
 		
@@ -869,38 +864,38 @@ module AtsSccas_Testcases
 
 			f_cf_1IscDown(v_imsComponent_ueims);
 			
-		} // End of TP_ISC_SCCAS_CPT_INV_06
+		} // End of TC_ISC_SCCAS_CPT_INV_06
 		
 		
-		testcase TC_ISC_SCCAS_PCT_INV_05(inout CSeq p_cSeq_s)
-		runs on ServerSyncComp
-		system TestAdapter {
-		
-			var ImsComponent v_imsComponent_ueims;
-				   
-			// Test control
-			if (not PICS_SCCAS_IUT) {
-				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***");
-				stop;
-			}
-			
-			
-			// Test component configuration
-			f_cf_1IscUp(v_imsComponent_ueims);
-			
-			// TODO: SCC AS supports the MSC Server g.3gpp.drvcc-alerting feature 
-			
-				
-			f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_PCT_INV_05(p_cSeq_s));
-			
-			
-			
-			// synchronize PTC on 3 sychronization points
-			f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
-
-			f_cf_1IscDown(v_imsComponent_ueims);
-			
-		} // End of TC_ISC_SCCAS_PCT_INV_05
+//		testcase TC_ISC_SCCAS_PCT_INV_05(inout CSeq p_cSeq_s)
+//		runs on ServerSyncComp
+//		system TestAdapter {
+//		
+//			var ImsComponent v_imsComponent_ueims;
+//				   
+//			// Test control
+//			if (not PICS_SCCAS_IUT) {
+//				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***");
+//				stop;
+//			}
+//			
+//			
+//			// Test component configuration
+//			f_cf_1IscUp(v_imsComponent_ueims);
+//			
+//			// TODO: SCC AS supports the MSC Server g.3gpp.drvcc-alerting feature 
+//			
+//				
+//			f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_PCT_INV_05(p_cSeq_s));
+//			
+//			
+//			
+//			// synchronize PTC on 3 sychronization points
+//			f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+//
+//			f_cf_1IscDown(v_imsComponent_ueims);
+//			
+//		} // End of TC_ISC_SCCAS_PCT_INV_05
     	
     } // End of group Group_9_3
      

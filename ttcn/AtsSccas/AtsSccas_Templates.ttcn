@@ -557,7 +557,7 @@ module AtsSccas_Templates
                 group request_receive_Steffen {
                 
                 
- 				template(present) Response mw_Response_1xx_stl(
+ 				template(present) Response mw_Response_1xx_SDPMessage(
 					template CallId p_callId,
 					template CSeq p_cSeq,
 					template PEarlyMedia p_PEarlyMedia,

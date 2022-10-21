@@ -1776,7 +1776,7 @@ module AtsSccas_TCFunctions {
 			// Expeted Result: r_1xx_Any
 			tc_ack.start;
 				alt {
-					[] SIPP.receive(mw_Response_1xx_stl(
+					[] SIPP.receive(mw_Response_1xx_SDPMessage(
 							vc_callId, 
 							vc_cSeq, 
 							?, // TODO: EarlyMedia indicating value "the last received P-Early-Media header field",
