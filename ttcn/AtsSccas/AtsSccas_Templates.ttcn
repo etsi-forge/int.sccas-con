@@ -556,6 +556,30 @@ module AtsSccas_Templates
             
                 group request_receive_Steffen {
                 
+                
+ 				template(present) Response mw_Response_1xx_stl(
+					template CallId p_callId,
+					template CSeq p_cSeq,
+					template PEarlyMedia p_PEarlyMedia,
+					template ContentType p_contentType,
+					template SDP_Message p_sdpMessageBody
+				) modifies mw_Response_1xx_Base := {
+					statusLine := mw_statusLine1xx,
+					msgHeader := {
+						callId := p_callId,
+						contentLength := *,
+						cSeq := p_cSeq,
+						fromField := ?,
+						maxForwards := *,
+						toField := ?,
+						via := ?,
+						pEarlyMedia := p_PEarlyMedia,
+						contentType := p_contentType
+					},
+					messageBody := {
+						sdpMessageBody := p_sdpMessageBody
+					}
+				}
    
 				template(present) REFER_Request mw_REFER_Request_stl(
 					template CallId p_callId := ?,
