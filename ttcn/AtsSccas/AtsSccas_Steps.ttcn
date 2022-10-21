@@ -617,6 +617,11 @@ module AtsSccas_Steps {
 			var CSeq v_cSeq_s := p_cSeq_s;
 		} //end function f_EstablishDialogAS
 		
+		function f_ReleaseDialogAS(in CSeq p_cSeq_s)
+			runs on ImsComponent {
+			var CSeq v_cSeq_s := p_cSeq_s;
+		} //end function f_ReleaseDialogAS
+		
     } //end group CommonProcedures
 
 } // End of module AtsSccas_Steps
