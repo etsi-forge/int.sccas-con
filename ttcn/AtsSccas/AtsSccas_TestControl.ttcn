@@ -21,7 +21,7 @@ module AtsSccas_TestControl
           method := "INVITE"
       }
 
-      if (PICS_SCCAS_GM == true) {
+      if (PICS_SCCAS_IUT == true) {
         execute(TC_ISC_SCCAS_RSC_REG_01(v_cSeq));
         execute(TC_ISC_SCCAS_RSC_REG_02(v_cSeq));
         execute(TC_ISC_SCCAS_RSC_REG_03(v_cSeq));
@@ -30,7 +30,7 @@ module AtsSccas_TestControl
         execute(TC_ISC_SCCAS_RSC_REG_06(v_cSeq));
       }
 
-      if (PICS_MSC_GM == true) {
+      if (PICS_MSC_IUT == true) {
         execute(TC_ISC_SCCAS_MSC_REG_01(v_cSeq));
         execute(TC_ISC_SCCAS_MSC_REG_02(v_cSeq));
       }

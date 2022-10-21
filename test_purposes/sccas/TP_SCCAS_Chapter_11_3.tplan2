@@ -33,7 +33,7 @@ Package TP_SCCAS {
         
         Config Id CFG_SCCAS_01
         
-        PICS Selection NONE
+        PICS Selection NONE //PICS_SCCAS_PS2PS_ACCES_TRANSFER_IN_CONJUNCTION_PS2CS
         
         Initial conditions with {
             the UE entity isRegisteredTo the IMS and 
@@ -84,7 +84,7 @@ Package TP_SCCAS {
         
         Config Id CFG_SCCAS_01
         
-        PICS Selection NONE
+        PICS Selection NONE //PICS_SCCAS_PS2PS_ACCES_TRANSFER_IN_CONJUNCTION_PS2CS
         
         Initial conditions with {
             the UE entity isRegisteredTo the IMS and
@@ -126,7 +126,7 @@ Package TP_SCCAS {
         
         Config Id CFG_SCCAS_01
         
-        PICS Selection NONE
+        PICS Selection NONE //PICS_SCCAS_PS2PS_ACCES_TRANSFER_IN_CONJUNCTION_PS2CS
         
         Initial conditions with {
             the UE entity isRegisteredTo the IMS and
