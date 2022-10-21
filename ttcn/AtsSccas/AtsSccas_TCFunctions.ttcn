@@ -1327,7 +1327,41 @@ module AtsSccas_TCFunctions {
 												), 
 												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
 												);
-				
+			
+			// TODO: the UE entity previouslyEstablishedCallWith 
+			
+			// STEP: invite
+			LibIms_Steps.f_setHeadersINVITE(p_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+			f_SendINVITE(m_sccas_invite(
+					vc_requestUri,
+					vc_callId,
+					vc_cSeq,
+					vc_from,
+					vc_to,
+					vc_via_REG,
+					vc_contact,
+					omit, 
+					vc_route,
+					m_supported_replaces, 
+					m_messageBody_SDP_mediaOnly
+					
+				));
+			
+			
+			// EXPECTED: 200 ok
+			f_awaitingResponse(mw_sccas_Response_200mediaOnly(200, vc_callIdReg, p_cSeq_s, vc_from, vc_to, vc_via, ?, ?, ?, ?));
+//			template (present) Response (
+//						template (present) StatusLine.statusCode p_statusCode := 200,
+//						template (present) CallId p_callId := ?,
+//						template (present) CSeq p_cSeq := ?,
+//						template (present) From p_from := ?,
+//						template (present) To p_to := ?,
+//						template (present) Via p_via := ?,
+//						template (present) Contact p_contact := ?,
+//						template (present) PChargingVector p_pChargingVector := ?,
+//						template (present) PAssertedID p_pAssertedID := ?,
+//						template AcceptContact p_acceptContact := *
+			
 
 			f_deregistrationAS(p_cSeq_s);
 			f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
@@ -1368,12 +1402,21 @@ module AtsSccas_TCFunctions {
 												), 
 												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
 												);
+												
+			// TODO: the UE entity hasReceived200OkOnInitialRequestForDialogWith
+												
+			// STEP: sen ACK
+			f_SendACK(m_ACK_Request_Base(vc_requestUri, vc_callId, vc_cSeq, vc_from, vc_to, vc_via));
+			
+			// Expected: BYE
+			f_awaitingBYE(mw_BYE_Request_Base(?));	
+			
 				
 				
 			f_deregistrationAS(p_cSeq_s);
 			f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
 			
-		} // End of f_TC_IISC_SCCAS_CPT_ACK_01
+		} // End of f_TC_ISC_SCCAS_CPT_ACK_01
 		
 		function f_TC_ISC_SCCAS_CPT_INV_03(in CSeq p_cSeq_s)
 		runs on ImsComponent {

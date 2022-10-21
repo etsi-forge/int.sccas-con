@@ -544,7 +544,7 @@ module AtsSccas_Testcases
 				stop;
 			}
 			
-			// TODO: setUo "the UE entity isRegisteredTo the IMS"
+			
 			
 			// f_Registration_IMS
 			
