@@ -1444,6 +1444,42 @@ module AtsSccas_TCFunctions {
 		} // End of f_TC_ISC_SCCAS_PCT_INV_05
 		
 		
+		function f_TC_ISC_SCCAS_PCT_RES_02(in CSeq p_cSeq_s)
+		runs on ImsComponent {
+			
+			// Preambule
+			f_init_userprofile(c_userProfile_UE1atSUThome);
+			f_initSipUrl(c_serviceProfile_EMERGENCY);
+			f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+					
+			// initial condition: the UE entity isRegisteredTo the IMS  
+			f_registrationAS(p_cSeq_s);
+			
+			// STEP: send r_200_ok
+			f_sendResponse(m_Response_Base(c_statusLine200, vc_callId, vc_cSeq, vc_caller_From, vc_caller_To, vc_via));
+			
+			// Expeted Result: r_1xx_Any
+			tc_ack.start;
+				alt {
+					[] SIPP.receive(mw_Response_1xx_stl(
+							vc_callId, 
+							vc_cSeq, 
+							?, // TODO: EarlyMedia indicating value "the last received P-Early-Media header field",
+							mw_contentType_appclication_sdp,
+							mw_sdpmessageBody
+							)) {
+						tc_ack.stop;
+						log("*** " & __SCOPE__ & ": PASS: REFER message was received ***");
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+					}
+					[] tc_ack.timeout {
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+					}
+				}
+			
+			
+		}
+		
         
     } // End of group Group_9_3
      
