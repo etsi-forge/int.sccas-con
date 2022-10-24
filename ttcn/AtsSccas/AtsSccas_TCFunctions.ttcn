@@ -113,7 +113,7 @@ module AtsSccas_TCFunctions {
                                               vc_contact, 
                                               -,
                                               "600000",
-                                              m_contentType("multipart/mixed",{m_contentTypeBoundary(c_boundary)}) ,
+                                              m_contentType_sccas("multipart/mixed",{m_contentTypeBoundary(c_boundary)}) ,
                                               m_MBody_MIME_SipReqResp(c_boundary,m_req,m_ResponseReg_3ptyUe)
                               ));
                 tc_ack.start;
@@ -253,7 +253,7 @@ module AtsSccas_TCFunctions {
                                                 vc_contact, 
                                                 -,
                                                 "600000",
-                                                m_contentType("multipart/mixed",{m_contentTypeBoundary(c_boundary)}) ,
+                                                m_contentType_sccas("multipart/mixed",{m_contentTypeBoundary(c_boundary)}) ,
                                                 m_MBody_MIME_SipReqResp(c_boundary,m_req,m_ResponseReg_3ptyUe)
                                 ));
                 tc_ack.start;
@@ -381,7 +381,7 @@ module AtsSccas_TCFunctions {
                                                 vc_contact, 
                                                 -,
                                                 "600000",
-                                                m_contentType("multipart/mixed",{m_contentTypeBoundary(c_boundary)}) ,
+                                                m_contentType_sccas("multipart/mixed",{m_contentTypeBoundary(c_boundary)}) ,
                                                 m_MBody_MIME_SipReqResp(c_boundary,m_req,m_ResponseReg_3ptyUe)
                                 ));
                 tc_ack.start;
@@ -1295,10 +1295,10 @@ module AtsSccas_TCFunctions {
                     vc_to,
                     vc_via_REG,
                     vc_contact,
-                    omit, // template(omit) Require p_require := omit,
+                    omit,
                     vc_route,
-                    m_supported_replaces, //template(omit) Supported p_supported := omit,
-                    omit //template(value) MessageBody p_mb
+                    m_supported_replaces,
+                    m_messageBody_SDP_mediaOnly
                 )
             
             );
@@ -1359,7 +1359,6 @@ module AtsSccas_TCFunctions {
 					vc_route,
 					m_supported_replaces, 
 					m_messageBody_SDP_mediaOnly
-					
 				)
 			
 			);
@@ -1610,7 +1609,7 @@ module AtsSccas_TCFunctions {
 					omit, // template(omit) Require p_require := omit,
 					vc_route,
 					m_supported_replaces, 
-					omit
+					m_messageBody_SDP_mediaOnly
 					
 				)
 			
@@ -1674,7 +1673,7 @@ module AtsSccas_TCFunctions {
 					omit, // template(omit) Require p_require := omit,
 					vc_route,
 					m_supported_replaces, 
-					omit // TODO
+					m_messageBody_SDP_mediaOnly // TODO
 					
 				)
 			
@@ -1821,7 +1820,6 @@ module AtsSccas_TCFunctions {
 					vc_route,
 					m_supported_replaces, 
 					m_messageBody_SDP_mediaOnly
-					
 				));
 			
 			// TDOD  PEarlyMedia indicating value "the last received P-Early-Media header field",
@@ -2062,7 +2060,7 @@ module AtsSccas_TCFunctions {
 							 m_sccas_invite( // TODO Replaces indicating value PX_UE_A_SIP_URI; // indicating access transfer procedure
 											vc_requestUri,
 											vc_callId, 
-											p_cSeq_s, 
+											v_cSeq_s, 
 											vc_from, vc_to, vc_via_REG, 
 											vc_contact,
 											-, -, -,
@@ -2070,7 +2068,7 @@ module AtsSccas_TCFunctions {
 											));
 				tc_ack.start;
 				alt {
-					[] SIPP.receive(mw_Response_Base(c_statusLine480)) {
+					[] SIPP.receive(mw_Response_Base(c_statusLine480, vc_callId, v_cSeq_s)) {
 						tc_ack.stop;
 						log("*** " & __SCOPE__ & ": PASS: 480 OK message was received ***");
 						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
@@ -2130,7 +2128,7 @@ module AtsSccas_TCFunctions {
 							 m_sccas_invite( // TODO TargetDialog indicating value PX_UE_MediaLines; // indicating number of media lines in the Target Access Leg is less than the number of media lines in the Source Access Leg
 											vc_requestUri,
 											vc_callId, 
-											p_cSeq_s, 
+											v_cSeq_s, 
 											vc_from, vc_to, vc_via_REG, 
 											vc_contact,
 											-, -, -,
@@ -2138,7 +2136,7 @@ module AtsSccas_TCFunctions {
 											));
 				tc_ack.start;
 				alt {
-					[] SIPP.receive(mw_Response_Base(c_statusLine480)) {
+					[] SIPP.receive(mw_Response_Base(c_statusLine480, vc_callId, v_cSeq_s)) {
 						tc_ack.stop;
 						log("*** " & __SCOPE__ & ": PASS: 480 OK message was received ***");
 						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
@@ -2198,13 +2196,13 @@ module AtsSccas_TCFunctions {
 							 m_BYE_Request_UE(
 											vc_requestUri,
 											vc_callId, 
-											p_cSeq_s, 
+											v_cSeq_s, 
 											vc_from, vc_to, vc_via_REG
 											));
 				tc_T1.start(8.0); tc_T1.timeout; // wait 8s
 				tc_ack.start;
 				alt {
-					[] SIPP.receive(mw_Response_Base(c_statusLine200)) {
+					[] SIPP.receive(mw_Response_Base(c_statusLine200, vc_callId, v_cSeq_s)) {
 						tc_ack.stop;
 						log("*** " & __SCOPE__ & ": PASS: 200 OK message was received ***");
 						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
@@ -2276,13 +2274,13 @@ module AtsSccas_TCFunctions {
 							 m_BYE_Request_UE(
 											vc_requestUri,
 											vc_callId, 
-											p_cSeq_s, 
+											v_cSeq_s, 
 											vc_from, vc_to, vc_via_REG
 											));
 				tc_T1.start(8.0); tc_T1.timeout; // wait 8s
 				tc_ack.start;
 				alt {
-					[] SIPP.receive(mw_Response_Base(c_statusLine200)) {
+					[] SIPP.receive(mw_Response_Base(c_statusLine200, vc_callId, v_cSeq_s)) {
 						tc_ack.stop;
 						log("*** " & __SCOPE__ & ": PASS: 200 OK message was received ***");
 						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
@@ -2354,14 +2352,14 @@ module AtsSccas_TCFunctions {
 							 m_CANCEL_Request_Reason_IMS(
 											vc_requestUri,
 											vc_callId, 
-											p_cSeq_s, 
+											v_cSeq_s, 
 											vc_from, vc_to, vc_via_REG,vc_route,
 											503
 											));
 				tc_T1.start(8.0); tc_T1.timeout; // wait 8s
 				tc_ack.start;
 				alt {
-					[] SIPP.receive(mw_Response_Base(c_statusLine200)) {
+					[] SIPP.receive(mw_Response_Base(c_statusLine200, vc_callId, v_cSeq_s)) {
 						tc_ack.stop;
 						log("*** " & __SCOPE__ & ": PASS: 200 OK message was received ***");
 						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
@@ -2421,7 +2419,7 @@ module AtsSccas_TCFunctions {
 							 m_Response_2xx_Base(
 											c_statusLine503,
 											vc_callId, 
-											p_cSeq_s, 
+											v_cSeq_s, 
 											vc_from, 
 											vc_to, 
 											vc_via_REG
@@ -2429,7 +2427,7 @@ module AtsSccas_TCFunctions {
 				tc_T1.start(8.0); tc_T1.timeout; // wait 8s											
 				tc_ack.start;
 				alt {
-					[] SIPP.receive(mw_Response_Base(c_statusLine503)) {
+					[] SIPP.receive(mw_Response_Base(c_statusLine503, vc_callId, v_cSeq_s)) {
 						tc_ack.stop;
 						log("*** " & __SCOPE__ & ": PASS: Respoonse 503 was received ***");
 						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
@@ -2629,7 +2627,7 @@ module AtsSccas_TCFunctions {
                              m_sccas_invite(
                                             vc_requestUri,
                                             vc_callId, 
-                                            p_cSeq_s, 
+                                            v_cSeq_s, 
                                             vc_from, vc_to, vc_via_REG, 
                                             vc_contact,
                                             -, -, -,
@@ -2637,7 +2635,7 @@ module AtsSccas_TCFunctions {
                                             ));
                 tc_ack.start;
                 alt {
-                    [] SIPP.receive(mw_Response_Base(c_statusLine480)) {
+                    [] SIPP.receive(mw_Response_Base(c_statusLine480, vc_callId, v_cSeq_s)) {
                         tc_ack.stop;
                         log("*** " & __SCOPE__ & ": PASS: 480 OK message was received ***");
                         f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
@@ -2703,7 +2701,7 @@ module AtsSccas_TCFunctions {
                              m_sccas_invite(
                                             vc_requestUri,
                                             vc_callId, 
-                                            p_cSeq_s, 
+                                            v_cSeq_s, 
                                             vc_from, vc_to, vc_via_REG, 
 											m_contact_wildcard("g3gppps2csSrvccTermPreAlerting"),
                                             -, -, -,
@@ -2711,7 +2709,7 @@ module AtsSccas_TCFunctions {
                                             ));
                 tc_ack.start;
                 alt {
-                    [] SIPP.receive(mw_Response_Base(c_statusLine183)) {
+                    [] SIPP.receive(mw_Response_Base(c_statusLine183, vc_callId, v_cSeq_s)) {
                         tc_ack.stop;
                         log("*** " & __SCOPE__ & ": PASS: 183 OK message was received ***");
                         f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
@@ -2771,7 +2769,7 @@ module AtsSccas_TCFunctions {
                              m_sccas_invite(
                                             vc_requestUri,
                                             vc_callId, 
-                                            p_cSeq_s, 
+                                            v_cSeq_s, 
                                             vc_from, vc_to, vc_via_REG, 
 											m_contact_wildcard("g3gppPs2csSrvccOrigPreAlerting"), 
                                             -, -, -,
@@ -2779,7 +2777,7 @@ module AtsSccas_TCFunctions {
                                             ));
                 tc_ack.start;
                 alt {
-                    [] SIPP.receive(mw_Response_Base(c_statusLine183)) {
+                    [] SIPP.receive(mw_Response_Base(c_statusLine183, vc_callId, v_cSeq_s)) {
                         tc_ack.stop;
                         log("*** " & __SCOPE__ & ": PASS: 183 OK message was received ***");
                         f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
@@ -2839,14 +2837,14 @@ module AtsSccas_TCFunctions {
                              m_Response_18x_Base(
                                             c_statusLine183,
                                             vc_callId, 
-                                            p_cSeq_s, 
+                                            v_cSeq_s, 
                                             vc_from, 
                                             vc_to, 
                                             vc_via_REG
                                             ));
                 tc_ack.start;
                 alt {
-                    [] SIPP.receive(mw_Response_Base(c_statusLine200)) {
+                    [] SIPP.receive(mw_Response_Base(c_statusLine200, vc_callId, v_cSeq_s)) {
                         tc_ack.stop;
                         log("*** " & __SCOPE__ & ": PASS: response 200 was received ***");
                         f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
@@ -2901,19 +2899,19 @@ module AtsSccas_TCFunctions {
                 f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
                 // Registration
-                f_IncCSeq(v_cSeq_s); f_setHeadersOPTIONS(v_cSeq_s);
-                f_SendOPTIONS(
-                             m_OPTIONS_Request_Base(
-                                            vc_requestUri,
-                                            vc_callId, 
-                                            p_cSeq_s, 
-                                            vc_from, 
-                                            vc_to, 
-                                            vc_via_REG
-                                            ));
+                f_IncCSeq(v_cSeq_s); LibSip_Steps.f_setHeadersOPTIONS(v_cSeq_s);
+                AtsSccas_Steps.f_SendOPTIONS(
+											m_OPTIONS_Request_Base(
+															vc_requestUri,
+															vc_callId, 
+															v_cSeq_s, 
+															vc_from, 
+															vc_to, 
+															vc_via_REG
+															));
                 tc_ack.start;
                 alt {
-                    [] SIPP.receive(mw_Response_Base(c_statusLine200)) {
+                    [] SIPP.receive(mw_Response_Base(c_statusLine200, vc_callId, v_cSeq_s)) {
                         tc_ack.stop;
                         log("*** " & __SCOPE__ & ": PASS: 200 response was received ***");
                         f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
@@ -2973,7 +2971,7 @@ module AtsSccas_TCFunctions {
                              m_sccas_invite(
                                             vc_requestUri,
                                             vc_callId, 
-                                            p_cSeq_s, 
+                                            v_cSeq_s, 
                                             vc_from, vc_to, vc_via_REG, 
                                             vc_contact,
                                             -, -, -,
@@ -2981,7 +2979,7 @@ module AtsSccas_TCFunctions {
                                             ));
                 tc_ack.start;
                 alt {
-                    [] SIPP.receive(mw_Response_Base(c_statusLine200)) {
+                    [] SIPP.receive(mw_Response_Base(c_statusLine200, vc_callId, v_cSeq_s)) {
                         tc_ack.stop;
                         log("*** " & __SCOPE__ & ": PASS: 200 OK message was received ***");
                         f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
@@ -3109,14 +3107,14 @@ module AtsSccas_TCFunctions {
                              m_Response_2xx_Base(
                                             c_statusLine200,
                                             vc_callId, 
-                                            p_cSeq_s, 
+                                            v_cSeq_s, 
                                             vc_from, 
                                             vc_to, 
                                             vc_via_REG
                                             ));
                 tc_ack.start;
                 alt {
-                    [] SIPP.receive(mw_Response_Base(c_statusLine180)) {
+                    [] SIPP.receive(mw_Response_Base(c_statusLine180, vc_callId, v_cSeq_s)) {
                         tc_ack.stop;
                         log("*** " & __SCOPE__ & ": PASS: Respoonse 180 was received ***");
                         f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
@@ -3176,14 +3174,14 @@ module AtsSccas_TCFunctions {
                              m_Response_2xx_Base(
                                             c_statusLine200,
                                             vc_callId, 
-                                            p_cSeq_s, 
+                                            v_cSeq_s, 
                                             vc_from, 
                                             vc_to, 
                                             vc_via_REG
                                             ));
                 tc_ack.start;
                 alt {
-                    [] SIPP.receive(mw_Response_Base(c_statusLine183)) {
+                    [] SIPP.receive(mw_Response_Base(c_statusLine183, vc_callId, v_cSeq_s)) {
                         tc_ack.stop;
                         log("*** " & __SCOPE__ & ": PASS: Respoonse 183 was received ***");
                         f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
@@ -3243,7 +3241,7 @@ module AtsSccas_TCFunctions {
 							 m_sccas_invite(
 											vc_requestUri,
 											vc_callId, 
-											p_cSeq_s, 
+											v_cSeq_s, 
 											vc_from, vc_to, vc_via_REG, 
 											vc_contact,
 											-, -, -,
@@ -3251,7 +3249,7 @@ module AtsSccas_TCFunctions {
 											));
 				tc_ack.start;
 				alt {
-					[] SIPP.receive(mw_Response_Base(c_statusLine200)) {
+					[] SIPP.receive(mw_Response_Base(c_statusLine200, vc_callId, v_cSeq_s)) {
 						tc_ack.stop;
 						log("*** " & __SCOPE__ & ": PASS: 200 OK message was received ***");
 						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
@@ -3379,14 +3377,14 @@ module AtsSccas_TCFunctions {
 							 m_Response_2xx_Base(
 											c_statusLine200,
 											vc_callId, 
-											p_cSeq_s, 
+											v_cSeq_s, 
 											vc_from, 
 											vc_to, 
 											vc_via_REG
 											));
 				tc_ack.start;
 				alt {
-					[] SIPP.receive(mw_Response_Base(c_statusLine180)) {
+					[] SIPP.receive(mw_Response_Base(c_statusLine180, vc_callId, v_cSeq_s)) {
 						tc_ack.stop;
 						log("*** " & __SCOPE__ & ": PASS: Respoonse 180 was received ***");
 						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
@@ -3446,14 +3444,14 @@ module AtsSccas_TCFunctions {
 							 m_Response_2xx_Base(
 											c_statusLine200,
 											vc_callId, 
-											p_cSeq_s, 
+											v_cSeq_s, 
 											vc_from, 
 											vc_to, 
 											vc_via_REG
 											));
 				tc_ack.start;
 				alt {
-					[] SIPP.receive(mw_Response_Base(c_statusLine183)) {
+					[] SIPP.receive(mw_Response_Base(c_statusLine183, vc_callId, v_cSeq_s)) {
 						tc_ack.stop;
 						log("*** " & __SCOPE__ & ": PASS: Respoonse 183 was received ***");
 						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
@@ -3513,12 +3511,12 @@ module AtsSccas_TCFunctions {
 							 m_BYE_Request_UE(
 											vc_requestUri,
 											vc_callId, 
-											p_cSeq_s, 
+											v_cSeq_s, 
 											vc_from, vc_to, vc_via_REG
 											));
 				tc_ack.start;
 				alt {
-					[] SIPP.receive(mw_Response_Base(c_statusLine200)) {
+					[] SIPP.receive(mw_Response_Base(c_statusLine200, vc_callId, v_cSeq_s)) {
 						tc_ack.stop;
 						log("*** " & __SCOPE__ & ": PASS: 200 OK message was received ***");
 						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync

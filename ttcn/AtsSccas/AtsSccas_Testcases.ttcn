@@ -228,7 +228,7 @@ module AtsSccas_Testcases
             * @desc Verify that the SCCAS send INVITE for anchored user populated with FeatureCaps header
             * @param p_cSeq_s Transaction Id
             */
-            testcase TP_ISC_SCCAS_GEN_INV_01(inout CSeq p_cSeq_s) 
+            testcase TC_ISC_SCCAS_GEN_INV_01(inout CSeq p_cSeq_s) 
             runs on ServerSyncComp
             system TestAdapter {
                 //Variables

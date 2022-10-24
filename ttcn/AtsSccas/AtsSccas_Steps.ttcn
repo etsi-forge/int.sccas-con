@@ -589,7 +589,7 @@ module AtsSccas_Steps {
                                               vc_contact, 
                                               -,
                                               "600000",
-                                              m_contentType("multipart/mixed",{m_contentTypeBoundary(c_boundary)}) ,
+                                              m_contentType_sccas("multipart/mixed",{m_contentTypeBoundary(c_boundary)}) ,
                                               m_MBody_MIME_SipReqResp(c_boundary,m_req,m_ResponseReg_3ptyUe)
                               ));
                               

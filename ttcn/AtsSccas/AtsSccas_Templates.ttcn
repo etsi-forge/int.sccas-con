@@ -110,16 +110,22 @@ module AtsSccas_Templates
         }
         
         group HeaderTemplatesIztok {
-			template Accept mw_accept( template AcceptBody_List p_acceptParams := *) := {
+
+			template (present) Accept mw_accept(
+                                                template (present) AcceptBody_List p_acceptArgs := ?
+                                                ) := {
 				fieldName  := ACCEPT_E,
-				acceptArgs := p_acceptParams
+				acceptArgs := p_acceptArgs
 			}
 			
-			template RecvInfo mw_recvinfo( template InfoPackage_List p_infoPackage_list ) :={
+			template (present) RecvInfo mw_recvinfo(
+                                                    template (present) InfoPackage_List p_infoPackage_list := ?
+                                                    ) :={
 				fieldName := RECV_INFO_E,
-				infoPackageList :=p_infoPackage_list
+				infoPackageList := p_infoPackage_list
 			}
-}
+            
+        }
         
         group HeaderTemplatesYann {
         }
@@ -268,32 +274,23 @@ module AtsSccas_Templates
                     
                     template  Supported m_supported_replaces := 
                     {
-                         fieldName := REPLACES_E,
+                        fieldName := SUPPORTED_E,
                         optionsTags := omit 
                     }
-                    
-//                 template(value) Response m_Response_Dummy := {
-//                    statusLine := c_statusLine100,
-//                    msgHeader := m_msgHeader_dummy,
-//                    messageBody := omit,
-//                    payload := omit
-//                }
-                    
         
                     template (omit) INVITE_Request m_sccas_invite_contact(
-                        template(value) SipUrl p_requestUri,
-                        template(value) CallId p_callId,
-                        template(value) CSeq p_cSeq,
-                        template(value) From p_from,
-                        template(value) To p_to,
-                        template(value) Via p_via,
-                        template(value) Contact p_contact,
-                        template(omit) Require p_require := omit,
-                        template(omit) Route p_route := omit,
-                        template(omit) Supported p_supported := omit,
-                        template(value) MessageBody p_mb
+                                                                          template (value) SipUrl p_requestUri,
+                                                                          template (value) CallId p_callId,
+                                                                          template (value) CSeq p_cSeq,
+                                                                          template (value) From p_from,
+                                                                          template (value) To p_to,
+                                                                          template (value) Via p_via,
+                                                                          template (value) Contact p_contact,
+                                                                          template (omit) Require p_require := omit,
+                                                                          template (omit) Route p_route := omit,
+                                                                          template (omit) Supported p_supported := omit,
+                                                                          template (value) MessageBody p_mb
                     ) modifies m_INVITE_Request_UE := {
-                        
                         msgHeader := {
                             callId := p_callId,
                             contact := p_contact,
@@ -458,17 +455,17 @@ module AtsSccas_Templates
                 }
                
                 template (omit) INVITE_Request m_sccas_invite(
-                                                              in template(value) SipUrl p_requestUri,
-                                                              in template(value) CallId p_callId,
-                                                              in template(value) CSeq p_cSeq,
-                                                              in template(value) From p_from,
-                                                              in template(value) To p_to,
-                                                              in template(value) LibSip_SIPTypesAndValues.Via p_via,
-                                                              in template(value) LibSip_SIPTypesAndValues.Contact p_contact,
-                                                              in template(omit) Require p_require := omit,
-                                                              in template(omit) Route p_route := omit,
-                                                              in template(omit) Supported p_supported := omit,
-                                                              in template(value) MessageBody p_mb
+                                                              in template (value) SipUrl p_requestUri,
+                                                              in template (value) CallId p_callId,
+                                                              in template (value) CSeq p_cSeq,
+                                                              in template (value) From p_from,
+                                                              in template (value) To p_to,
+                                                              in template (value) LibSip_SIPTypesAndValues.Via p_via,
+                                                              in template (value) LibSip_SIPTypesAndValues.Contact p_contact,
+                                                              in template (omit) Require p_require := omit,
+                                                              in template (omit) Route p_route := omit,
+                                                              in template (omit) Supported p_supported := omit,
+                                                              in template (value) MessageBody p_mb
                 ) modifies m_INVITE_Request_UE := {
                     msgHeader := {
                         contentLength := m_contentLength(f_MessageBodyLength(p_mb)),
@@ -815,13 +812,23 @@ module AtsSccas_Templates
 											msgHeader := {
 												pChargingVector := p_chargingVector,
 												featureCaps   := p_featureCaps,
-												accept := mw_accept({{"application/vnd.3gpp.state-and-event-info.xml"}}),
-												recvInfo := mw_recvinfo({{"g3gppStateAndEventPackageName"}})
+												accept := mw_accept({{"application/vnd.3gpp.state-and-event-info.xml", *}}),
+												recvInfo := mw_recvinfo({{"g3gppStateAndEventPackageName", *}})
 											}
 										}
 				    }
                 }   
                 group request_receive_Yann {
+
+                    template(value) ContentType m_contentType_sccas(
+                                                                    in template (value) charstring p_mTypeSubtype,
+                                                                    in template (omit) SemicolonParam_List p_mParams := omit
+                                                                    ) modifies m_contentType := {
+                        fieldName := CONTENT_TYPE_E,
+                        mTypeSubtype := p_mTypeSubtype,
+                        mParams := omit
+                    }
+
                 }
 
                 template (present) Response mw_sccas_Response_2xxonINVITE(
