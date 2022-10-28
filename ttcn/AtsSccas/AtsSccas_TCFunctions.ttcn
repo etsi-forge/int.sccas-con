@@ -2655,6 +2655,129 @@ module AtsSccas_TCFunctions {
      
     group Group_12_3 {
         
+            /**
+             *  @desc    Verify that the SCCAS distinguish SIP INVITE with STN-SR for nonexisting dialog.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_SRA_INV_01(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                // Local variables
+                var CSeq v_cSeq_s := p_cSeq_s;
+
+                // Preamble
+                f_registrationAS(v_cSeq_s);
+                
+                f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+
+                // Registration
+                f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+                f_SendINVITE(
+                             m_sccas_invite_targetDialog(
+                                            vc_requestUri,
+                                            vc_callId, 
+                                            p_cSeq_s, 
+                                            vc_from, vc_to, vc_via_REG, 
+                                            vc_contact,
+                                            -, -, -,
+                                            m_MBody_SDP(vc_sdp_local),
+                                            -,
+                                            -
+                                            ));
+              
+                tc_wait.start;
+                alt {
+                    [] SIPP.receive(mw_Response_StatusCode_Base(
+                                        480,
+                                        vc_callId,
+                                        vc_cSeq
+                                   )) {
+                        tc_wait.stop;
+                        log("*** " & __SCOPE__ & ": PASS: response 480 was received ***");
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+                    }
+                    [] tc_wait.timeout {
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+                    }
+                }
+
+                // Postamble
+                f_deregistrationAS(v_cSeq_s);
+                
+                f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+
+            } // End of function f_TC_ISC_SCCAS_SRA_INV_01
+        
+            /**
+             *  @desc    Verify that the SCCAS distinguish SIP INVITE with STN-SR and informs remote UE.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_SRA_INV_02(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+            	
+            } // End of function f_TC_ISC_SCCAS_SRA_INV_02
+        
+            /**
+             *  @desc    Verify that the SCCAS distinguish Transfer of first session.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_SRA_INV_03(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                
+            } // End of function f_TC_ISC_SCCAS_SRA_INV_03
+        
+            /**
+             *  @desc    Verify that the SCCAS distinguish SIP INVITE with STN-SR and not release source leg.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_SRA_INV_04(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                
+            } // End of function f_TC_ISC_SCCAS_SRA_INV_04
+        
+            /**
+             *  @desc    Verify that the SCCAS distinguish SIP INVITE with STN-SR and not release source leg.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_SRA_BYE_01(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                
+            } // End of function f_TC_ISC_SCCAS_SRA_BYE_01
+        
+            /**
+             *  @desc    Verify that the SCCAS distinguish SIP BYE with STN-SR and release source leg after OperatiorSpecificTimer timeout.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_SRA_BYE_02(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                
+            } // End of function f_TC_ISC_SCCAS_SRA_BYE_02
+        
+            /**
+             *  @desc    Verify that the SCCAS distinguish SIP BYE with STN-SR and release source leg on BYE Cause different from Cause Q850 31.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_SRA_BYE_03(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                
+            } // End of function f_TC_ISC_SCCAS_SRA_BYE_03
+        
+            /**
+             *  @desc    Verify that the SCCAS distinguish SIP CANCEL and release session transfered leg after OperatiorSpecificTimer timeout.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_SRA_CAN_01(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                
+            } // End of function f_TC_ISC_SCCAS_SRA_CAN_01
+        
+            /**
+             *  @desc    Verify that the SCCAS send 200Ok_CANCEL and release PStoCS session transfered leg in alerting state for terminating user.
+             *  @param   p_cSeq_s Random CSeq REGISTER number
+             */
+            function f_TC_ISC_SCCAS_SRA_CAN_02(in CSeq p_cSeq_s)
+            runs on ImsComponent {
+                
+            } // End of function f_TC_ISC_SCCAS_SRA_CAN_02
         
             /**
              *  @desc    Verify that SCC AS correctly recognizes and initiated for PS to CS access transfer for terminating call in pre-alerting phase using PS to CS SRVCC procedure.

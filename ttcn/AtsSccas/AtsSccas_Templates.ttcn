@@ -107,6 +107,23 @@ module AtsSccas_Templates
         }
         
         group HeaderTemplatesBostjan {
+        
+        
+                    
+                    
+                template (omit) TargetDialog m_targetDialog (in template CallidString p_callidString) := 
+                    {
+                      fieldName := TARGET_DIALOG_E,
+                      callid    := p_callidString,
+                      tdParam   := omit
+                    }
+                    
+                template (omit) Require m_require (in template OptionTag_List p_optionTag_List) := 
+                    {
+                      fieldName := REQUIRE_E,
+                      optionsTags    := p_optionTag_List
+                    }
+        
         }
         
         group HeaderTemplatesIztok {
@@ -307,6 +324,32 @@ module AtsSccas_Templates
                 }
                 
                 group request_sent_Bostjan {
+               
+                template (omit) INVITE_Request m_sccas_invite_targetDialog(
+                                                              in template (value) SipUrl p_requestUri,
+                                                              in template (value) CallId p_callId,
+                                                              in template (value) CSeq p_cSeq,
+                                                              in template (value) From p_from,
+                                                              in template (value) To p_to,
+                                                              in template (value) LibSip_SIPTypesAndValues.Via p_via,
+                                                              in template (value) LibSip_SIPTypesAndValues.Contact p_contact,
+                                                              in template (omit) Require p_require := m_require({"tdialog"}),
+                                                              in template (omit) Route p_route := omit,
+                                                              in template (omit) Supported p_supported := omit,
+                                                              in template (value) MessageBody p_mb,
+                                                              in template (value) TargetDialog p_targetDialog := m_targetDialog("CallidString"),
+                                                              in template (omit) PAssertedID p_pAssertedID := omit//m_PAssertedID(m_AddrUnion_NameAddr(m_NameAddr(,))),
+                ) modifies m_INVITE_Request_UE := {
+                    msgHeader := {
+                        contentLength := m_contentLength(f_MessageBodyLength(p_mb)),
+                        contentType := m_contentType(c_sdpApplication),
+                        targetDialog := p_targetDialog,
+                        pAssertedID := p_pAssertedID
+                    },
+                    messageBody := p_mb
+                }
+                
+                
                 }
                 
                 group request_sent_Iztok {

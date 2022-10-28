@@ -1260,6 +1260,267 @@ module AtsSccas_Testcases
     } // End of group Group_11_3
 
     group Group_12_3 {
+        
+           /*
+            * @desc Verify that the SCCAS distinguish SIP INVITE with STN-SR for nonexisting dialog.
+            * @param p_cSeq_s Transaction Id
+            */
+            testcase TC_ISC_SCCAS_SRA_INV_01(inout CSeq p_cSeq_s) 
+            runs on ServerSyncComp
+            system TestAdapter {
+                //Variables
+                var ImsComponent v_imsComponent_ueims;
+
+                // Test control
+                if (not PICS_SCCAS_IUT or not PICS_SCCAS_PS2CS_SRVCC) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_PS2CS_SRVCC' shall be set to true for executing the TC. ***"); 
+                    stop;
+                }
+
+                // Test component configuration
+                f_cf_1IscUp(v_imsComponent_ueims);
+
+                //Start
+                f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_SRA_INV_01(p_cSeq_s));
+
+                // synchronize both PTCs on 3 sychronization points
+                f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+                f_cf_1IscDown(v_imsComponent_ueims);
+
+            } // End of TC_ISC_SCCAS_SRA_INV_01
+        
+           /*
+            * @desc Verify that the SCCAS distinguish SIP INVITE with STN-SR and informs remote UE.
+            * @param p_cSeq_s Transaction Id
+            */
+            testcase TC_ISC_SCCAS_SRA_INV_02(inout CSeq p_cSeq_s) 
+            runs on ServerSyncComp
+            system TestAdapter {
+                //Variables
+                var ImsComponent v_imsComponent_ueims;
+
+                // Test control
+                if (not PICS_SCCAS_IUT or not PICS_SCCAS_PS2CS_SRVCC) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_PS2CS_SRVCC' shall be set to true for executing the TC. ***"); 
+                    stop;
+                }
+
+                // Test component configuration
+                f_cf_1IscUp(v_imsComponent_ueims);
+
+                //Start
+                f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_SRA_INV_02(p_cSeq_s));
+
+                // synchronize both PTCs on 3 sychronization points
+                f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+                f_cf_1IscDown(v_imsComponent_ueims);
+
+            } // End of TC_ISC_SCCAS_SRA_INV_02
+        
+           /*
+            * @desc Verify that the SCCAS distinguish Transfer of first session.
+            * @param p_cSeq_s Transaction Id
+            */
+            testcase TC_ISC_SCCAS_SRA_INV_03(inout CSeq p_cSeq_s) 
+            runs on ServerSyncComp
+            system TestAdapter {
+                //Variables
+                var ImsComponent v_imsComponent_ueims;
+
+                // Test control
+                if (not PICS_SCCAS_IUT or not PICS_SCCAS_PS2CS_SRVCC) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_PS2CS_SRVCC' shall be set to true for executing the TC. ***"); 
+                    stop;
+                }
+
+                // Test component configuration
+                f_cf_1IscUp(v_imsComponent_ueims);
+
+                //Start
+                f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_SRA_INV_03(p_cSeq_s));
+
+                // synchronize both PTCs on 3 sychronization points
+                f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+                f_cf_1IscDown(v_imsComponent_ueims);
+
+            } // End of TC_ISC_SCCAS_SRA_INV_03
+        
+           /*
+            * @desc Verify that the SCCAS distinguish SIP INVITE with STN-SR and not release source leg.
+            * @param p_cSeq_s Transaction Id
+            */
+            testcase TC_ISC_SCCAS_SRA_INV_04(inout CSeq p_cSeq_s) 
+            runs on ServerSyncComp
+            system TestAdapter {
+                //Variables
+                var ImsComponent v_imsComponent_ueims;
+
+                // Test control
+                if (not PICS_SCCAS_IUT or not PICS_SCCAS_PS2CS_SRVCC) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_PS2CS_SRVCC' shall be set to true for executing the TC. ***"); 
+                    stop;
+                }
+
+                // Test component configuration
+                f_cf_1IscUp(v_imsComponent_ueims);
+
+                //Start
+                f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_SRA_INV_04(p_cSeq_s));
+
+                // synchronize both PTCs on 3 sychronization points
+                f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+                f_cf_1IscDown(v_imsComponent_ueims);
+
+            } // End of TC_ISC_SCCAS_SRA_INV_04
+        
+           /*
+            * @desc Verify that the SCCAS distinguish SIP INVITE with STN-SR and not release source leg.
+            * @param p_cSeq_s Transaction Id
+            */
+            testcase TC_ISC_SCCAS_SRA_BYE_01(inout CSeq p_cSeq_s) 
+            runs on ServerSyncComp
+            system TestAdapter {
+                //Variables
+                var ImsComponent v_imsComponent_ueims;
+
+                // Test control
+                if (not PICS_SCCAS_IUT or not PICS_SCCAS_PS2CS_SRVCC) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_PS2CS_SRVCC' shall be set to true for executing the TC. ***"); 
+                    stop;
+                }
+
+                // Test component configuration
+                f_cf_1IscUp(v_imsComponent_ueims);
+
+                //Start
+                f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_SRA_BYE_01(p_cSeq_s));
+
+                // synchronize both PTCs on 3 sychronization points
+                f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+                f_cf_1IscDown(v_imsComponent_ueims);
+
+            } // End of TC_ISC_SCCAS_SRA_BYE_01
+        
+           /*
+            * @desc Verify that the SCCAS distinguish SIP BYE with STN-SR and release source leg after OperatiorSpecificTimer timeout.
+            * @param p_cSeq_s Transaction Id
+            */
+            testcase TC_ISC_SCCAS_SRA_BYE_02(inout CSeq p_cSeq_s) 
+            runs on ServerSyncComp
+            system TestAdapter {
+                //Variables
+                var ImsComponent v_imsComponent_ueims;
+
+                // Test control
+                if (not PICS_SCCAS_IUT or not PICS_SCCAS_PS2CS_SRVCC) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_PS2CS_SRVCC' shall be set to true for executing the TC. ***"); 
+                    stop;
+                }
+
+                // Test component configuration
+                f_cf_1IscUp(v_imsComponent_ueims);
+
+                //Start
+                f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_SRA_BYE_02(p_cSeq_s));
+
+                // synchronize both PTCs on 3 sychronization points
+                f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+                f_cf_1IscDown(v_imsComponent_ueims);
+
+            } // End of TC_ISC_SCCAS_SRA_BYE_02
+        
+           /*
+            * @desc Verify that the SCCAS distinguish SIP BYE with STN-SR and release source leg on BYE Cause different from Cause Q850 31.
+            * @param p_cSeq_s Transaction Id
+            */
+            testcase TC_ISC_SCCAS_SRA_BYE_03(inout CSeq p_cSeq_s) 
+            runs on ServerSyncComp
+            system TestAdapter {
+                //Variables
+                var ImsComponent v_imsComponent_ueims;
+
+                // Test control
+                if (not PICS_SCCAS_IUT or not PICS_SCCAS_PS2CS_SRVCC) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_PS2CS_SRVCC' shall be set to true for executing the TC. ***"); 
+                    stop;
+                }
+
+                // Test component configuration
+                f_cf_1IscUp(v_imsComponent_ueims);
+
+                //Start
+                f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_SRA_BYE_03(p_cSeq_s));
+
+                // synchronize both PTCs on 3 sychronization points
+                f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+                f_cf_1IscDown(v_imsComponent_ueims);
+
+            } // End of TC_ISC_SCCAS_SRA_BYE_03
+        
+           /*
+            * @desc Verify that the SCCAS distinguish SIP CANCEL and release session transfered leg after OperatiorSpecificTimer timeout.
+            * @param p_cSeq_s Transaction Id
+            */
+            testcase TC_ISC_SCCAS_SRA_CAN_01(inout CSeq p_cSeq_s) 
+            runs on ServerSyncComp
+            system TestAdapter {
+                //Variables
+                var ImsComponent v_imsComponent_ueims;
+
+                // Test control
+                if (not PICS_SCCAS_IUT or not PICS_SCCAS_PS2CS_SRVCC) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_PS2CS_SRVCC' shall be set to true for executing the TC. ***"); 
+                    stop;
+                }
+
+                // Test component configuration
+                f_cf_1IscUp(v_imsComponent_ueims);
+
+                //Start
+                f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_SRA_CAN_01(p_cSeq_s));
+
+                // synchronize both PTCs on 3 sychronization points
+                f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+                f_cf_1IscDown(v_imsComponent_ueims);
+
+            } // End of TC_ISC_SCCAS_SRA_CAN_01
+        
+           /*
+            * @desc Verify that the SCCAS send 200Ok_CANCEL and release PStoCS session transfered leg in alerting state for terminating user.
+            * @param p_cSeq_s Transaction Id
+            */
+            testcase TC_ISC_SCCAS_SRA_CAN_02(inout CSeq p_cSeq_s) 
+            runs on ServerSyncComp
+            system TestAdapter {
+                //Variables
+                var ImsComponent v_imsComponent_ueims;
+
+                // Test control
+                if (not PICS_SCCAS_IUT or not PICS_SCCAS_PS2CS_SRVCC) {
+                    log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_PS2CS_SRVCC' shall be set to true for executing the TC. ***"); 
+                    stop;
+                }
+
+                // Test component configuration
+                f_cf_1IscUp(v_imsComponent_ueims);
+
+                //Start
+                f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_SRA_CAN_02(p_cSeq_s));
+
+                // synchronize both PTCs on 3 sychronization points
+                f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+                f_cf_1IscDown(v_imsComponent_ueims);
+
+            } // End of TC_ISC_SCCAS_SRA_CAN_02
     	
 		   /*
 			* @desc Verify that SCC AS correctly recognizes and initiated for PS to CS access transfer for terminating call in pre-alerting phase using PS to CS SRVCC procedure.
