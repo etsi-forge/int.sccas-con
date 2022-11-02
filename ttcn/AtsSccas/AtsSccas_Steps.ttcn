@@ -465,7 +465,33 @@ module AtsSccas_Steps {
 
             vc_via_REG := vc_via;
         } // end function setHeaders_REGISTER_AS
+		
+		
+		/**
+	   * @desc function sets header field for the next outgoing REFER message
+	   * @param p_cSeq_s CSeq parameter to be applied
+	   */
+	  function f_setHeaders_REFER_AS( //TODO review and repair params due to isc interface
+		  inout CSeq p_cSeq_s,
+		  in SipUrl p_to_user,
+		  in SipUrl p_from_user
+	  ) runs on ImsComponent  {
+		  var SemicolonParam_List v_params := {};
+
+		  //f_setHeadersGeneral(p_cSeq_s, "REFER"); // cseq, contact, branch, via
+		  vc_to := f_initToHeader(p_to_user); // init of vc_to using userProfile identifier
+		  vc_from := f_initFromHeader(p_from_user, f_getRndTag()); // init of vc_from using userProfile identifier
+		  vc_requestUri := p_to_user; // Request URI of Invite is identical with To header
+		  if (vc_boo_route) {
+			  vc_route := m_route_interface(vc_interfaceprofile);
+		  }
+		  if (vc_boo_recordRoute) {
+			  vc_recordRoute := m_recordRoute_currIpAddr(vc_userprofile);
+		  }
         
+		  LibSip_Steps.f_setHeadersREFER(p_cSeq_s);
+	  } // end function setHeaders_REFER_AS    
+		  
         /**
          * @desc Sets Invite header fields (IMS addresses) extension of general settings from LibSip basic function
          * @param p_cSeq_s The current cSeq

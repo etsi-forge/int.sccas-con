@@ -1063,7 +1063,69 @@ module AtsSccas_TCFunctions {
 					}  //End of function f_TC_ISC_SCCAS_GEN_RIN_02
             
 			}   //End of group  TP_6A_4_5_Target_refresh_request_for_a_dialog_and_associated_responses
+		    
+		    group TP_6A_4_6_Rejecting_malicious_SIP_REFER_requests_from_remote_UE {
+     
+				/**
+				 * @desc Verify that the SCCAS sends 403 response to the SIP REFER request from remote UE.
+				 * @param   p_cSeq_s Random CSeq INVITE number
+				 */
+				function f_TC_ISC_SCCAS_GEN_REF_01(in CSeq p_cSeq_s)
+				runs on ImsComponent {
+					// Local variables
+					var CSeq v_cSeq_s := p_cSeq_s;
+    
+					f_registrationAS(v_cSeq_s);
+					f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
+
+					f_EstablishDialogAS(v_cSeq_s);
+
+
+					f_IncCSeq(v_cSeq_s);
+					f_setHeaders_REFER_AS(v_cSeq_s, f_initSipUrl(c_userProfile_PCSCFwithHomeUE), f_initSipUrl(c_userProfile_SCSCFwithHomeUE));
+					f_SendREFER(
+								 m_sccas_refer(
+												vc_requestUri,
+												vc_callId, 
+												p_cSeq_s,
+												vc_contact, 
+												vc_from, vc_to, vc_via_REG, 
+												m_referTo(vc_contact.contactBody.contactAddresses[0].addressField.nameAddr),
+												-, -,-, -,-,-,
+												m_MBody_SDP(vc_sdp_local)
+												));
+                      
+					tc_ack.start;
+					alt {
+						[] SIPP.receive(mw_Response_1xx_Base(vc_callId, vc_cSeq)) {
+							repeat
+						}
+
+						[] SIPP.receive(mw_Response_PCV_FeatureCaps(
+											403,
+											?,
+											?,
+											?,
+											*
+						)) {
+							tc_ack.stop;
+							log("*** " & __SCOPE__ & ": PASS: response 403 was received ***");
+							f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+						}
+						[] tc_ack.timeout {
+							f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+						}
+					}                
+    
+					f_ReleaseDialogAS(v_cSeq_s);
+					f_deregistrationAS(v_cSeq_s);
+					f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+
+				}  //End of function f_TC_ISC_SCCAS_GEN_REF_01
+        
+	        }// End of group TP_6A_4_6_Rejecting_malicious_SIP_REFER_requests_from_remote_UEs
+	        
     } // End of group Group_6A_4
      
     group Group_7_3 {
@@ -3022,7 +3084,7 @@ module AtsSccas_TCFunctions {
                 f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
                 // Registration
-                f_IncCSeq(v_cSeq_s); LibSip_Steps.f_setHeadersOPTIONS(v_cSeq_s);
+                f_IncCSeq(v_cSeq_s); /*LibSip_Steps.*/f_setHeadersOPTIONS(v_cSeq_s);
                 AtsSccas_Steps.f_SendOPTIONS(
 											m_OPTIONS_Request_Base(
 															vc_requestUri,

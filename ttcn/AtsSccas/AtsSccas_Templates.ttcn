@@ -141,6 +141,13 @@ module AtsSccas_Templates
 				fieldName := RECV_INFO_E,
 				infoPackageList := p_infoPackage_list
 			}
+			
+			template ReferTo m_referTo(template NameAddr p_nameaddr, template SemicolonParam_List p_refertoparams := omit) := {
+            
+		      fieldName := REFER_TO_E,
+			  nameAddr := p_nameaddr ,
+			  referToParams := p_refertoparams 
+        	}
             
         }
         
@@ -473,6 +480,32 @@ module AtsSccas_Templates
                             },
                             messageBody := p_mb
                         }
+                        
+					    template (omit) REFER_Request m_sccas_refer(
+											  in template(value) SipUrl p_requestUri,
+											  in template(value) CallId p_callId,
+											  in template(value) CSeq p_cSeq,
+											  in template(value) LibSip_SIPTypesAndValues.Contact p_contact,
+											  in template(value) From p_from,
+											  in template(value) To p_to,
+											  in template(value) LibSip_SIPTypesAndValues.Via p_via,
+											 // in template(value) LibSip_SIPTypesAndValues.Contact p_contact,
+											  in template(value) ReferTo p_referTo ,
+											  in template(omit) ReferredBy p_referredBy := omit,
+											  in template(omit) Require p_require := omit,
+											  in template(omit) Route p_route := omit,
+											  in template(omit) RecordRoute p_recordRoute := omit,
+											  in template(omit) Supported p_supported := omit,
+											  in template(omit) PChargingVector p_pChargingVector := omit,
+											  in template(value) MessageBody p_mb
+						) modifies m_REFER_Request_IMS/*m_REFER_Request_UE*/ := {
+							msgHeader := {
+								contentLength := m_contentLength(f_MessageBodyLength(p_mb)),
+								contentType := m_contentType(c_sdpApplication)
+							},
+							messageBody := p_mb
+						}  
+						                      
                         group response_sent{
 							template(value) Response m_Response_18XonINVITE_AS_Featurecaps(
 								template(value) StatusLine_18x p_statusLine,
