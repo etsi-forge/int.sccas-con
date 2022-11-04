@@ -1126,6 +1126,57 @@ module AtsSccas_TCFunctions {
         
 	        }// End of group TP_6A_4_6_Rejecting_malicious_SIP_REFER_requests_from_remote_UEs
 	        
+		    group TP_6A_4_7_Protecting_from_malicious_SIP_INFO_requests_with_remote_leg_information_from_remote_UE {
+				/**
+				 * @desc Verify that the SCCAS not include Accept,RecvInfo towards remote UE.
+				 * @param   p_cSeq_s Random CSeq INVITE number
+				 */
+				function f_TC_ISC_SCCAS_GEN_INF_01(in CSeq p_cSeq_s)
+				runs on ImsComponent {
+					// Local variables
+					var CSeq v_cSeq_s := p_cSeq_s;
+		                
+					f_registrationAS(v_cSeq_s);
+					f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+		
+		            
+					f_EstablishDialogAS(v_cSeq_s);
+		
+		
+					f_IncCSeq(v_cSeq_s);
+					f_setHeaders_INVITE_AS(v_cSeq_s, f_initSipUrl(c_userProfile_PCSCFwithHomeUE), f_initSipUrl(c_userProfile_SCSCFwithHomeUE));
+					f_SendINVITE(
+								 m_sccas_invite(
+												vc_requestUri,
+												vc_callId, 
+												p_cSeq_s, 
+												vc_from, vc_to, vc_via_REG, 
+												vc_contact,
+												-, -, -,
+												m_MBody_SDP(vc_sdp_local)
+												));
+					tc_wait.start;
+					alt {
+						[] SIPP.receive(mw_Response_1xx_Base(vc_callId, vc_cSeq)) {
+							repeat
+						}
+						[] SIPP.receive(mw_INVITE_Request_AS(?, ?, ?, ?, *, *)) {//TO BE DONE : To be refined during validation 
+							tc_wait.stop;
+							log("*** " & __SCOPE__ & ": PASS: ReINVITE message was received ***");
+							f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+						}
+						[] tc_wait.timeout {
+							f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+						}
+					}           
+		                
+					f_ReleaseDialogAS(v_cSeq_s);
+					f_deregistrationAS(v_cSeq_s);
+					f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+		            
+				}  //End of function f_TC_ISC_SCCAS_GEN_INF_01
+		            
+		}   //End of group  TP_6A_4_7_Protecting_from_malicious_SIP_INFO_requests_with_remote_leg_information_from_remote_UE	        
     } // End of group Group_6A_4
      
     group Group_7_3 {
