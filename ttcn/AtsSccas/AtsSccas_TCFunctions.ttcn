@@ -1085,7 +1085,7 @@ module AtsSccas_TCFunctions {
 					f_IncCSeq(v_cSeq_s);
 					f_setHeaders_REFER_AS(v_cSeq_s, f_initSipUrl(c_userProfile_PCSCFwithHomeUE), f_initSipUrl(c_userProfile_SCSCFwithHomeUE));
 					f_SendREFER(
-								 m_sccas_refer(
+								 m_sccas_refer_wo_contact(
 												vc_requestUri,
 												vc_callId, 
 												p_cSeq_s,
@@ -3305,7 +3305,7 @@ module AtsSccas_TCFunctions {
                 f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
                 // Registration
-                f_IncCSeq(v_cSeq_s); /*LibSip_Steps.*/f_setHeadersOPTIONS(v_cSeq_s);
+                f_IncCSeq(v_cSeq_s); LibSip_Steps.f_setHeadersOPTIONS(v_cSeq_s);
                 AtsSccas_Steps.f_SendOPTIONS(
 											m_OPTIONS_Request_Base(
 															vc_requestUri,

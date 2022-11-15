@@ -481,7 +481,7 @@ module AtsSccas_Templates
                             messageBody := p_mb
                         }
                         
-					    template (omit) REFER_Request m_sccas_refer(
+					    template (omit) REFER_Request m_sccas_refer_wo_contact(
 											  in template(value) SipUrl p_requestUri,
 											  in template(value) CallId p_callId,
 											  in template(value) CSeq p_cSeq,
@@ -504,7 +504,7 @@ module AtsSccas_Templates
 								contentType := m_contentType(c_sdpApplication)
 							},
 							messageBody := p_mb
-						}  
+						}
 						                      
                         group response_sent{
 							template(value) Response m_Response_18XonINVITE_AS_Featurecaps(
