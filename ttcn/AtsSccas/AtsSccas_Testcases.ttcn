@@ -751,11 +751,24 @@ module AtsSccas_Testcases
 		runs on ServerSyncComp
 		system TestAdapter {
 		
-		// TODO
-		
-		
-		
+			var ImsComponent v_imsComponent_ueims;
+				   
+			// Test control
+			if (not PICS_SCCAS_IUT or not PICS_SCCAS_REJECTION_OF_MALICIOUS_REFER) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' and 'PICS_SCCAS_REJECTION_OF_MALICIOUS_REFER' shall be set to true for executing the TC. ***");
+				stop;
+			}
 			
+			// Test component configuration
+			f_cf_1IscUp(v_imsComponent_ueims);
+					
+			f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_PCT_REF_01(p_cSeq_s));
+			
+			// synchronize PTC on 3 sychronization points
+			f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+			f_cf_1IscDown(v_imsComponent_ueims);
+
 		} // End of TC_ISC_SCCAS_PCT_REF_01
 		
 		
@@ -798,7 +811,23 @@ module AtsSccas_Testcases
 		runs on ServerSyncComp
 		system TestAdapter {
 		
-		// TODO
+			var ImsComponent v_imsComponent_ueims;
+				   
+			// Test control
+			if (not PICS_SCCAS_IUT) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***");
+				stop;
+			}
+			
+			// Test component configuration
+			f_cf_1IscUp(v_imsComponent_ueims);
+			
+			f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_PCT_RES_01(p_cSeq_s));
+			
+			// synchronize PTC on 3 sychronization points
+			f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+			f_cf_1IscDown(v_imsComponent_ueims);
 			
 		} // End of TC_ISC_SCCAS_PCT_RES_01
 		
@@ -807,7 +836,23 @@ module AtsSccas_Testcases
 		runs on ServerSyncComp
 		system TestAdapter {
 		
-		// TODO
+			var ImsComponent v_imsComponent_ueims;
+				   
+			// Test control
+			if (not PICS_SCCAS_IUT) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***");
+				stop;
+			}
+			
+			// Test component configuration
+			f_cf_1IscUp(v_imsComponent_ueims);
+			
+			f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_MED_BYE_01(p_cSeq_s));
+			
+			// synchronize PTC on 3 sychronization points
+			f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+			f_cf_1IscDown(v_imsComponent_ueims);
 			
 		} // End of TC_ISC_SCCAS_MED_BYE_01
 		
@@ -815,7 +860,23 @@ module AtsSccas_Testcases
 		runs on ServerSyncComp
 		system TestAdapter {
 		
-		// TODO
+			var ImsComponent v_imsComponent_ueims;
+				   
+			// Test control
+			if (not PICS_SCCAS_IUT) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***");
+				stop;
+			}
+			
+			// Test component configuration
+			f_cf_1IscUp(v_imsComponent_ueims);
+			
+			f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_ISC_SCCAS_MED_RES_01(p_cSeq_s));
+			
+			// synchronize PTC on 3 sychronization points
+			f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+			f_cf_1IscDown(v_imsComponent_ueims);
 			
 		} // End of TC_ISC_SCCAS_MED_RES_01
 		
@@ -823,7 +884,23 @@ module AtsSccas_Testcases
 		runs on ServerSyncComp
 		system TestAdapter {
 		
-		// TODO
+			var ImsComponent v_imsComponent_ueims;
+				   
+			// Test control
+			if (not PICS_SCCAS_IUT) {
+				log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***");
+				stop;
+			}
+			
+			// Test component configuration
+			f_cf_1IscUp(v_imsComponent_ueims);
+			
+			f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_MED_RIN_01(p_cSeq_s));
+			
+			// synchronize PTC on 3 sychronization points
+			f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+			f_cf_1IscDown(v_imsComponent_ueims);
 			
 		} // End of TC_ISC_SCCAS_MED_RIN_01
 		

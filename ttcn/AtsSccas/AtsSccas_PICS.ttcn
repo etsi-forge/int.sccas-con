@@ -67,7 +67,6 @@ PICS used for test case selection
      *  @see    ETSI TS 103 833-1 A.3/2.2
     */
     modulepar boolean PICS_SCCAS_REJECTION_OF_MALICIOUS_REFER := false;
-    //TODO add check of PICS_SCCAS_REJECTION_OF_MALICIOUS_REFER in TP_ISC_SCCAS_GEN_REF_01
     
     //A3/2.3  handling of SDP media description conflicts?    5.3, 6A.5   m   
     //A3/2.4  SCC AS server procedure for indicating traffic leg? 5.3, 6A.6.1 o   

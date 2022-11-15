@@ -1761,7 +1761,7 @@ module AtsSccas_TCFunctions {
 //					template(value) SipUrl p_requestUri,
 //					template(value) SipUrl p_referredBy,
 //					template(value) MessageBody p_messageBody	
-			// Ecpecation: REFER message
+			// Expectation: REFER message
 			tc_ack.start;
 				alt {
 					[] SIPP.receive(mw_REFER_Request_stl(
@@ -1783,6 +1783,124 @@ module AtsSccas_TCFunctions {
 			
 		} // End of f_TC_ISC_SCCAS_PCT_REF_02
 		
+		function f_TC_ISC_SCCAS_PCT_RES_01(in CSeq p_cSeq_s)
+		runs on ImsComponent {
+			
+			// Preambule
+			f_init_userprofile(c_userProfile_UE1atSUThome);
+			f_initSipUrl(c_serviceProfile_EMERGENCY);
+			f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+					
+			// initial condition: the UE entity isRegisteredTo the IMS  
+			f_registrationAS(p_cSeq_s);
+	
+			// STEp: send invite
+			LibIms_Steps.f_setHeadersINVITE(p_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+			f_SendINVITE(
+						 m_sccas_invite(
+										vc_requestUri,
+										vc_callId,
+										vc_cSeq,
+										vc_from,
+										vc_to,
+										vc_via_REG,
+										vc_contact,
+										omit, 
+										vc_route,
+										m_supported_replaces, 
+										m_messageBody_SDP_mediaOnly
+									));
+			f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+						
+			f_awaitingPRACK(mw_PRACK_Request_sdp(vc_callId, ?));
+			f_awaitingUPDATE(mw_UPDATE_Request_ContactChange(vc_callId, vc_contact, mw_contentType_appclication_sdp, ?));
+			f_selfOrClientSyncAndVerdict(c_tbDone, f_getVerdict()); // sync
+				
+			f_deregistrationAS(p_cSeq_s);
+			f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+			
+		} // End of f_TC_ISC_SCCAS_PCT_RES_01
+
+		function f_TC_ISC_SCCAS_MED_BYE_01(in CSeq p_cSeq_s)
+		runs on ImsComponent {
+			
+			// Preambule
+			f_init_userprofile(c_userProfile_UE1atSUThome);
+			f_initSipUrl(c_serviceProfile_EMERGENCY);
+			f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+					
+			// initial condition: the UE entity isRegisteredTo the IMS  
+			f_registrationAS(p_cSeq_s);
+	
+			action("trigger for event unclear, transfer of a session is successfully completed"); // TODO: trigger for event unclear, transfer of a session is successfully completed
+			f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+
+			
+			f_awaitingBYE(mw_BYE_Request_via_PChargingVector_UE(vc_callId, ?, ?));
+			f_selfOrClientSyncAndVerdict(c_tbDone, f_getVerdict()); // sync
+				
+			f_deregistrationAS(p_cSeq_s);
+			f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+			
+		} // End of f_TC_ISC_SCCAS_MED_BYE_01
+
+		function f_ISC_SCCAS_MED_RES_01(in CSeq p_cSeq_s)
+		runs on ImsComponent {
+			
+			// Preambule
+			f_init_userprofile(c_userProfile_UE1atSUThome);
+			f_initSipUrl(c_serviceProfile_EMERGENCY);
+			f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+					
+			// initial condition: the UE entity isRegisteredTo the IMS  
+			f_registrationAS(p_cSeq_s);
+	
+			action("trigger for event unclear, transfer of a session is successfully completed"); // TODO: trigger for event unclear, transfer of a session is successfully completed
+			f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+
+			
+			tc_ack.start;
+			alt {
+				[] SIPP.receive(mw_Response_Base(c_statusLine480, vc_callId, p_cSeq_s)) {
+					tc_ack.stop;
+					log("*** " & __SCOPE__ & ": PASS: 480 OK message was received ***");
+					f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+				}
+				[] tc_ack.timeout {
+					f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+				}
+			}
+
+				
+			f_deregistrationAS(p_cSeq_s);
+			f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+			
+		} // End of f_ISC_SCCAS_MED_RES_01
+
+		function f_TC_ISC_SCCAS_MED_RIN_01(in CSeq p_cSeq_s)
+		runs on ImsComponent {
+			
+			// Preambule
+			f_init_userprofile(c_userProfile_UE1atSUThome);
+			f_initSipUrl(c_serviceProfile_EMERGENCY);
+			f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+					
+			// initial condition: the UE entity isRegisteredTo the IMS  
+			f_registrationAS(p_cSeq_s);
+	
+			// STEp: send ACK
+			f_setHeadersACK();
+			f_SendACK(m_ACK_Request_Base(vc_requestUri, vc_callId, vc_cSeq, vc_from, vc_to, vc_via)); // TODO: trigger for event unclear, transfer of a session is successfully completed
+			f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+						
+			f_awaitingINVITE(mw_INVITE_Request_AS(?));
+			f_selfOrClientSyncAndVerdict(c_tbDone, f_getVerdict()); // sync
+				
+			f_deregistrationAS(p_cSeq_s);
+			f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+			
+		} // End of f_TC_ISC_SCCAS_MED_RIN_01
+
 		function f_TC_ISC_SCCAS_PCT_INV_05(in CSeq p_cSeq_s)
 		runs on ImsComponent {
 			
@@ -1822,10 +1940,10 @@ module AtsSccas_TCFunctions {
 					m_messageBody_SDP_mediaOnly
 				));
 			
-			// TDOD  PEarlyMedia indicating value "the last received P-Early-Media header field",
+			// TODO  PEarlyMedia indicating value "the last received P-Early-Media header field",
 			
 			// TODO: Contact indicating value "set to the Contact header field provided by the served UE at the creation of the dialog",
-			// TDOD: SDP containing Media indicating value "the media characteristics as received in the SIP INVITE request due to PS to CS STN (including any precondition mechanism specific SDP attributes)";                       		
+			// TODO: SDP containing Media indicating value "the media characteristics as received in the SIP INVITE request due to PS to CS STN (including any precondition mechanism specific SDP attributes)";                       		
 			f_awaitingUPDATE(mw_UPDATE_Request_ContactChange(vc_callId, vc_contact, mw_contentType_appclication_sdp, ?));
 			
 			f_deregistrationAS(p_cSeq_s);
@@ -1834,6 +1952,58 @@ module AtsSccas_TCFunctions {
 			
 		} // End of f_TC_ISC_SCCAS_PCT_INV_05
 		
+		function f_TC_ISC_SCCAS_PCT_REF_01(in CSeq p_cSeq_s)
+		runs on ImsComponent {
+			
+			// Preambule
+			f_init_userprofile(c_userProfile_UE1atSUThome);
+			f_initSipUrl(c_serviceProfile_EMERGENCY);
+			f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+
+			// initial condition: the UE entity isRegisteredTo the IMS  
+			f_registrationAS(p_cSeq_s);
+			
+			// Send REFER
+			LibIms_Steps.f_setHeadersREFER(p_cSeq_s, vc_to.addressField.addrSpecUnion);
+			f_SendREFER(
+				        m_sccas_refer(
+									  vc_requestUri,
+									  vc_callId,
+									  vc_cSeq,
+									  vc_contact,
+									  vc_from,
+									  vc_to,
+									  vc_via_REG,
+									  m_ReferTo_SipUrl(vc_to.addressField.addrSpecUnion, { tokenOrHost := "" }),
+									  omit, 
+									  omit, 
+									  vc_route,
+									  omit,
+									  m_supported_replaces, 
+									  omit,
+									  m_messageBody_SDP_mediaOnly,
+									  m_ReferSub(false)
+						));
+
+			tc_ack.start;
+				alt {
+					[] SIPP.receive(mw_Response_403Forbidden(
+							vc_callId, 
+							vc_cSeq
+							)) {
+						tc_ack.stop;
+						log("*** " & __SCOPE__ & ": PASS: REFER message was received ***");
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+					}
+					[] tc_ack.timeout {
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+					}
+				}
+			
+			f_deregistrationAS(p_cSeq_s);
+			f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+			
+		} // End of f_TC_ISC_SCCAS_PCT_REF_01
 		
 		function f_TC_ISC_SCCAS_PCT_RES_02(in CSeq p_cSeq_s)
 		runs on ImsComponent {
