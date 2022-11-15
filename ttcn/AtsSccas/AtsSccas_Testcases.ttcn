@@ -382,7 +382,70 @@ module AtsSccas_Testcases
 			} // End of TC_ISC_SCCAS_GEN_RIN_02
 				
 		} //End of group TP_6A_4_5_Target_refresh_request_for_a_dialog_and_associated_responses {
+		group TP_6A_4_6_Rejecting_malicious_SIP_REFER_requests_from_remote_UE {
+            
+			/**
+			 * @desc Verify that the SCCAS sends 403 response to the SIP REFER request from remote UE.
+			 * @param   p_cSeq_s Random CSeq INVITE number
+			 */
+			 testcase TC_ISC_SCCAS_GEN_REF_01(inout CSeq p_cSeq_s) 
+			 runs on ServerSyncComp
+			 system TestAdapter {
+				 //Variables
+				 var ImsComponent v_imsComponent_ueims;
 
+				 // Test control
+				 if (not PICS_SCCAS_IUT) {
+					 log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
+					 stop;
+				 }
+
+				 // Test component configuration
+				 f_cf_1IscUp(v_imsComponent_ueims);
+
+				 //Start
+				 f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_GEN_REF_01(p_cSeq_s));
+
+				 // synchronize both PTCs on 3 sychronization points
+				 f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+				 f_cf_1IscDown(v_imsComponent_ueims);
+
+			 } // End of TC_ISC_SCCAS_GEN_REF_01
+
+		} // End of group TP_6A_4_6_Rejecting_malicious_SIP_REFER_requests_from_remote_UE
+		group TP_6A_4_7_Protecting_from_malicious_SIP_INFO_requests_with_remote_leg_information_from_remote_UE {
+            
+			/**
+				 * @desc Verify that the SCCAS not include Accept,RecvInfo towards remote UE.
+				 * @param   p_cSeq_s Random CSeq INVITE number
+				 */
+			 testcase TC_ISC_SCCAS_GEN_INF_01(inout CSeq p_cSeq_s) 
+			 runs on ServerSyncComp
+			 system TestAdapter {
+				 //Variables
+				 var ImsComponent v_imsComponent_ueims;
+
+				 // Test control
+				 if (not PICS_SCCAS_IUT) {
+					 log("*** " & __SCOPE__ & ": ERROR: 'PICS_SCCAS_IUT' shall be set to true for executing the TC. ***"); 
+					 stop;
+				 }
+
+				 // Test component configuration
+				 f_cf_1IscUp(v_imsComponent_ueims);
+
+				 //Start
+				 f_IncCSeq(p_cSeq_s); v_imsComponent_ueims.start(f_TC_ISC_SCCAS_GEN_INF_01(p_cSeq_s));
+
+				 // synchronize both PTCs on 3 sychronization points
+				 f_serverSync1Client({c_prDone, c_tbDone, c_poDone});
+
+				 f_cf_1IscDown(v_imsComponent_ueims);
+
+			 } // End of TC_ISC_SCCAS_GEN_REF_01
+
+		} // End of group TP_6A_4_7_Protecting_from_malicious_SIP_INFO_requests_with_remote_leg_information_from_remote_UE		
     } // End of group Group_6A_4
      
     group Group_7_3 {

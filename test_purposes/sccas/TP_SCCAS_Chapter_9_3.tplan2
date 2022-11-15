@@ -94,10 +94,10 @@ Package TP_SCCAS_Chapter_9_3 {
         
         Config Id CFG_SCCAS_01
         
-        PICS Selection NONE  // TODO
+        PICS Selection NONE  
         
         Initial conditions with {
-            the UE entity isRegisteredTo the IMS  // TODO
+            the UE entity isRegisteredTo the IMS  
         }
         
         Expected behaviour
@@ -112,12 +112,12 @@ Package TP_SCCAS_Chapter_9_3 {
                         Supported indicating value "replaces",
                         PAccessNetworkInfo,
                         Replaces containing  // Replaces indicating value (RFC 3891)
-                        	 call_id indicating value PX_call_id, // TODO PX
-                        	 from_tag indicating value PX_from_tag, // TODO PX
-                        	 to_tag indicating value PX_to_tag // TODO PX                   
+                        	 call_id indicating value PX_call_id, 
+                        	 from_tag indicating value PX_from_tag, 
+                        	 to_tag indicating value PX_to_tag                
                         MessageBody containing
                             SDP containing  // SDP: Session Description Protocol
-                                Media indicating value PX_PSMediaOnly, // TODO: PX for media only
+                                Media indicating value PX_PSMediaOnly, 
                                 Version indicating value "0";;;;
                     from the IMS_S_CSCF entity
                 }
@@ -133,7 +133,7 @@ Package TP_SCCAS_Chapter_9_3 {
                         ContentLength,
                         MessageBody containing
                             SDP containing
-                             	Media indicating value PX_PSMediaOnly, // TODO: PX for media only
+                             	Media indicating value PX_PSMediaOnly, 
                                 Version indicating value "0";;;
                      to the IMS_S_CSCF entity
                 	}
@@ -162,10 +162,10 @@ Package TP_SCCAS_Chapter_9_3 {
 	        
 	        Config Id CFG_SCCAS_01
 	        
-	        PICS Selection NONE  // TODO
+	        PICS Selection NONE 
 	        
 	        Initial conditions with {
-	            the UE entity isRegisteredTo the IMS  // TODO
+	            the UE entity isRegisteredTo the IMS 
 	        }
 	        
 	        Expected behaviour
@@ -180,12 +180,12 @@ Package TP_SCCAS_Chapter_9_3 {
 	                        Supported indicating value "replaces",
 	                        PAccessNetworkInfo,
 	                        Replaces containing  // Replaces indicating value (RFC 3891)
-	                        	 call_id indicating value PX_call_id, // TODO PX
-	                        	 from_tag indicating value PX_from_tag, // TODO PX
-	                        	 to_tag indicating value PX_to_tag // TODO PX                   
+	                        	 call_id indicating value PX_call_id,
+	                        	 from_tag indicating value PX_from_tag, 
+	                        	 to_tag indicating value PX_to_tag               
 	                        MessageBody containing
 	                            SDP containing  // SDP: Session Description Protocol
-	                                Media indicating value PX_PSMediaOnly, // TODO: PX for media only
+	                                Media indicating value PX_PSMediaOnly,
 	                                Version indicating value "0";;;;
 	                    from the IMS_S_CSCF entity
 	                }
@@ -201,7 +201,7 @@ Package TP_SCCAS_Chapter_9_3 {
 	                        ContentLength,
 	                        MessageBody containing
 	                            SDP containing
-	                             	Media indicating value PX_PSMediaOnly, // TODO: PX for media only
+	                             	Media indicating value PX_PSMediaOnly, 
 	                                Version indicating value "0";;;
 	                     to the IMS_S_CSCF entity
 	                	}
@@ -227,10 +227,10 @@ Package TP_SCCAS_Chapter_9_3 {
 	        
 	        Config Id CFG_SCCAS_01
 	        
-	        PICS Selection NONE  // TODO
+	        PICS Selection NONE 
 	        
 	        Initial conditions with {
-	            the UE entity isRegisteredTo the IMS and // TODO
+	            the UE entity isRegisteredTo the IMS and
 	            the UE entity previouslyEstablishedCallWith 
 	        }
 	        
@@ -246,12 +246,12 @@ Package TP_SCCAS_Chapter_9_3 {
 	                        Supported indicating value "replaces",
 	                        PAccessNetworkInfo,
 	                        Replaces containing  // Replaces indicating value (RFC 3891)
-	                        	 call_id indicating value PX_call_id, // TODO PX
-	                        	 from_tag indicating value PX_from_tag, // TODO PX
-	                        	 to_tag indicating value PX_to_tag // TODO PX                   
+	                        	 call_id indicating value PX_call_id, 
+	                        	 from_tag indicating value PX_from_tag, 
+	                        	 to_tag indicating value PX_to_tag                 
 	                        MessageBody containing
 	                            SDP containing  // SDP: Session Description Protocol
-	                                Media indicating value PX_PSMediaOnly, // TODO: PX for media only
+	                                Media indicating value PX_PSMediaOnly, 
 	                                Version indicating value "0";;;;
 	                    from the IMS_S_CSCF entity
 	                }
@@ -267,7 +267,7 @@ Package TP_SCCAS_Chapter_9_3 {
 	                        ContentLength,
 	                        MessageBody containing
 	                            SDP containing
-	                             	Media indicating value PX_PSMediaOnly, // TODO: PX for media only
+	                             	Media indicating value PX_PSMediaOnly, 
 	                                Version indicating value "0";;;
 	                     to the IMS_S_CSCF entity
 	                	}
@@ -295,7 +295,7 @@ Package TP_SCCAS_Chapter_9_3 {
         
         	Config Id CFG_SCCAS_01
         
-       	 	PICS Selection NONE  // TODO
+       	 	PICS Selection NONE 
         
         	Initial conditions with {
             	the UE entity isRegisteredTo the IMS and
@@ -345,7 +345,7 @@ Package TP_SCCAS_Chapter_9_3 {
         
         	Config Id CFG_SCCAS_01
         
-       	 	PICS Selection NONE  // TODO
+       	 	PICS Selection NONE 
        	 	
        	 	Initial conditions with {
        	 		the UE entity isRegisteredTo the IMS
@@ -377,7 +377,7 @@ Package TP_SCCAS_Chapter_9_3 {
                         	g3gppMidcallFeatureCapabilityIndicator;,  
 		                MessageBody containing
                             SDP containing
-                             	Media indicating value PX_PSMediaOnly;;; // TODO: PX for media only 
+                             	Media indicating value PX_PSMediaOnly;;;
                     to the IMS_S_CSCF entity
                     }
                     
@@ -661,7 +661,7 @@ Package TP_SCCAS_Chapter_9_3 {
 	        
 	        	Config Id CFG_SCCAS_01
 	        
-	       	 	PICS Selection NONE  // TODO
+	       	 	PICS Selection NONE  
 	        
 	        	Initial conditions with {
 	            	the UE entity isRegisteredTo the IMS 
@@ -1030,7 +1030,7 @@ Package TP_SCCAS_Chapter_9_3 {
         
         	Config Id CFG_SCCAS_01
         
-       	 	PICS Selection NONE  // TODO
+       	 	PICS Selection NONE 
         
         	Initial conditions with {
             	the UE entity isRegisteredTo the IMS 
@@ -1176,7 +1176,7 @@ Package TP_SCCAS_Chapter_9_3 {
 																	// included in the SIP INVITE due to static STI
 						MessageBody containing
 	                    	SDP containing  
-	                    		Media indicating value PX_PSMedia;;; // TODO: PIX for media
+	                    		Media indicating value PX_PSMedia;;; 
                     from the IMS_S_CSCF entity
                 }                    	             	
               	then {
