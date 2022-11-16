@@ -2712,7 +2712,7 @@ module AtsSccas_TCFunctions {
 				alt {
 					[] SIPP.receive(mw_Response_Base(c_statusLine503, vc_callId, v_cSeq_s)) {
 						tc_ack.stop;
-						log("*** " & __SCOPE__ & ": PASS: Respoonse 503 was received ***");
+						log("*** " & __SCOPE__ & ": PASS: Response 503 was received ***");
 						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
 					}
 					[] tc_ack.timeout {
@@ -3522,7 +3522,7 @@ module AtsSccas_TCFunctions {
                 alt {
                     [] SIPP.receive(mw_Response_Base(c_statusLine180, vc_callId, v_cSeq_s)) {
                         tc_ack.stop;
-                        log("*** " & __SCOPE__ & ": PASS: Respoonse 180 was received ***");
+                        log("*** " & __SCOPE__ & ": PASS: Response 180 was received ***");
                         f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
                     }
                     [] tc_ack.timeout {
@@ -3577,8 +3577,8 @@ module AtsSccas_TCFunctions {
                 // Registration
         //        f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
                 f_sendResponse(
-                             m_Response_2xx_Base(
-                                            c_statusLine200,
+                             m_Response_18x_Base(
+                                            c_statusLine183,
                                             vc_callId, 
                                             v_cSeq_s, 
                                             vc_from, 
@@ -3589,7 +3589,7 @@ module AtsSccas_TCFunctions {
                 alt {
                     [] SIPP.receive(mw_Response_Base(c_statusLine183, vc_callId, v_cSeq_s)) {
                         tc_ack.stop;
-                        log("*** " & __SCOPE__ & ": PASS: Respoonse 183 was received ***");
+                        log("*** " & __SCOPE__ & ": PASS: Response 183 was received ***");
                         f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
                     }
                     [] tc_ack.timeout {
@@ -3651,7 +3651,8 @@ module AtsSccas_TCFunctions {
 											vc_from, vc_to, vc_via_REG, 
 											vc_contact,
 											-, -, -,
-											m_MBody_SDP(vc_sdp_local)
+											m_MBody_SDP(vc_sdp_local),
+											m_accept("application/vnd.3gpp.mid-call+xml")
 											));
 				tc_ack.start;
 				alt {
@@ -3719,7 +3720,8 @@ module AtsSccas_TCFunctions {
 											vc_from, vc_to, vc_via_REG, 
 											vc_contact,
 											-, -, -,
-											m_MBody_SDP(vc_sdp_local)
+											m_MBody_SDP(vc_sdp_local),
+											m_accept("application/vnd.3gpp.mid-call+xml")
 											));
 				tc_ack.start;
 				alt {
@@ -3792,7 +3794,7 @@ module AtsSccas_TCFunctions {
 				alt {
 					[] SIPP.receive(mw_Response_Base(c_statusLine180, vc_callId, v_cSeq_s)) {
 						tc_ack.stop;
-						log("*** " & __SCOPE__ & ": PASS: Respoonse 180 was received ***");
+						log("*** " & __SCOPE__ & ": PASS: Response 180 was received ***");
 						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
 					}
 					[] tc_ack.timeout {
@@ -3859,7 +3861,7 @@ module AtsSccas_TCFunctions {
 				alt {
 					[] SIPP.receive(mw_Response_Base(c_statusLine183, vc_callId, v_cSeq_s)) {
 						tc_ack.stop;
-						log("*** " & __SCOPE__ & ": PASS: Respoonse 183 was received ***");
+						log("*** " & __SCOPE__ & ": PASS: Response 183 was received ***");
 						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
 					}
 					[] tc_ack.timeout {

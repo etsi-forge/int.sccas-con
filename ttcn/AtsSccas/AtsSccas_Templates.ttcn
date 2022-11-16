@@ -152,6 +152,18 @@ module AtsSccas_Templates
         }
         
         group HeaderTemplatesYann {
+
+            template (value) Accept m_accept(
+                                             in template (value) charstring p_mediaRange
+                                             ) := {
+                fieldName := ACCEPT_E,
+                acceptArgs := { 
+                    {
+                        mediaRange := p_mediaRange,
+                         acceptParam := omit
+                    } }
+            } // End of template m_accept
+
         }
 
     } // End of group HeaderTemplates
@@ -565,11 +577,13 @@ module AtsSccas_Templates
                                                               in template (omit) Require p_require := omit,
                                                               in template (omit) Route p_route := omit,
                                                               in template (omit) Supported p_supported := omit,
-                                                              in template (value) MessageBody p_mb
+                                                              in template (value) MessageBody p_mb,
+                                                              in template (omit) Accept p_accept := omit
                 ) modifies m_INVITE_Request_UE := {
                     msgHeader := {
+                        accept        := p_accept,
                         contentLength := m_contentLength(f_MessageBodyLength(p_mb)),
-                        contentType := m_contentType(c_sdpApplication)
+                        contentType   := m_contentType(c_sdpApplication)
                     },
                     messageBody := p_mb
                 }
