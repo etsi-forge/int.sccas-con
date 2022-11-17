@@ -111,14 +111,14 @@ module AtsSccas_Templates
         
                     
                     
-                template (omit) TargetDialog m_targetDialog (in template CallidString p_callidString) := 
+                template (value) TargetDialog m_targetDialog (in template (value) CallidString p_callidString) := 
                     {
                       fieldName := TARGET_DIALOG_E,
                       callid    := p_callidString,
                       tdParam   := omit
                     }
                     
-                template (omit) Require m_require (in template OptionTag_List p_optionTag_List) := 
+                template (omit) Require m_require (in template (omit) OptionTag_List p_optionTag_List := omit) := 
                     {
                       fieldName := REQUIRE_E,
                       optionsTags    := p_optionTag_List
@@ -141,10 +141,29 @@ module AtsSccas_Templates
 				fieldName := RECV_INFO_E,
 				infoPackageList := p_infoPackage_list
 			}
+			
+			template ReferTo m_referTo(template NameAddr p_nameaddr, template SemicolonParam_List p_refertoparams := omit) := {
+            
+		      fieldName := REFER_TO_E,
+			  nameAddr := p_nameaddr ,
+			  referToParams := p_refertoparams 
+        	}
             
         }
         
         group HeaderTemplatesYann {
+
+            template (value) Accept m_accept(
+                                             in template (value) charstring p_mediaRange
+                                             ) := {
+                fieldName := ACCEPT_E,
+                acceptArgs := { 
+                    {
+                        mediaRange := p_mediaRange,
+                         acceptParam := omit
+                    } }
+            } // End of template m_accept
+
         }
 
     } // End of group HeaderTemplates
@@ -495,6 +514,32 @@ module AtsSccas_Templates
                             },
                             messageBody := p_mb
                         }
+                        
+					    template (omit) REFER_Request m_sccas_refer_wo_contact(
+											  in template(value) SipUrl p_requestUri,
+											  in template(value) CallId p_callId,
+											  in template(value) CSeq p_cSeq,
+											  in template(value) LibSip_SIPTypesAndValues.Contact p_contact,
+											  in template(value) From p_from,
+											  in template(value) To p_to,
+											  in template(value) LibSip_SIPTypesAndValues.Via p_via,
+											 // in template(value) LibSip_SIPTypesAndValues.Contact p_contact,
+											  in template(value) ReferTo p_referTo ,
+											  in template(omit) ReferredBy p_referredBy := omit,
+											  in template(omit) Require p_require := omit,
+											  in template(omit) Route p_route := omit,
+											  in template(omit) RecordRoute p_recordRoute := omit,
+											  in template(omit) Supported p_supported := omit,
+											  in template(omit) PChargingVector p_pChargingVector := omit,
+											  in template(value) MessageBody p_mb
+						) modifies m_REFER_Request_IMS/*m_REFER_Request_UE*/ := {
+							msgHeader := {
+								contentLength := m_contentLength(f_MessageBodyLength(p_mb)),
+								contentType := m_contentType(c_sdpApplication)
+							},
+							messageBody := p_mb
+						}
+						                      
                         group response_sent{
 							template(value) Response m_Response_18XonINVITE_AS_Featurecaps(
 								template(value) StatusLine_18x p_statusLine,
@@ -517,6 +562,30 @@ module AtsSccas_Templates
                 }
                 
                 group request_sent_Yann {
+
+                    template(value) REFER_Request m_sccas_refer(
+                                                                in template(value) SipUrl p_requestUri,
+                                                                in template(value) CallId p_callId,
+                                                                in template(value) CSeq p_cSeq,
+                                                                in template(omit) LibSip_SIPTypesAndValues.Contact p_contact := omit,
+                                                                in template(value) From p_from,
+                                                                in template(value) To p_to,
+                                                                in template(value) Via p_via,
+                                                                in template(value) ReferTo p_referTo,
+                                                                in template(omit) ReferredBy p_referredBy := omit,
+                                                                in template(omit) Require p_require := omit,
+                                                                in template(omit) Route p_route := omit,
+                                                                in template(omit) RecordRoute p_recordRoute := omit,
+                                                                in template(omit) Supported p_supported := omit,
+                                                                in template(omit) PChargingVector p_pChargingVector := omit,
+                                                                in template(value) MessageBody p_mb,
+                                                                in template(value) ReferSub p_referSub
+                    ) modifies m_REFER_Request_IMS := {
+                        msgHeader := {
+                            referSub := p_referSub
+                        }
+                    }
+
                 }
                
                 template (omit) INVITE_Request m_sccas_invite(
@@ -530,11 +599,13 @@ module AtsSccas_Templates
                                                               in template (omit) Require p_require := omit,
                                                               in template (omit) Route p_route := omit,
                                                               in template (omit) Supported p_supported := omit,
-                                                              in template (value) MessageBody p_mb
+                                                              in template (value) MessageBody p_mb,
+                                                              in template (omit) Accept p_accept := omit
                 ) modifies m_INVITE_Request_UE := {
                     msgHeader := {
+                        accept        := p_accept,
                         contentLength := m_contentLength(f_MessageBodyLength(p_mb)),
-                        contentType := m_contentType(c_sdpApplication)
+                        contentType   := m_contentType(c_sdpApplication)
                     },
                     messageBody := p_mb
                 }
@@ -894,6 +965,17 @@ module AtsSccas_Templates
                         mParams := omit
                     }
 
+                    // NOTE STF471: removed statusline parameter as it is a fixed 401 status code
+                    template(present) Response mw_Response_403Forbidden(
+                        template CallId p_callId,
+                        template CSeq p_cSeq
+                    ) modifies mw_Response_4xx_Base := {
+                        statusLine := {
+                            sipVersion := c_sipNameVersion,
+                            statusCode := 403,
+                            reasonPhrase := ?
+                        }
+                    }
                 }
 
                 template (present) Response mw_sccas_Response_2xxonINVITE(
