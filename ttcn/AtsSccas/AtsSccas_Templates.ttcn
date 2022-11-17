@@ -348,6 +348,28 @@ module AtsSccas_Templates
                     },
                     messageBody := p_mb
                 }
+               
+                template (omit) INVITE_Request m_sccas_invite_reason(
+                                                              in template (value) SipUrl p_requestUri,
+                                                              in template (value) CallId p_callId,
+                                                              in template (value) CSeq p_cSeq,
+                                                              in template (value) From p_from,
+                                                              in template (value) To p_to,
+                                                              in template (value) LibSip_SIPTypesAndValues.Via p_via,
+                                                              in template (value) LibSip_SIPTypesAndValues.Contact p_contact,
+                                                              in template (omit) Require p_require := m_require({"tdialog"}),
+                                                              in template (omit) Route p_route := omit,
+                                                              in template (omit) Supported p_supported := omit,
+                                                              in template (value) MessageBody p_mb,
+                                                              in template (value) Reason p_reason := m_Reason(487)
+                ) modifies m_INVITE_Request_UE := {
+                    msgHeader := {
+                        contentLength := m_contentLength(f_MessageBodyLength(p_mb)),
+                        contentType := m_contentType(c_sdpApplication),
+                        reason := p_reason
+                    },
+                    messageBody := p_mb
+                }
                 
                 
                 }
