@@ -74,8 +74,8 @@ module AtsSccas_TCFunctions {
                                                                                 vc_authorization, 
                                                                                 {c_Integrity_protected_no}
                                                                                 ), 
-                                                    PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                    PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                    PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+                                                    PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
                                                     "600000",
                                                     omit,
                                                     omit,
@@ -214,8 +214,8 @@ module AtsSccas_TCFunctions {
                                                                                 vc_authorization, 
                                                                                 {c_Integrity_protected_no}
                                                                                 ), 
-                                                    PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                    PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                    PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+                                                    PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
                                                     "600000",
                                                     m_sccas_featureCaps({m_fcValue("g3gppAtcfFeatureCapabilityIndicator")}),
                                                     omit,
@@ -335,8 +335,8 @@ module AtsSccas_TCFunctions {
                                                                                 vc_authorization, 
                                                                                 {c_Integrity_protected_no}
                                                                                 ), 
-                                                    PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                    PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                    PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+                                                    PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
                                                     "600000",
                                                     m_sccas_featureCaps( // TS 124 237 Clause C.6 Definition of feature-capability indicator g.3gpp.atcfmgmt-uri
                                                                         {
@@ -491,8 +491,8 @@ module AtsSccas_TCFunctions {
                                                                            vc_authorization, 
                                                                            {c_Integrity_protected_no}
                                                                            ), 
-                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+                                                PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
                                                 "600000",
                                                 -/*m_sccas_featureCaps( // TS 124 237 Clause C.6 Definition of feature-capability indicator g.3gpp.atcfmgmt-uri
                                                                     {
@@ -580,8 +580,8 @@ module AtsSccas_TCFunctions {
                                                                             vc_authorization, 
                                                                             {c_Integrity_protected_no}
                                                                             ), 
-                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+                                                PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
                                                 "600000",
                                                 -/*m_sccas_featureCaps( // TS 124 237 Clause C.6 Definition of feature-capability indicator g.3gpp.atcfmgmt-uri
                                                                     {
@@ -695,8 +695,8 @@ module AtsSccas_TCFunctions {
                                                                                             vc_authorization, 
                                                                                             {c_Integrity_protected_no}
                                                                                             ), 
-                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
                                                                 "600000",
                                                                 -,
                                                                 m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -1448,8 +1448,8 @@ module AtsSccas_TCFunctions {
 																							vc_authorization, 
 																							{c_Integrity_protected_no}
 																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
 																"600000",
 																-,
 																m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -1508,8 +1508,8 @@ module AtsSccas_TCFunctions {
 																							vc_authorization, 
 																							{c_Integrity_protected_no}
 																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
 																"600000",
 																-,
 																m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -1583,8 +1583,8 @@ module AtsSccas_TCFunctions {
 																							vc_authorization, 
 																							{c_Integrity_protected_no}
 																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
 																"600000",
 																-,
 																m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -1633,8 +1633,8 @@ module AtsSccas_TCFunctions {
 																							vc_authorization, 
 																							{c_Integrity_protected_no}
 																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
 																"600000",
 																-,
 																m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -1696,8 +1696,8 @@ module AtsSccas_TCFunctions {
 																							vc_authorization, 
 																							{c_Integrity_protected_no}
 																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
 																"600000",
 																-,
 																m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -1760,8 +1760,8 @@ module AtsSccas_TCFunctions {
 																							vc_authorization, 
 																							{c_Integrity_protected_no}
 																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
 																"600000",
 																-,
 																m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -2189,8 +2189,8 @@ module AtsSccas_TCFunctions {
                                                                                             vc_authorization, 
                                                                                             {c_Integrity_protected_no}
                                                                                             ), 
-                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
                                                                 "600000",
                                                                 -,
                                                                 m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -2258,8 +2258,8 @@ module AtsSccas_TCFunctions {
 																							vc_authorization, 
 																							{c_Integrity_protected_no}
 																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
 																"600000",
 																-,
 																m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -2326,8 +2326,8 @@ module AtsSccas_TCFunctions {
 																							vc_authorization, 
 																							{c_Integrity_protected_no}
 																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
 																"600000",
 																-,
 																m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -2394,8 +2394,8 @@ module AtsSccas_TCFunctions {
 																							vc_authorization, 
 																							{c_Integrity_protected_no}
 																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
 																"600000",
 																-,
 																m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -2462,8 +2462,8 @@ module AtsSccas_TCFunctions {
 																							vc_authorization, 
 																							{c_Integrity_protected_no}
 																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
 																"600000",
 																-,
 																m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -2540,8 +2540,8 @@ module AtsSccas_TCFunctions {
 																							vc_authorization, 
 																							{c_Integrity_protected_no}
 																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
 																"600000",
 																-,
 																m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -2618,8 +2618,8 @@ module AtsSccas_TCFunctions {
 																							vc_authorization, 
 																							{c_Integrity_protected_no}
 																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
 																"600000",
 																-,
 																m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -2685,8 +2685,8 @@ module AtsSccas_TCFunctions {
 																							vc_authorization, 
 																							{c_Integrity_protected_no}
 																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
 																"600000",
 																-,
 																m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -2757,8 +2757,8 @@ module AtsSccas_TCFunctions {
                                                                                             vc_authorization, 
                                                                                             {c_Integrity_protected_no}
                                                                                             ), 
-                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
                                                                 "600000",
                                                                 -,
                                                                 m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -2825,8 +2825,8 @@ module AtsSccas_TCFunctions {
                                                                                             vc_authorization, 
                                                                                             {c_Integrity_protected_no}
                                                                                             ), 
-                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
                                                                 "600000",
                                                                 -,
                                                                 m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -2893,8 +2893,8 @@ module AtsSccas_TCFunctions {
                                                                                             vc_authorization, 
                                                                                             {c_Integrity_protected_no}
                                                                                             ), 
-                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
                                                                 "600000",
                                                                 -,
                                                                 m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -3484,8 +3484,8 @@ module AtsSccas_TCFunctions {
                                                                                             vc_authorization, 
                                                                                             {c_Integrity_protected_no}
                                                                                             ), 
-                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
                                                                 "600000",
                                                                 -,
                                                                 m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -3552,8 +3552,8 @@ module AtsSccas_TCFunctions {
                                                                                             vc_authorization, 
                                                                                             {c_Integrity_protected_no}
                                                                                             ), 
-                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
                                                                 "600000",
                                                                 -,
                                                                 m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -3620,8 +3620,8 @@ module AtsSccas_TCFunctions {
                                                                                             vc_authorization, 
                                                                                             {c_Integrity_protected_no}
                                                                                             ), 
-                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
                                                                 "600000",
                                                                 -,
                                                                 m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -3687,8 +3687,8 @@ module AtsSccas_TCFunctions {
                                                                                             vc_authorization, 
                                                                                             {c_Integrity_protected_no}
                                                                                             ), 
-                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
                                                                 "600000",
                                                                 -,
                                                                 m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -3755,8 +3755,8 @@ module AtsSccas_TCFunctions {
                                                                                             vc_authorization, 
                                                                                             {c_Integrity_protected_no}
                                                                                             ), 
-                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
                                                                 "600000",
                                                                 -,
                                                                 m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -3823,8 +3823,8 @@ module AtsSccas_TCFunctions {
                                                                                             vc_authorization, 
                                                                                             {c_Integrity_protected_no}
                                                                                             ), 
-                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
                                                                 "600000",
                                                                 -,
                                                                 m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -3891,8 +3891,8 @@ module AtsSccas_TCFunctions {
                                                                                             vc_authorization, 
                                                                                             {c_Integrity_protected_no}
                                                                                             ), 
-                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
                                                                 "600000",
                                                                 -,
                                                                 m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -3958,8 +3958,8 @@ module AtsSccas_TCFunctions {
                                                                                             vc_authorization, 
                                                                                             {c_Integrity_protected_no}
                                                                                             ), 
-                                                                PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                                PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+                                                                PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
                                                                 "600000",
                                                                 -,
                                                                 m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -4025,8 +4025,8 @@ module AtsSccas_TCFunctions {
 																							vc_authorization, 
 																							{c_Integrity_protected_no}
 																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
 																"600000",
 																-,
 																m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -4094,8 +4094,8 @@ module AtsSccas_TCFunctions {
 																							vc_authorization, 
 																							{c_Integrity_protected_no}
 																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
 																"600000",
 																-,
 																m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -4163,8 +4163,8 @@ module AtsSccas_TCFunctions {
 																							vc_authorization, 
 																							{c_Integrity_protected_no}
 																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
 																"600000",
 																-,
 																m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -4230,8 +4230,8 @@ module AtsSccas_TCFunctions {
 																							vc_authorization, 
 																							{c_Integrity_protected_no}
 																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
 																"600000",
 																-,
 																m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -4297,8 +4297,8 @@ module AtsSccas_TCFunctions {
 																							vc_authorization, 
 																							{c_Integrity_protected_no}
 																							), 
-																PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-																PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
 																"600000",
 																-,
 																m_contentType(c_sdpApplication), // TODO To be refined during validation

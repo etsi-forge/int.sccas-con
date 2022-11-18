@@ -561,8 +561,8 @@ module AtsSccas_Steps {
                                                                                 vc_authorization, 
                                                                                 {c_Integrity_protected_no}
                                                                                 ), 
-                                                    PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                    PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                    PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+                                                    PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
                                                     "600000",
                                                     omit,
                                                     omit,
