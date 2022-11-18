@@ -539,7 +539,42 @@ module AtsSccas_Templates
 							},
 							messageBody := p_mb
 						}
-						                      
+						template (omit) BYE_Request m_sccas_bye_reason(
+						                    template(value) SipUrl p_requestUri,
+											template(value) CallId p_callId,
+											template(value) CSeq p_cSeq,
+											template(value) From p_from,
+											template(value) To p_to,
+											template(value) Via p_via,
+											template(omit) Route p_route := omit,
+											in template (value) Reason p_reason := m_Reason(503)
+						) modifies m_BYE_Request_UE := {
+							msgHeader := {
+								reason := p_reason
+							}
+						}
+						
+					    template (omit) BYE_Request m_sccas_bye_targetDialog(
+															  in template (value) SipUrl p_requestUri,
+															  in template (value) CallId p_callId,
+															  in template (value) CSeq p_cSeq,
+															  in template (value) From p_from,
+															  in template (value) To p_to,
+															  in template (value) LibSip_SIPTypesAndValues.Via p_via,
+															  in template (omit) Route p_route := omit,
+					                                          in template (omit) Require p_require := m_require({"tdialog"}),
+															  in template (value) TargetDialog p_targetDialog := m_targetDialog("CallidString"),
+															  in template (omit) PAssertedID p_pAssertedID := omit,//m_PAssertedID(m_AddrUnion_NameAddr(m_NameAddr(,))),
+					                                          in template (value) Reason p_reason := m_Reason(503)
+						) modifies m_BYE_Request_UE := {
+							msgHeader := {
+								require := p_require,
+								targetDialog := p_targetDialog,
+								pAssertedID := p_pAssertedID,
+								reason := p_reason
+							}
+						}
+			                      
                         group response_sent{
 							template(value) Response m_Response_18XonINVITE_AS_Featurecaps(
 								template(value) StatusLine_18x p_statusLine,

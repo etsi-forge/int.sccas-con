@@ -349,7 +349,7 @@ Package TP_SCCAS_Chapter_9_3 {
        	 	
        	 	Initial conditions with {
        	 		the UE entity isRegisteredTo the IMS
-       	 		// TODO: SCC AS supports the MSC Server assisted mid-call feature according to operator policy 
+       	 		// SCC AS supports the MSC Server assisted mid-call feature according to operator policy 
        	 	}
        	 	
        	 	Expected behaviour
@@ -416,7 +416,7 @@ Package TP_SCCAS_Chapter_9_3 {
 	       	 	
 	       	 	Initial conditions with {
 	       	 		the UE entity isRegisteredTo the IMS
-	       	 		// TODO: SCC AS supports the MSC Server g.3gpp.drvcc-alerting feature 
+	       	 		// SCC AS supports the MSC Server g.3gpp.drvcc-alerting feature 
 	       	 	}
 	       	 	
 	       	 	Expected behaviour
@@ -501,7 +501,6 @@ Package TP_SCCAS_Chapter_9_3 {
 	        
 	        	Initial conditions with {
 	            	the UE entity isRegisteredTo the IMS 
-					// TODO: 
 					// here are one or more dialogs in an early dialog phase supporting a session with active speech media component such that:
 					//		1) all dialogs are early dialogs created by the same SIP INVITE request;
 					//		2) a SIP 180 (Ringing) response to SIP INVITE request was received in at least one of those early dialogs;
@@ -574,7 +573,7 @@ Package TP_SCCAS_Chapter_9_3 {
 	        
 	        	Config Id CFG_SCCAS_01
 	        
-	       	 	PICS Selection NONE  // TODO
+	       	 	PICS Selection NONE  
 	        
 	        	Initial conditions with {
 	            	the UE entity isRegisteredTo the IMS 
@@ -727,11 +726,11 @@ Package TP_SCCAS_Chapter_9_3 {
         
         	Config Id CFG_SCCAS_01
         
-       	 	PICS Selection NONE // TODO
+       	 	PICS Selection NONE 
         
         	Initial conditions with {
             	the UE entity isRegisteredTo the IMS 
-				// TODO: initial condition SIP INVITE request to PS to CS STN
+				// initial condition SIP INVITE request to PS to CS STN
 				// "In order to transfer an additional session on the originating side that can be in pre-alerting phase or in an alerting phase,
 				// the SCC AS shall send a SIP REFER request in the
 				// dialog created by the SIP INVITE request due to PS to CS STN"
@@ -764,8 +763,7 @@ Package TP_SCCAS_Chapter_9_3 {
 		    		
     		Expected behaviour
             	ensure that {
-                	when {        
-                	    // TODO: Trigger unclear for this refer    
+                	when {                    	      
                     	the IUT entity receives an ACK 
 
                     from the IMS_S_CSCF entity
@@ -780,14 +778,14 @@ Package TP_SCCAS_Chapter_9_3 {
                         ReferSub indicating value false,  			// 1. the Refer-Sub header field with value "false"
                         Require indicating value "norefersub",	// 2. the Require header field with value "norefersub"
                         ReferTo containing "a SIP URI with the Target-Dialog_URI_header_field"  // 3. the Refer-To header field containing the additional transferred session SCC AS URI for PS to CS dual radio, where the URI also includes the following header fields containing the information related to the additional transferred session:
-                        	TargetDialog indicating value "TODO: dialog identifier of an dialog in the early phase supporting session of the SC UE", // A. the Target-Dialog header field populated, containing the dialog identifier of an dialog in the early phase supporting session of the SC UE;
+                        	TargetDialog indicating value "dialog identifier of an dialog in the early phase supporting session of the SC UE", // A. the Target-Dialog header field populated, containing the dialog identifier of an dialog in the early phase supporting session of the SC UE;
                         	Require indicating value "tdialog", // B. the Require header field populated with the option tag value "tdialog"
                         	To indicating value "", // C. the To header field populated, containing the value of the P-Asserted-Identity provided by the remote UE during the session establishment;
                         	From indicating value "", // D. the From header field populated, containing the value of the P-Asserted-Identity provided by the SC UE during the session establishment;
                         	ContentType indicating value "application/sdp", // E. the Content-Type header field with "application/sdp";
                         	MessageBody containing  // F. the URI header field with the hname "body" populated with SDP describing the media streams as negotiated in the session with the remote UE
                             	SDP containing
-                            		TODO indicating value "";
+                            		Media indicating value "";
                         		;
                         	;,
                         	PAssertedIdentity indicating value ""; // G. optionally the P-Asserted-Identity URI header field containing value of the P-Asserted-Identity header field of the received SIP INVITE request
@@ -834,11 +832,11 @@ Package TP_SCCAS_Chapter_9_3 {
 	        
 	        	Config Id CFG_SCCAS_01
 	        
-	       	 	PICS Selection NONE  // TODO
+	       	 	PICS Selection NONE 
 	        
 	        	Initial conditions with {
-	            	the UE entity isRegisteredTo the IMS 
-					// TODO: 
+	            	the UE entity isRegisteredTo the IMS and
+					the UE entity hasReceivedInitialRequestForDialog 
 					// SIP INVITE was sent with:
 						//  creating the session in the terminating alerting phase without an SDP MIME body
 					// SCC AS supports PS to CS dual radio access
@@ -865,14 +863,14 @@ Package TP_SCCAS_Chapter_9_3 {
                         ReferSub indicating value false,  			// 1. the Refer-Sub header field with value "false"
                         Require indicating value "norefersub",	// 2. the Require header field with value "norefersub"
                         ReferTo containing "a SIP URI with the Target-Dialog_URI_header_field"  // 3. the Refer-To header field containing the additional transferred session SCC AS URI for PS to CS dual radio, where the URI also includes the following header fields containing the information related to the additional transferred session:
-                        	TargetDialog indicating value "TODO: dialog identifier of an dialog in the early phase supporting session of the SC UE", // A. the Target-Dialog header field populated, containing the dialog identifier of an dialog in the early phase supporting session of the SC UE;
+                        	TargetDialog indicating value "dialog identifier of an dialog in the early phase supporting session of the SC UE", // A. the Target-Dialog header field populated, containing the dialog identifier of an dialog in the early phase supporting session of the SC UE;
                         	Require indicating value "tdialog", // B. the Require header field populated with the option tag value "tdialog"
                         	To indicating value "", // C. the To header field populated, containing the value of the P-Asserted-Identity provided by the remote UE during the session establishment;
                         	From indicating value "", // D. the From header field populated, containing the value of the P-Asserted-Identity provided by the SC UE during the session establishment;
                         	ContentType indicating value "application/sdp", // E. the Content-Type header field with "application/sdp";
                         	MessageBody containing  // F. the URI header field with the hname "body" populated with SDP describing the media streams as negotiated in the session with the remote UE
                             	SDP containing
-                            		TODO indicating value "";
+                            		Media indicating value "";
                         		;
                         	;,
                         	PAssertedIdentity indicating value ""; // G. optionally the P-Asserted-Identity URI header field containing value of the P-Asserted-Identity header field of the received SIP INVITE request
@@ -905,11 +903,11 @@ Package TP_SCCAS_Chapter_9_3 {
 	        
 	        	Config Id CFG_SCCAS_01
 	        
-	       	 	PICS Selection NONE  // TODO
+	       	 	PICS Selection NONE  
 	        
 	        	Initial conditions with {
-	            	the UE entity isRegisteredTo the IMS 
-					// TODO: 
+	            	the UE entity isRegisteredTo the IMS and
+	            	the UE entity hasReceivedInitialRequestForDialog 
 					// SIP INVITE was sent with:
 						//  creating the session in the terminating alerting phase without an SDP MIME body
 					// SCC AS supports PS to CS dual radio access
@@ -941,7 +939,7 @@ Package TP_SCCAS_Chapter_9_3 {
                         Via indicating value PX_UE_A_VIA,
                         Route indicating value PX_UE_A_SERVICE_ROUTE,
                         Contact indicating value "set to the Contact header field provided by the served UE at the creation of the dialog with the remote UE", // the Contact header field set to the Contact header field provided by the served UE at the creation of the dialog with the remote UE;
-                        MessageBody containing  // anew SDP offer, including the media characteristics as received in the SIP 1xx response with the SDP answer, by following the rules of 3GPP TS 24.229 [2].
+                        MessageBody containing  // a new SDP offer, including the media characteristics as received in the SIP 1xx response with the SDP answer, by following the rules of 3GPP TS 24.229 [2].
                             	SDP containing
                             		Media indicating value "the same media characteristics as received in the SIP 1xx response with the SDP answer";
                             		;
@@ -981,12 +979,12 @@ Package TP_SCCAS_Chapter_9_3 {
         
         	Config Id CFG_SCCAS_01
         
-       	 	PICS Selection NONE  // TODO
+       	 	PICS Selection NONE 
         
         	Initial conditions with {
             	the UE entity isRegisteredTo the IMS 
-            	// TODO
             	// source access leg is an ongoing session containing only an active or inactive media component
+            	// transfer of a session is successfully completed
 				
         	}
         	
@@ -994,7 +992,6 @@ Package TP_SCCAS_Chapter_9_3 {
             	ensure that {
                 	when {                 
                     	the IUT entity receives an ACK 
-                    	// TODO: trigger for event unclear, transfer of a session is successfully completed
                     from the IMS_S_CSCF entity
                 }                    	             	
               	then {
@@ -1034,16 +1031,14 @@ Package TP_SCCAS_Chapter_9_3 {
         
         	Initial conditions with {
             	the UE entity isRegisteredTo the IMS 
-            	// TODO: session is dialog in an early dialog phase on the originating side
+            	// session is dialog in an early dialog phase on the originating side
+            	// transfer of a session is successfully completed
         	}
         	
         	Expected behaviour
             	ensure that {
                 	when {                 
-                    	the IUT entity receives an ACK 
-                    	
-                    	// TODO: trigger for event unclear, transfer of a session is successfully completed
-                    	
+                    	the IUT entity receives an ACK                    	                  	
                     from the IMS_S_CSCF entity
                 }                    	             	
               	then {
@@ -1078,11 +1073,10 @@ Package TP_SCCAS_Chapter_9_3 {
         
         	Config Id CFG_SCCAS_01
         
-       	 	PICS Selection NONE  // TODO
+       	 	PICS Selection NONE 
         
         	Initial conditions with {
             	the UE entity isRegisteredTo the IMS 
-            	// TODO:
             	// transfer of a session is successfully completed
             	// and
             	// the source access leg contains media components other than speech media component
@@ -1091,10 +1085,7 @@ Package TP_SCCAS_Chapter_9_3 {
         	Expected behaviour
             	ensure that {
                 	when {                 
-                    	the IUT entity receives an ACK 
-                    	
-                        // TODO: trigger for event unclear, transfer of a session is successfully completed
-                        
+                    	the IUT entity receives an ACK               
                     from the IMS_S_CSCF entity
                 }                    	             	
               	then {
@@ -1108,7 +1099,7 @@ Package TP_SCCAS_Chapter_9_3 {
                         ContentLength,
                         MessageBody containing
                             SDP containing
-                                Media indicating value "TODO: the source access leg contains media components other than speech media component";;;
+                                Media indicating value "the source access leg contains media components other than speech media component";;;
                     to the IMS_S_CSCF entity
                     }
                 }
@@ -1190,7 +1181,7 @@ Package TP_SCCAS_Chapter_9_3 {
                     	ContentType indicating value "application/sdp", 
                         	MessageBody containing  // 3) a new SDP offer, including:
                             	SDP containing
-                            		Media indicating value PX_PSMedia; // TODO: PIX for media, media characteristics as received in the SIP INVITE request
+                            		Media indicating value PX_PSMedia; 
                         		;
                         	;
                     to the IMS_S_CSCF entity
@@ -1233,8 +1224,9 @@ Package TP_SCCAS_Chapter_9_3 {
 	        
 	        	Initial conditions with {
 	            	the UE entity isRegisteredTo the IMS and
-	            	 the IUT entity hasAchievedInitialINVITE // TODO: INVITE contains: g3gppDrvccAlerting
-	        		// SCC AS supports CS to PS dual radio access transfer for calls in alerting phase
+	            	 the IUT entity hasAchievedInitialINVITE 
+	            	 // INVITE contains: g3gppDrvccAlerting
+	        		 // SCC AS supports CS to PS dual radio access transfer for calls in alerting phase
 	        	}
 	        	
 	        	Expected behaviour
@@ -1254,7 +1246,7 @@ Package TP_SCCAS_Chapter_9_3 {
 	                    	ContentType indicating value "application/sdp", 
 	                        	MessageBody containing  // 3) a new SDP offer, including:
 	                            	SDP containing
-	                            		Media indicating value PX_PSMedia; // TODO: PIX for media, media characteristics as received in the SIP INVITE request
+	                            		Media indicating value PX_PSMedia; 
 	                        		;
 	                        	;
 	                    to the IMS_S_CSCF entity
@@ -1356,7 +1348,7 @@ Package TP_SCCAS_Chapter_9_3 {
 	                        	ContentType indicating value "application/sdp", // E. the Content-Type header field with "application/sdp";	                        	
 	                        	MessageBody containing  // F. the URI header field with the hname "body" populated with SDP describing the media streams as negotiated in the session with the remote UE
 	                            	SDP containing
-	                            		TODO indicating value "";;;
+	                            		Media indicating value "";;;
 	                        		,
 	                        Accept containing  // if a SIP 180 (Ringing) response to the INVITE request has already been received on the source access leg, the state-info XML element containing "early" and the direction XML element containing "receiver"
                             	MIME indicating value "application/vnd.3gpp.state-and-event-info.xml";; //subclause D.2.3	
