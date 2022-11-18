@@ -53,7 +53,7 @@ module AtsSccas_TCFunctions_TS124292 {
             f_awaitingRegistration_IMS(
                                        v_cSeq_s, 
                                        valueof(m_SipUrl_currDomain(vc_userprofile)),
-                                       PX_IMS_SUT_UE1_QOP,
+                                       PX_IMS_TS_UE1_QOP,
                                        mw_sccas_register(
                                                        -, 
                                                        mw_pChargingVector(-, *), // TODO To be refined during validation - Clause 6.3.2 Initial registration Point 11
@@ -62,8 +62,8 @@ module AtsSccas_TCFunctions_TS124292 {
                                                        mw_Authorization_digest( // Clause 6.3.2 Initial registration Point 4
                                                                                mw_digestResponse(
                                                                                                  (
-                                                                                                  {"username", {tokenOrHost := PX_IMS_SUT_UE1_PRIVAT_USERNAME}}, 
-                                                                                                  {"realm", {tokenOrHost := PX_IMS_SUT_UE1_PUBLIC_USER}}, 
+                                                                                                  {"username", {tokenOrHost := PX_IMS_TS_UE1_PRIVAT_USERNAME}}, 
+                                                                                                  {"realm", {tokenOrHost := PX_IMS_TS_UE1_PUBLIC_USER}}, 
                                                                                                   {"integrity-protected", {tokenOrHost := "auth-done"}}, 
                                                                                                   {"nonce", {tokenOrHost := ""}}
                                                                                                   ))
@@ -102,7 +102,7 @@ module AtsSccas_TCFunctions_TS124292 {
             f_awaitingRegistration_IMS(
                                        v_cSeq_s, 
                                        valueof(m_SipUrl_currDomain(vc_userprofile)),
-                                       PX_IMS_SUT_UE1_QOP,
+                                       PX_IMS_TS_UE1_QOP,
                                        mw_sccas_register(
                                                        -, 
                                                        mw_pChargingVector(-, *),  // TODO To be refined during validation - Clause 6.3.2 Initial registration Point 11
@@ -111,8 +111,8 @@ module AtsSccas_TCFunctions_TS124292 {
                                                        mw_Authorization_digest( // Clause 6.3.2 Initial registration Point 4
                                                                                mw_digestResponse(
                                                                                                  (
-                                                                                                  {"username", {tokenOrHost := PX_IMS_SUT_UE1_PRIVAT_USERNAME}}, 
-                                                                                                  {"realm", {tokenOrHost := PX_IMS_SUT_UE1_PUBLIC_USER}}, 
+                                                                                                  {"username", {tokenOrHost := PX_IMS_TS_UE1_PRIVAT_USERNAME}}, 
+                                                                                                  {"realm", {tokenOrHost := PX_IMS_TS_UE1_PUBLIC_USER}}, 
                                                                                                   {"integrity-protected", {tokenOrHost := "auth-done"}}, 
                                                                                                   {"nonce", {tokenOrHost := ""}}
                                                                                                   ))

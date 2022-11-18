@@ -343,7 +343,7 @@ module AtsSccas_TCFunctions {
                                                                             m_fcValue(
                                                                                       "g-3gpp-atcf-mgmt-uri-in-path",
                                                                                       {
-                                                                                        {"sip-uri", { tokenOrHost := PX_ACTF_MGMT_URI }}
+                                                                                        {"sip-uri", { tokenOrHost := PX_ATCF_MGMT_URI }}
                                                                                       })
                                                                         }),
                                                     omit,
@@ -471,11 +471,11 @@ module AtsSccas_TCFunctions {
                 v_contact.contactBody.contactAddresses[0].contactParams := { // TODO To be refined during validation
                                                                              {
                                                                                "g.3gpp.atcf-mgmt-uri",
-                                                                               {tokenOrHost := PX_ACTF_MGMT_URI}
+                                                                               {tokenOrHost := PX_ATCF_MGMT_URI}
                                                                              },
                                                                              {
                                                                                "g.3gpp.path",
-                                                                               {tokenOrHost := PX_ACTF_URI}
+                                                                               {tokenOrHost := PX_ATCF_URI}
                                                                              }
                                                                             };
                 f_SendREGISTER(
@@ -499,7 +499,7 @@ module AtsSccas_TCFunctions {
                                                                         m_fcValue(
                                                                                   "g-3gpp-atcf-mgmt-uri\",
                                                                                   {
-                                                                                    {"sip-uri", { tokenOrHost := PX_ACTF_MGMT_URI }}
+                                                                                    {"sip-uri", { tokenOrHost := PX_ATCF_MGMT_URI }}
                                                                                   })
                                                                     })*/, // TODO To be refined during validation
                                                 m_contentType(c_sdpApplication), // TODO To be refined during validation
@@ -588,7 +588,7 @@ module AtsSccas_TCFunctions {
                                                                         m_fcValue(
                                                                                   "g-3gpp-atcf-mgmt-uri-in-path",
                                                                                   {
-                                                                                    {"sip-uri", { tokenOrHost := PX_ACTF_MGMT_URI }}
+                                                                                    {"sip-uri", { tokenOrHost := PX_ATCF_MGMT_URI }}
                                                                                   })
                                                                     })*/, // TODO To be refined during validation
                                                 m_contentType(c_sdpApplication), // TODO To be refined during validation
