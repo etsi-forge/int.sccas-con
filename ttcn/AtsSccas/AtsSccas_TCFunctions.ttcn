@@ -2952,7 +2952,7 @@ module AtsSccas_TCFunctions {
                 
                 f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
-                // Registration
+                // Call initiation
                 f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
                 f_SendINVITE(
                              m_sccas_invite_targetDialog(
@@ -3004,7 +3004,7 @@ module AtsSccas_TCFunctions {
                 
                 f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
-                // Registration
+                // Call initiation
                 f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
                 f_SendINVITE(
                              m_sccas_invite_targetDialog(
@@ -3082,7 +3082,7 @@ module AtsSccas_TCFunctions {
                 
                 f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 
-                // Registration
+                // Call initiation
                 f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
                 f_SendINVITE(
                              m_sccas_invite_targetDialog(
@@ -3444,6 +3444,75 @@ module AtsSccas_TCFunctions {
              */
             function f_TC_ISC_SCCAS_SRA_CAN_01(in CSeq p_cSeq_s)
             runs on ImsComponent {
+                // Local variables
+                var CSeq v_cSeq_s := p_cSeq_s;
+
+                // Preamble
+                f_registrationAS(v_cSeq_s);
+                
+                f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+
+                // Call initiation
+                f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+                f_SendINVITE(
+                             m_sccas_invite_targetDialog(
+                                            vc_requestUri,
+                                            vc_callId, 
+                                            p_cSeq_s, 
+                                            vc_from, vc_to, vc_via_REG, 
+                                            vc_contact,
+                                            -, -, -,
+                                            m_MBody_SDP(vc_sdp_local),
+                                            -,
+                                            -
+                                            ));
+              
+                tc_ack.start;
+                alt {
+                    [] SIPP.receive(mw_Response_1xx_Base(vc_callId, vc_cSeq)) {
+                        repeat
+                    }
+                    [] SIPP.receive(mw_INVITE_Request_AS(?, ?, ?, ?, *, *)) {
+                        tc_ack.stop;
+                        log("*** " & __SCOPE__ & ": PASS: INVITE message was received ***");
+                        // Cancelation
+                        f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersCANCEL(v_cSeq_s);
+                        f_SendCANCEL(
+                             m_CANCEL_Request_Reason_IMS(
+                                            vc_requestUri,
+                                            vc_callId, 
+                                            v_cSeq_s, 
+                                            vc_from, vc_to, vc_via_REG,vc_route,
+                                            31
+                                            ));
+                    }
+                    [] tc_ack.timeout {
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+                    }
+                }
+                
+                tc_ack.start;
+                alt {
+                    [] SIPP.receive(mw_Response_Base(c_statusLine200, vc_callId, v_cSeq_s)) {
+                        tc_ack.stop;
+                        log("*** " & __SCOPE__ & ": PASS: 200 OK message was received ***");
+                        repeat;
+                    }[] SIPP.receive(mw_CANCEL_Request_Base(?)) {
+                        tc_ack.stop;
+                        log("*** " & __SCOPE__ & ": PASS: CANCEL message was received ***");
+                        f_sendResponse(m_Response_Base(c_statusLine200, vc_callId, vc_cSeq, vc_caller_From, vc_caller_To, vc_via));
+                        
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+                    }
+                    [] tc_ack.timeout {
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+                    }
+                }
+
+                // Postamble
+                f_deregistrationAS(v_cSeq_s);
+                
+                f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
                 
             } // End of function f_TC_ISC_SCCAS_SRA_CAN_01
         
@@ -3453,6 +3522,69 @@ module AtsSccas_TCFunctions {
              */
             function f_TC_ISC_SCCAS_SRA_CAN_02(in CSeq p_cSeq_s)
             runs on ImsComponent {
+                // Local variables
+                var CSeq v_cSeq_s := p_cSeq_s;
+
+                // Preamble
+                f_registrationAS(v_cSeq_s);
+                
+                f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+
+                // Call initiation
+                f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersINVITE(v_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+                f_SendINVITE(
+                             m_sccas_invite_targetDialog(
+                                            vc_requestUri,
+                                            vc_callId, 
+                                            p_cSeq_s, 
+                                            vc_from, vc_to, vc_via_REG, 
+                                            vc_contact,
+                                            -, -, -,
+                                            m_MBody_SDP(vc_sdp_local),
+                                            -,
+                                            -
+                                            ));
+              
+                tc_ack.start;
+                alt {
+                    [] SIPP.receive(mw_Response_1xx_Base(vc_callId, vc_cSeq)) {
+                        repeat
+                    }
+                    [] SIPP.receive(mw_INVITE_Request_AS(?, ?, ?, ?, *, *)) {
+                        tc_ack.stop;
+                        log("*** " & __SCOPE__ & ": PASS: INVITE message was received ***");
+                        // Cancelation
+                        f_IncCSeq(v_cSeq_s); LibIms_Steps.f_setHeadersCANCEL(v_cSeq_s);
+                        f_SendCANCEL(
+                             m_CANCEL_Request_Reason_IMS(
+                                            vc_requestUri,
+                                            vc_callId, 
+                                            v_cSeq_s, 
+                                            vc_from, vc_to, vc_via_REG,vc_route,
+                                            31
+                                            ));
+                    }
+                    [] tc_ack.timeout {
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+                    }
+                }
+                
+                tc_ack.start;
+                alt {
+                    [] SIPP.receive(mw_Response_Base(c_statusLine200, vc_callId, v_cSeq_s)) {
+                        tc_ack.stop;
+                        log("*** " & __SCOPE__ & ": PASS: 200 OK message was received ***");
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+                    }
+                    [] tc_ack.timeout {
+                        f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+                    }
+                }
+
+                // Postamble
+                f_deregistrationAS(v_cSeq_s);
+                
+                f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
                 
             } // End of function f_TC_ISC_SCCAS_SRA_CAN_02
         
