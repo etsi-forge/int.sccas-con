@@ -1398,7 +1398,15 @@ module AtsSccas_TCFunctions {
         function f_TC_ISC_SCCAS_CPT_INV_01(in CSeq p_cSeq_s)
         runs on ImsComponent {
                 
-            // TODO: set correct service profiles
+            // Local variables
+			var CSeq v_cSeq_s := p_cSeq_s;
+					
+			// Preambule
+			f_init_userprofile(c_userProfile_UE1atSUThome);
+			f_initSipUrl(c_serviceProfile_EMERGENCY);
+			f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);    
+                
+
             LibIms_Steps.f_setHeadersINVITE(p_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
             f_SendINVITE(m_sccas_invite(
                     vc_requestUri,
@@ -1488,7 +1496,7 @@ module AtsSccas_TCFunctions {
 		// Local variables
 		var CSeq v_cSeq_s := p_cSeq_s;
 		
-		// Preambule
+		// Preamble
 		f_init_userprofile(c_userProfile_UE1atSUThome);
 		f_initSipUrl(c_serviceProfile_EMERGENCY);
 		f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
@@ -1518,8 +1526,7 @@ module AtsSccas_TCFunctions {
 												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
 												);
 			
-			// TODO: the UE entity previouslyEstablishedCallWith 
-			
+		
 			// STEP: invite
 			LibIms_Steps.f_setHeadersINVITE(p_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
 			f_SendINVITE(m_sccas_invite(
@@ -1540,17 +1547,6 @@ module AtsSccas_TCFunctions {
 			
 			// EXPECTED: 200 ok
 			f_awaitingResponse(mw_sccas_Response_200mediaOnly(200, vc_callIdReg, p_cSeq_s, vc_from, vc_to, vc_via, ?, ?, ?, ?));
-//			template (present) Response (
-//						template (present) StatusLine.statusCode p_statusCode := 200,
-//						template (present) CallId p_callId := ?,
-//						template (present) CSeq p_cSeq := ?,
-//						template (present) From p_from := ?,
-//						template (present) To p_to := ?,
-//						template (present) Via p_via := ?,
-//						template (present) Contact p_contact := ?,
-//						template (present) PChargingVector p_pChargingVector := ?,
-//						template (present) PAssertedID p_pAssertedID := ?,
-//						template AcceptContact p_acceptContact := *
 			
 
 			f_deregistrationAS(p_cSeq_s);
@@ -1563,12 +1559,13 @@ module AtsSccas_TCFunctions {
 		// Local variables
 		var CSeq v_cSeq_s := p_cSeq_s;
 			
-		// Preambule
+		// Preamble
 		f_init_userprofile(c_userProfile_UE1atSUThome);
 		f_initSipUrl(c_serviceProfile_EMERGENCY);
 		f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
 				
 		// initial condition: the UE entity isRegisteredTo the IMS  
+		// the UE entity hasReceived200OkOnInitialRequestForDialogWith
 		f_sendRegistrationAndAwait200Ok(
 												v_cSeq_s,
 												m_sccas_register(
@@ -1592,9 +1589,7 @@ module AtsSccas_TCFunctions {
 												), 
 												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
 												);
-												
-			// TODO: the UE entity hasReceived200OkOnInitialRequestForDialogWith
-												
+																		
 			// STEP: sen ACK
 			f_SendACK(m_ACK_Request_Base(vc_requestUri, vc_callId, vc_cSeq, vc_from, vc_to, vc_via));
 			
@@ -1613,7 +1608,7 @@ module AtsSccas_TCFunctions {
 		// Local variables
 		var CSeq v_cSeq_s := p_cSeq_s;
 		
-		// Preambule
+		// Preamble
 		f_init_userprofile(c_userProfile_UE1atSUThome);
 		f_initSipUrl(c_serviceProfile_EMERGENCY);
 		f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
@@ -1644,7 +1639,6 @@ module AtsSccas_TCFunctions {
 												);
 				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 				
-				// TODO: initial condition (PICS?): SCC AS supports the MSC Server assisted mid-call feature according to operator policy 
 			
 			// STEP: send invite	
 			LibIms_Steps.f_setHeadersINVITE(p_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
@@ -1655,7 +1649,7 @@ module AtsSccas_TCFunctions {
 					vc_from,
 					vc_to,
 					vc_via_REG,
-					m_contact_g3gppSrvccAlertingFeature, // TODO: correct use auf g3gppSrvccAlertingFeatureCapabilityIndicator
+					m_contact_g3gppSrvccAlertingFeature, // TODO To be refined during validation: correct use auf g3gppSrvccAlertingFeatureCapabilityIndicator
 					omit, // template(omit) Require p_require := omit,
 					vc_route,
 					omit, 
@@ -1676,7 +1670,7 @@ module AtsSccas_TCFunctions {
 		// Local variables
 		var CSeq v_cSeq_s := p_cSeq_s;
 		
-		// Preambule
+		// Preamble
 		f_init_userprofile(c_userProfile_UE1atSUThome);
 		f_initSipUrl(c_serviceProfile_EMERGENCY);
 		f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
@@ -1707,7 +1701,6 @@ module AtsSccas_TCFunctions {
 												);
 				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
 				
-				// TODO: initial condition (PICS?): SCC AS supports the MSC Server assisted mid-call feature according to operator policy 
 			
 			// STEP: send invite	
 			LibIms_Steps.f_setHeadersINVITE(p_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
@@ -1718,7 +1711,7 @@ module AtsSccas_TCFunctions {
 					vc_from,
 					vc_to,
 					vc_via_REG,
-					m_contact_g3gppDrvccAlertingFeature, // TODO: correct use auf g3gppDrvccAlertingFeature
+					m_contact_g3gppDrvccAlertingFeature, // TODO To be refined during validation: correct use auf g3gppDrvccAlertingFeature
 					omit, // template(omit) Require p_require := omit,
 					vc_route,
 					m_supported_replaces, 
@@ -1899,7 +1892,7 @@ module AtsSccas_TCFunctions {
 		function f_TC_ISC_SCCAS_PCT_RES_01(in CSeq p_cSeq_s)
 		runs on ImsComponent {
 			
-			// Preambule
+			// Preamble
 			f_init_userprofile(c_userProfile_UE1atSUThome);
 			f_initSipUrl(c_serviceProfile_EMERGENCY);
 			f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
@@ -2014,30 +2007,69 @@ module AtsSccas_TCFunctions {
 			
 		} // End of f_TC_ISC_SCCAS_MED_RIN_01
 
-		function f_TC_ISC_SCCAS_PCT_INV_05(in CSeq p_cSeq_s)
+		function f_TC_ISC_SCCAS_PCT_UPD_01(in CSeq p_cSeq_s)
 		runs on ImsComponent {
 			
-			// Preambule
+			// Local variables
+			var CSeq v_cSeq_s := p_cSeq_s;
+			
+			// Preamble
 			f_init_userprofile(c_userProfile_UE1atSUThome);
 			f_initSipUrl(c_serviceProfile_EMERGENCY);
 			f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
 					
-			// initial condition: the UE entity isRegisteredTo the IMS  
-			f_registrationAS(p_cSeq_s);
-			
-			// TODO:
-			// one dialog is early dialog 
-			// and
-			// a SIP 180 (Ringing) response to the SIP INVITE request has not been received yet in any of the existing dialogs
-			// and
-			// the SCC AS included a g.3gpp.ps2cs-drvcc-orig-pre-alerting feature-capability indicator as in a Feature-Caps header field of SIP 18x responses
-			// and
-			// the Contact header field in the initial SIP INVITE request sent by the SC UE towards the SCC AS included a g.3gpp.ps2cs-drvcc-orig-pre-alerting media feature tag as
-			// and
-			// the remote leg is not a precondition enabled dialog
 			
 			
-			// STEp: send invite
+			// Registration
+			f_sendRegistrationAndAwait200Ok(
+												v_cSeq_s,
+												m_sccas_register(
+																vc_requestUri, 
+																vc_callId, 
+																vc_cSeq, 
+																vc_from, 
+																vc_to, 
+																vc_via_REG, 
+																vc_contact, 
+																m_add_Authorization_digest(
+																							vc_authorization, 
+																							{c_Integrity_protected_no}
+																							), 
+																PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
+																"600000",
+																-,
+																m_contentType(c_sdpApplication), // TODO To be refined during validation
+																m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
+												), 
+												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
+												);
+				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+
+				// Registration
+				f_sendResponse(
+							 m_Response_2xx_Base(
+											c_statusLine200,
+											vc_callId, 
+											v_cSeq_s, 
+											vc_from, 
+											vc_to, 
+											vc_via_REG
+											));
+				tc_ack.start;
+				alt {
+					[] SIPP.receive(mw_Response_Base(c_statusLine180, vc_callId, v_cSeq_s)) {
+						tc_ack.stop;
+						log("*** " & __SCOPE__ & ": PASS: Response 180 was received ***");
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+					}
+					[] tc_ack.timeout {
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+					}
+				}
+			
+			
+			// STEP: send invite
 			LibIms_Steps.f_setHeadersINVITE(p_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
 			f_SendINVITE(m_sccas_invite(
 					vc_requestUri,
@@ -2053,10 +2085,100 @@ module AtsSccas_TCFunctions {
 					m_messageBody_SDP_mediaOnly
 				));
 			
-			// TODO  PEarlyMedia indicating value "the last received P-Early-Media header field",
+			// TODO To be refined during validation: PEarlyMedia indicating value "the last received P-Early-Media header field",
 			
-			// TODO: Contact indicating value "set to the Contact header field provided by the served UE at the creation of the dialog",
-			// TODO: SDP containing Media indicating value "the media characteristics as received in the SIP INVITE request due to PS to CS STN (including any precondition mechanism specific SDP attributes)";                       		
+			// Contact indicating value "set to the Contact header field provided by the served UE at the creation of the dialog",
+			// SDP containing Media indicating value "the media characteristics as received in the SIP INVITE request due to PS to CS STN (including any precondition mechanism specific SDP attributes)";                       		
+			f_awaitingUPDATE(mw_UPDATE_Request_ContactChange(vc_callId, vc_contact, mw_contentType_appclication_sdp, ?));
+			
+			f_deregistrationAS(p_cSeq_s);
+			f_selfOrClientSyncAndVerdict(c_poDone, f_getVerdict()); // sync
+			
+			
+		} // End of f_TC_ISC_SCCAS_PCT_UPD_01
+
+		function f_TC_ISC_SCCAS_PCT_INV_05(in CSeq p_cSeq_s)
+		runs on ImsComponent {
+			
+			// Local variables
+			var CSeq v_cSeq_s := p_cSeq_s;
+			
+			// Preamble
+			f_init_userprofile(c_userProfile_UE1atSUThome);
+			f_initSipUrl(c_serviceProfile_EMERGENCY);
+			f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
+					
+			
+			
+ 			// Registration
+			f_sendRegistrationAndAwait200Ok(
+												v_cSeq_s,
+												m_sccas_register(
+																vc_requestUri, 
+																vc_callId, 
+																vc_cSeq, 
+																vc_from, 
+																vc_to, 
+																vc_via_REG, 
+																vc_contact, 
+																m_add_Authorization_digest(
+																							vc_authorization, 
+																							{c_Integrity_protected_no}
+																							), 
+																PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+																PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
+																"600000",
+																-,
+																m_contentType(c_sdpApplication), // TODO To be refined during validation
+																m_MBody_SDP(vc_sdp_local) // TODO To be refined during validation
+												), 
+												mw_sccas_Response_2xxonREGISTER(vc_callId, vc_cSeq, vc_from, vc_to, vc_via_REG, vc_contact)
+												);
+				f_selfOrClientSyncAndVerdict(c_prDone, f_getVerdict()); // sync
+
+				// Registration
+				f_sendResponse(
+							 m_Response_2xx_Base(
+											c_statusLine200,
+											vc_callId, 
+											v_cSeq_s, 
+											vc_from, 
+											vc_to, 
+											vc_via_REG
+											));
+				tc_ack.start;
+				alt {
+					[] SIPP.receive(mw_Response_Base(c_statusLine180, vc_callId, v_cSeq_s)) {
+						tc_ack.stop;
+						log("*** " & __SCOPE__ & ": PASS: Response 180 was received ***");
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_success); // sync
+					}
+					[] tc_ack.timeout {
+						f_selfOrClientSyncAndVerdict(c_tbDone, e_error); // sync 
+					}
+				}
+			
+			
+			// STEP: send invite
+			LibIms_Steps.f_setHeadersINVITE(p_cSeq_s, f_initSipUrl(c_serviceProfile_EMERGENCY), f_initSipUrl(c_userProfile_UE1atSUThome));
+			f_SendINVITE(m_sccas_invite(
+					vc_requestUri,
+					vc_callId,
+					vc_cSeq,
+					vc_from,
+					vc_to,
+					vc_via_REG,
+					vc_contact,
+					omit, 
+					vc_route,
+					m_supported_replaces, 
+					m_messageBody_SDP_mediaOnly
+				));
+			
+			// // TODO To be refined during validation: PEarlyMedia indicating value "the last received P-Early-Media header field",
+			
+			// Contact indicating value "set to the Contact header field provided by the served UE at the creation of the dialog",
+			// SDP containing Media indicating value "the media characteristics as received in the SIP INVITE request due to PS to CS STN (including any precondition mechanism specific SDP attributes)";                       		
 			f_awaitingUPDATE(mw_UPDATE_Request_ContactChange(vc_callId, vc_contact, mw_contentType_appclication_sdp, ?));
 			
 			f_deregistrationAS(p_cSeq_s);
@@ -2121,7 +2243,7 @@ module AtsSccas_TCFunctions {
 		function f_TC_ISC_SCCAS_PCT_RES_02(in CSeq p_cSeq_s)
 		runs on ImsComponent {
 			
-			// Preambule
+			// Preamble
 			f_init_userprofile(c_userProfile_UE1atSUThome);
 			f_initSipUrl(c_serviceProfile_EMERGENCY);
 			f_init_interfaceprofile(c_interfaceProfile_IMS_SUT_PCSCF1);
@@ -2138,7 +2260,7 @@ module AtsSccas_TCFunctions {
 					[] SIPP.receive(mw_Response_1xx_SDPMessage(
 							vc_callId, 
 							vc_cSeq, 
-							?, // TODO: EarlyMedia indicating value "the last received P-Early-Media header field",
+							?, // TODO To be refined during validation, EarlyMedia indicating value "the last received P-Early-Media header field",
 							mw_contentType_appclication_sdp,
 							mw_sdpmessageBody
 							)) {
