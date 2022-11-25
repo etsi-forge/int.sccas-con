@@ -51,11 +51,20 @@ module AtsSccas_PIXITS {
             */
           modulepar charstring  PX_IMS_SUT_AS_HOME_DOMAIN := "as.domain.net";
 
+          /** @desc	integer for SUT - S-CSCF port number to exchange SIP messages - connection point for SCSCF
+            */
+          modulepar integer	  PX_IMS_SUT_SCSCF_PORT := 5060;
+
+          /** @desc	charstring for SUT/S-CSCF domain
+            */
+          modulepar charstring  PX_IMS_SUT_SCSCF_IPADDR := "scscf.domain.net";
+
         } // End of group SUT_AS
 
       } // End of group SUT 
 
     group TS {
+
         group TS_UE1 {
     
             /** @desc   charstring for IP address used by the UE1 to exchange SIP messages
@@ -117,6 +126,7 @@ module AtsSccas_PIXITS {
             modulepar charstring  PX_IMS_TS_SCSCF_HOME_DOMAIN := "scscf.domain.net";
 
         } // End of group TS_SCSCF
+
       } //end group TS {
 
 } // end module AtsSccas_PIXITS

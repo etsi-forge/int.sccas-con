@@ -4018,7 +4018,7 @@ module AtsSccas_TCFunctions {
 
                 // Registration
                 f_IncCSeq(v_cSeq_s); 
-                f_setHeadersOPTIONS(v_cSeq_s);
+                LibSip_Steps.f_setHeadersOPTIONS(v_cSeq_s);
                 AtsSccas_Steps.f_SendOPTIONS(
 											m_OPTIONS_Request_Base(
 															vc_requestUri,
