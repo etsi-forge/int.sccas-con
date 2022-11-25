@@ -13,90 +13,29 @@ module AtsSccas_PIXITS {
 
     modulepar {
 
-        /** @desc    boolean  for SUT working mode due to 
-        */
-        boolean PX_SCCAS__ := true;
+//        /** @desc    boolean  for SUT working mode due to 
+//        */
+//        boolean PX_SCCAS__ := true;
 
-        charstring PX_ACTF_MGMT_URI := "";
+        /** @desc charstring for ATCF management URI in Contact header field
+          */
+        charstring PX_ATCF_MGMT_URI := "";
 
-        charstring PX_ACTF_URI := "";
+        /** @desc charstring for ATCF  URI in Contact header field
+          */
+        charstring PX_ATCF_URI := "";
 
+        /** @desc charstring for ICSI URI in Contact header field
+          */
         charstring PX_ICSI_URI := "";
 
+        /** @desc charstring for SCCAS URI in PAssertedID header field
+          */
         SipUrl PX_SCCAS_URI := {scheme := "c_sipScheme", components := {sip := {userInfo := omit, hostPort := {host := "",portField := c_defaultSipPort}}}};
         
     }
 
     group SUT {
-
-        // TODO - SUT_UE1 PIXITS to be removed
-        group SUT_UE1 {
-          /** @desc charstring for SUT - PCSCF1 IP address to exchange SIP messages - connection point for UE1
-            */
-          modulepar charstring  PX_IMS_SUT_PCSCF1_IPADDR := "10.100.0.6";
-
-          /** @desc	integer for SUT - PCSCF1 port number to exchange SIP messages - connection point for UE1
-            */
-          modulepar integer	  PX_IMS_SUT_PCSCF1_PORT := 5060;
-
-          /** @desc	charstring for SUT/PCSCF1 domain - connection point for UE1
-            */
-          modulepar charstring  PX_IMS_SUT_PCSCF1_HOME_DOMAIN := "plugtests.net";
-
-          /** @desc	charstring for IP address used by the TS to exchange media streams for UE1
-            */
-          modulepar charstring  PX_IMS_SUT_UE1_BEARER_IPADDR := "conftest.plugtests.net";
-
-          /** @desc	charstring for identity of the tester UE1 local domain 
-            */
-          modulepar charstring  PX_IMS_SUT_UE1_HOME_DOMAIN := "plugtests.net";
-
-          /** @desc	charstring for identity of the tester UE1 local user 
-            */
-          modulepar charstring  PX_IMS_SUT_UE1_PUBLIC_USER := "alice-06";
-
-          /** @desc	charstring for RFC 2617 clause 3-2-2 username of UE1:
-            * The name of user in the specified realm
-            */
-          modulepar charstring PX_IMS_SUT_UE1_PRIVAT_USERNAME := "alice-06";
-
-          /** @desc	charstring for RFC 2617 clause 3-2-2-2 passwd of UE1: A known shared secret, the password of user of the specified username
-            */
-          modulepar charstring PX_IMS_SUT_UE1_PRIVAT_PASSWD := "alice-05@1234";
-          
-          /** @desc	charstring for RFC 2617 clause 3-2-1 qop options of UE1:
-            * Quoted string of one or more tokens indicating the "quality of protection" values supported by the server; the
-            * value "auth" indicates authentication; the value "auth-int" indicates authentication with integrity protection.
-            */
-          modulepar charstring PX_IMS_SUT_UE1_QOP := "auth";
-          
-          /** @desc	charstring for home(SUT) REGISTRAR domain of UE1
-            */
-          modulepar charstring  PX_IMS_SUT_UE1_REGISTRAR := "registrar.sut.net";
-
-          /** @desc	charstring for UE1 display name
-            */
-          modulepar charstring  PX_IMS_SUT_UE1_DISPLAY := "alice-05@plugtest.net";
-        } // End of group SUT_UE1
-
-        // TODO - SUT_SCSCF PIXITS to be removed when will be replaced in ATS code with TS SCSCF
-        group SUT_SCSCF {
-          /** @desc	charstring for SUT/S-CSCF IP address to exchange SIP messages
-            */
-          modulepar charstring  PX_IMS_SUT_SCSCF_IPADDR := "172.31.10.4";	
-
-          /** @desc	integer for SUT/S-CSCF port number to exchange SIP messages
-            */
-          modulepar integer	  PX_IMS_SUT_SCSCF_PORT := 5060;
-
-          /** @desc	charstring for SUT/S-CSCFdomain
-            */
-          modulepar charstring  PX_IMS_SUT_SCSCF_HOME_DOMAIN := "scscf.sut.net";
-
-          /** @desc	charstring for SUT/S-CSCF globally used realm name of IUT S-CSCF 
-            */
-          modulepar charstring  PX_IMS_SUT_SCSCF_REALM := "realm.scscf";
-        } // End of group SUT_SCSCF
 
         //used for AS, TAS, SCC-AS
         group SUT_AS {
@@ -127,7 +66,7 @@ module AtsSccas_PIXITS {
              */
             modulepar integer PX_IMS_TS_UE1_PORT := 5060;
     
-            /** @desc   charstring for home(TS) REGISTRAR domain
+            /** @desc   charstring for home(TS) REGISTRAR domain for UE1
              */
             modulepar charstring PX_IMS_TS_UE1_REGISTRAR := "registrar.domain.net";
 

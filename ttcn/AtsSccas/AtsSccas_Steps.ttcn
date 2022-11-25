@@ -115,7 +115,7 @@ module AtsSccas_Steps {
                                                 vc_userprofile
                                                 )
                                 );
-            vc_sdp_local.origin.user_name := PX_IMS_SUT_UE1_PUBLIC_USER;
+            vc_sdp_local.origin.user_name := PX_IMS_TS_UE1_PUBLIC_USER;
             vc_sdp_local.origin.session_id := "2890844526";
             vc_sdp_local.origin.session_version := "2890842807";
             vc_sdp_local.origin.addr := "atlanta.example.com";
@@ -168,13 +168,13 @@ module AtsSccas_Steps {
             vc_userprofile.currIpaddr := PX_IMS_TS_UE1_IPADDR;
             vc_userprofile.contactPort := PX_IMS_TS_UE1_PORT;
             vc_userprofile.contactIpaddr := PX_IMS_TS_UE1_IPADDR;
-            vc_userprofile.bearerIpaddr := PX_IMS_SUT_UE1_BEARER_IPADDR;
-            vc_userprofile.homeDomain := PX_IMS_SUT_UE1_HOME_DOMAIN;
-            vc_userprofile.publUsername := PX_IMS_SUT_UE1_PUBLIC_USER;
-            vc_userprofile.qop := PX_IMS_SUT_UE1_QOP;
-            vc_userprofile.privUsername := PX_IMS_SUT_UE1_PRIVAT_USERNAME;
-            vc_userprofile.passwd := PX_IMS_SUT_UE1_PRIVAT_PASSWD;
-            vc_userprofile.registrarDomain := PX_IMS_SUT_UE1_REGISTRAR;
+            vc_userprofile.bearerIpaddr := PX_IMS_TS_UE1_BEARER_IPADDR;
+            vc_userprofile.homeDomain := PX_IMS_TS_UE1_HOME_DOMAIN;
+            vc_userprofile.publUsername := PX_IMS_TS_UE1_PUBLIC_USER;
+            vc_userprofile.qop := PX_IMS_TS_UE1_QOP;
+            vc_userprofile.privUsername := PX_IMS_TS_UE1_PRIVAT_USERNAME;
+            vc_userprofile.passwd := PX_IMS_TS_UE1_PRIVAT_PASSWD;
+            vc_userprofile.registrarDomain := PX_IMS_TS_UE1_REGISTRAR;
             }
             case (c_userProfile_PCSCFwithHomeUE) { //variant c_userProfile_PCSCFwithHomeUE 
             //for MIME REGISTER to SCCAS(message originaly exchanged between PCSCF and SCSCF)
@@ -198,13 +198,13 @@ module AtsSccas_Steps {
             vc_userprofile.currIpaddr := PX_IMS_TS_SCSCF_HOME_DOMAIN;
             vc_userprofile.contactPort := PX_IMS_TS_SCSCF_PORT;
             vc_userprofile.contactIpaddr := PX_IMS_TS_SCSCF_HOME_DOMAIN; //ip address or domain
-            vc_userprofile.bearerIpaddr := PX_IMS_SUT_UE1_BEARER_IPADDR;
-            vc_userprofile.homeDomain := PX_IMS_SUT_UE1_HOME_DOMAIN;
-            vc_userprofile.publUsername := PX_IMS_SUT_UE1_PUBLIC_USER;
-            vc_userprofile.qop := PX_IMS_SUT_UE1_QOP;
-            vc_userprofile.privUsername := PX_IMS_SUT_UE1_PRIVAT_USERNAME;
-            vc_userprofile.passwd := PX_IMS_SUT_UE1_PRIVAT_PASSWD;
-            vc_userprofile.registrarDomain := PX_IMS_SUT_UE1_REGISTRAR;
+            vc_userprofile.bearerIpaddr := PX_IMS_TS_UE1_BEARER_IPADDR;
+            vc_userprofile.homeDomain := PX_IMS_TS_UE1_HOME_DOMAIN;
+            vc_userprofile.publUsername := PX_IMS_TS_UE1_PUBLIC_USER;
+            vc_userprofile.qop := PX_IMS_TS_UE1_QOP;
+            vc_userprofile.privUsername := PX_IMS_TS_UE1_PRIVAT_USERNAME;
+            vc_userprofile.passwd := PX_IMS_TS_UE1_PRIVAT_PASSWD;
+            vc_userprofile.registrarDomain := PX_IMS_TS_UE1_REGISTRAR;
             }
         } // End of 'select' statement
 
@@ -264,8 +264,8 @@ module AtsSccas_Steps {
 
         select(p_user) {
             case (c_userProfile_UE1atSUThome) {
-                    p_sipUrl.components.sip.userInfo := {userOrTelephoneSubscriber:=PX_IMS_SUT_UE1_PUBLIC_USER, password:=omit};
-                    p_sipUrl.components.sip.hostPort := {host := PX_IMS_SUT_UE1_HOME_DOMAIN, portField :=omit}
+                    p_sipUrl.components.sip.userInfo := {userOrTelephoneSubscriber:=PX_IMS_TS_UE1_PUBLIC_USER, password:=omit};
+                    p_sipUrl.components.sip.hostPort := {host := PX_IMS_TS_UE1_HOME_DOMAIN, portField :=omit}
                     }
 //            case (c_userProfile_UE2atSUThome) {
 //                    p_sipUrl.components.sip.userInfo := {userOrTelephoneSubscriber:=PX_IMS_SUT_UE2_PUBLIC_USER, password:=omit};
@@ -276,8 +276,8 @@ module AtsSccas_Steps {
 //                    p_sipUrl.components.sip.hostPort := {host := PX_IMS_SUT_EMERGENCY_HOME_DOMAIN, portField :=omit}
 //                    }
             case (c_serviceProfile_SUBSCRIBER) {
-                    p_sipUrl.components.sip.userInfo := { userOrTelephoneSubscriber := PX_IMS_SUT_UE1_PUBLIC_USER, password := omit};
-                    p_sipUrl.components.sip.hostPort := {host := PX_IMS_SUT_UE1_HOME_DOMAIN, portField :=omit}
+                    p_sipUrl.components.sip.userInfo := { userOrTelephoneSubscriber := PX_IMS_TS_UE1_PUBLIC_USER, password := omit};
+                    p_sipUrl.components.sip.hostPort := {host := PX_IMS_TS_UE1_HOME_DOMAIN, portField :=omit}
                     }
 
         }; // End of 'select' statement
@@ -334,46 +334,6 @@ module AtsSccas_Steps {
         vc_sent_label := { host := PX_IMS_SUT_AS_IPADDR, portField := PX_IMS_SUT_AS_PORT };
 
                 select(p_interface){
-//                case (c_interfaceProfile_IMS_SUT_IBCF1) { //variant c_interfaceProfile_IMS_SUT_IBCF1
-//                vc_interfaceprofile.SUTPort := PX_IMS_SUT_IBCF1_PORT;
-//                vc_interfaceprofile.SUTIpaddr := PX_IMS_SUT_IBCF1_IPADDR;
-//                vc_interfaceprofile.SUTHomeDomain := PX_IMS_SUT_IBCF1_HOME_DOMAIN;
-//                }
-//                case (c_interfaceProfile_IMS_SUT_IBCF2) { //variant c_interfaceProfile_IMS_SUT_IBCF2
-//                vc_interfaceprofile.SUTPort := PX_IMS_SUT_IBCF2_PORT;
-//                vc_interfaceprofile.SUTIpaddr := PX_IMS_SUT_IBCF2_IPADDR;
-//                vc_interfaceprofile.SUTHomeDomain := PX_IMS_SUT_IBCF2_HOME_DOMAIN;
-//                }
-//                case (c_interfaceProfile_IMS_SUT_PCSCF1) { //variant c_interfaceProfile_IMS_SUT_PCSCF1
-//                vc_interfaceprofile.SUTPort := PX_IMS_SUT_PCSCF1_PORT;
-//                vc_interfaceprofile.SUTIpaddr := PX_IMS_SUT_PCSCF1_IPADDR;
-//                vc_interfaceprofile.SUTHomeDomain := PX_IMS_SUT_PCSCF1_HOME_DOMAIN;
-//                }
-//                case (c_interfaceProfile_IMS_SUT_PCSCF2) { //variant c_interfaceProfile_IMS_SUT_PCSCF2
-//                vc_interfaceprofile.SUTPort := PX_IMS_SUT_PCSCF2_PORT;
-//                vc_interfaceprofile.SUTIpaddr := PX_IMS_SUT_PCSCF2_IPADDR;
-//                vc_interfaceprofile.SUTHomeDomain := PX_IMS_SUT_PCSCF2_HOME_DOMAIN;
-//                }
-//                case (c_interfaceProfile_IMS_SUT_PCSCF) { //variant c_interfaceProfile_IMS_SUT_PCSCF
-//                vc_interfaceprofile.SUTPort := PX_IMS_SUT_PCSCF_PORT;
-//                vc_interfaceprofile.SUTIpaddr := PX_IMS_SUT_PCSCF_IPADDR;
-//                vc_interfaceprofile.SUTHomeDomain := PX_IMS_SUT_PCSCF_HOME_DOMAIN;
-//                }
-//                case (c_interfaceProfile_IMS_SUT_SCSCF) { //variant c_interfaceProfile_IMS_SUT_SCSCF
-//                vc_interfaceprofile.SUTPort := PX_IMS_SUT_SCSCF_PORT;
-//                vc_interfaceprofile.SUTIpaddr := PX_IMS_SUT_SCSCF_IPADDR;
-//                vc_interfaceprofile.SUTHomeDomain := PX_IMS_SUT_SCSCF_HOME_DOMAIN;
-//                }
-//                case (c_interfaceProfile_IMS_SUT_ICSCF) { //variant c_interfaceProfile_IMS_SUT_ICSCF
-//                vc_interfaceprofile.SUTPort := PX_IMS_SUT_ICSCF_PORT;
-//                vc_interfaceprofile.SUTIpaddr := PX_IMS_SUT_ICSCF_IPADDR;
-//                vc_interfaceprofile.SUTHomeDomain := PX_IMS_SUT_ICSCF_HOME_DOMAIN;
-//                }
-//                case (c_interfaceProfile_IMS_SUT_MGCF) { //variant c_interfaceProfile_IMS_SUT_MGCF
-//                vc_interfaceprofile.SUTPort := PX_IMS_SUT_IMGCF_PORT;
-//                vc_interfaceprofile.SUTIpaddr := PX_IMS_SUT_IMGCF_IPADDR;
-//                vc_interfaceprofile.SUTHomeDomain := PX_IMS_SUT_IMGCF_HOME_DOMAIN;
-//                }
                 //used for AS, TAS, SCC-AS
                 case (c_interfaceProfile_IMS_SUT_AS) { //variant c_interfaceProfile_IMS_SUT_AS
                 vc_interfaceprofile.SUTPort := PX_IMS_SUT_AS_PORT;
@@ -515,6 +475,29 @@ module AtsSccas_Steps {
             LibSip_Steps.f_setHeadersINVITE(p_cSeq_s);
         } // end f_setHeadersINVITE_AS
 
+		/**
+		 * @desc Sets BYE header fields (IMS addresses) extension of general settings from LibSip basic function
+		 * @param p_cSeq_s The current cSeq
+		 * @param p_to_user The selected user's SIP URL
+		 */
+		function f_setHeaders_BYE_AS(
+			inout CSeq p_cSeq_s,
+			in SipUrl p_to_user,
+			in SipUrl p_from_user
+		) runs on ImsComponent  {
+			vc_to := f_initToHeader(p_to_user); // init of vc_to using userProfile identifier
+			vc_from := f_initFromHeader(p_from_user, f_getRndTag()); // init of vc_from using userProfile identifier
+			vc_requestUri := p_to_user; // Request URI of Invite is identical with To header
+			if (vc_boo_route) {
+				vc_route := m_route_interface(vc_interfaceprofile);
+			}
+			if (vc_boo_recordRoute) {
+				vc_recordRoute := m_recordRoute_currIpAddr(vc_userprofile);
+			}
+
+			LibSip_Steps.f_setHeadersBYE(p_cSeq_s);
+		} // end f_setHeadersBYE_AS
+
 			/**
 			 * @desc setting of general and basic OPTIONS header fields in additon to the addresses (To, From, ReqUri)
 			 * @param p_cSeq_s
@@ -578,8 +561,8 @@ module AtsSccas_Steps {
                                                                                 vc_authorization, 
                                                                                 {c_Integrity_protected_no}
                                                                                 ), 
-                                                    PX_IMS_SUT_SCSCF_IPADDR, // TODO To be refined during validation
-                                                    PX_IMS_SUT_SCSCF_PORT, // TODO To be refined during validation
+                                                    PX_IMS_TS_SCSCF_IPADDR, // TODO To be refined during validation
+                                                    PX_IMS_TS_SCSCF_PORT, // TODO To be refined during validation
                                                     "600000",
                                                     omit,
                                                     omit,
@@ -680,6 +663,11 @@ module AtsSccas_Steps {
 			var CSeq v_cSeq_s := p_cSeq_s;
 		} //end function f_ReleaseDialogAS
 
+		function f_PS2CSTransfer(in CSeq p_cSeq_s)
+		    runs on ImsComponent {
+            var CSeq v_cSeq_s := p_cSeq_s;
+        } //end function f_PS2CSTransfer
+		
 
         /**
          * @desc function send OPTIONS message
